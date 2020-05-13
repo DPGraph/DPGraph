@@ -7,7 +7,7 @@ from nodeDP_degDist import *
 
 
 dataDir ="Datasets/"
-dataNames = ["facebook_combined.txt"]
+dataNames = ["toydata.txt", "facebook_combined.txt", "wiki-Vote.txt", "email-Enron.txt",  "cit-HepTh.txt", "com-dblp.ungraph.txt"]
 dataKey = int(sys.argv[1])
 dataName = dataNames[dataKey]
 print(dataName)
