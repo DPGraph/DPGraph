@@ -119,7 +119,7 @@ def extractHist(cumHist): #cumHist is noisy cumulative histogram
 def postTail(hist, theta):
     budget = hist[theta]
     #print("budget", budget)    
-    start = round(theta/2)
+    start = int(round(theta/2))
     cbar = 2.0/theta * sum(hist[start:theta])
     
     X = np.array([[x] for x in range(start,theta)])
