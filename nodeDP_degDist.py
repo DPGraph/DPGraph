@@ -6,22 +6,28 @@ from util import *
 #Node DP algorithms for degree distribution
 ################
 
+
 #Day et al. SIGMOD'16 
 #Algo 1 (projection by edge-addition, variant: output degSeq instead of graph), part of Algo 4
 def edgeAddition_DegList(G, theta):    
     #Edge addition algorithm from empty graph till no edges can be added keep degree bounded by theta
-    #Gt = nx.Graph()
     nodesNum = len(G.nodes())
-    nodes = np.random.permutation(nodesNum)
-    #Gt.add_nodes_from(nodes)
+    nodesList = list(G.nodes()) #the node ids are not strictly from 0 to |nodesNum|-1
+    invNodesList = {}
+    for id in range(nodesNum):
+        v = nodesList[id]
+        invNodesList[v]=id
+    
+    nodesIndices = np.random.permutation(nodesNum)
     degListGt = np.zeros(nodesNum)
     
-    for v in nodes:
+    for vid in nodesIndices:
+        v = nodesList[vid]
         for u in G.neighbors(v):
-            if u<v and degListGt[u]<theta and degListGt[v]<theta:
-                #Gt.add_edge(u,v)
-                degListGt[u] = degListGt[u]+1
-                degListGt[v] = degListGt[v]+1
+            uid = invNodesList[u]
+            if uid<vid and degListGt[uid]<theta and degListGt[vid]<theta:
+                degListGt[uid] = degListGt[uid]+1
+                degListGt[vid] = degListGt[vid]+1
                 
     degListGt=sorted(degListGt, reverse=False) #small to large degrees
     #print(degListGt)
@@ -31,6 +37,7 @@ def edgeAddition_DegList(G, theta):
     #print("difference in deg seq after edge addition", sum(diff))
     
     return degListGt
+
 
 #Day et al. SIGMOD'16 
 #Part of Algo 4 (select an optimal theta) 
@@ -99,6 +106,7 @@ def extractHist(cumHist): #cumHist is noisy cumulative histogram
             #print('a:', i, hist[i])
             i = i+1
         else:
+            iold = i
             jlist = list(reversed(range(i,theta+2)))
             #print(jlist)
             for j in jlist:
@@ -109,9 +117,12 @@ def extractHist(cumHist): #cumHist is noisy cumulative histogram
                         #print('b:', k, hist[k])
                     i= j+1
                     break 
+            if i == iold:
+                #print("i does not change", i, cumHist[i:theta])
+                break
     #print(pdfToCdf(hist))
     return hist
-    
+      
 
 #Day et al. SIGMOD'16 
 #Algo 5 (postprocess for tail destribution), part of Algo 4
