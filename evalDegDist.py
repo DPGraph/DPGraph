@@ -43,10 +43,12 @@ print(algo)
 epsList = [0.01,0.02,0.05,0.1,0.2,0.5,1.0,2.0,5.0,10.0]
 #epsList = [0.1, 0.5, 1.0, 1.5, 2.0]
 #epsList = [0.1]
-repeats = 30
+repeats = 3 
 
 maxTheta = min(nodesNum-1,200)
 thetaCandidates = [20,40,60,80,100,120,140,160,180,200]
+if maxTheta < 200:
+    thetaCandidates = [i+1 for i in range(maxTheta)]
 
 for epsilon in epsList:
     errors = []
