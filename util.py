@@ -8,7 +8,7 @@ from sklearn.isotonic import IsotonicRegression
 from sklearn.linear_model import LinearRegression 
 import matplotlib
 import matplotlib.pyplot as plt
-import cvxpy as cp
+from qpsolvers import solve_qp
 
 #utility functions
 def getSortedDegSeq(G):

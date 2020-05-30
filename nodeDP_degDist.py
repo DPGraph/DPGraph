@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from util import *
-
+from numpy import array, dot
 
 #Node DP algorithms for degree distribution
 ################
@@ -156,21 +156,22 @@ def postTail(hist, theta):
 
 #Raskhodnikova & Smith, Arxiv'15
 def flowgraph(G, theta):
-    #https://www.cvxpy.org/examples/basic/quadratic_program.html
+    #https://pypi.org/project/qpsolvers/
     #Raskhodnikova & Smith, Arxiv'15
     #Note: this algo is slow, take more than 1 min for nodeNum=200
 
     nodesNum = len(G.nodes()) 
     edgesNum = len(G.edges())
-    print(nodesNum,edgesNum)
+    #print(nodesNum,edgesNum)
 
     nn = nodesNum * 2
     ne = edgesNum * 2
     n = nn + ne
 
-    P = np.zeros([n,n])
-    P[:(nn),:(nn)] = np.identity(nn)
-
+    #P = np.zeros([n,n])
+    #P[:(nn),:(nn)] = np.identity(nn)
+    P = np.identity(n)
+    
     q = np.zeros(n)
     q[:(nn)] = -2.0* theta
 
@@ -191,16 +192,18 @@ def flowgraph(G, theta):
             A[nodesNum+i,(edgeCount+j)] = -1
         edgeCount = edgeCount + neighborSize
     #print(A)
-
-    x = cp.Variable(n)
-    prob = cp.Problem(cp.Minimize(cp.quad_form(x,P)+ q.T @ x), [T @x <=h, x>=0, A@x == 0 ])
-    prob.solve()
+    
+    b = np.repeat(0,nn)
+    lb = np.repeat(0,n)
+    x = solve_qp(P, q, T, h, A,b,lb)
     #print("\nThe optimal value is", prob.value)
     #print("A solution x is")
 
     degList = []
+    #print(x.value[0])
+    #print(nodesNum)
     for i in range(nodesNum):
-        degList.append(int(x.value[i,0].round()))
+        degList.append(int(x[i].round()))
     degSeq = sorted(degList,reverse=False)
     #print(degSeq)
     return degSeq
