@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Modern Business - Start Bootstrap Template</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/modern-business.css" rel="stylesheet">
+
+  <!-- Vega -->
+  <script src="https://vega.github.io/vega/vega.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@5"></script>
+
+  <!-- Plotly-->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+</head>
+<script>
+  var algorithms = [];
+  var algoindex = [];
+  var edgealgorithms = [];
+  var edgealgoindex = [];
+  function hideoption(){
+    document.getElementById("select_algorithm_DD").style.visibility = "hidden";
+    //document.getElementById("select_algorithm_DD_edge").style.visibility = "hidden";
+    //document.getElementById("algorithm1").label = "testing";
+    document.getElementById("algorithm1").checked = true;
+    document.getElementById("algorithm2").checked = true;
+    document.getElementById("algorithm3").checked = true;
+    document.getElementById("algorithm4").checked = true;
+    document.getElementById("algorithm5").checked = true;
+    document.getElementById("algorithm6").checked = true;
+  }
+  function getedgealgoname(){
+    Plotly.d3.csv("lookingedge.csv", function(rows){
+      var l = rows.filter(r => r.algoname)
+      edgealgorithms = l.map(r=>r.algoname)
+    })
+  }
+  function getedgealgoindex(){
+    Plotly.d3.csv("lookingedge.csv", function(rows){
+      var l = rows.filter(r => r.algo)
+      edgealgoindex = l.map(r=> r.algo)
+    })
+  }
+  function getalgoname(){
+    Plotly.d3.csv("looking.csv", function(rows){
+      var l = rows.filter(r => r.algoname)
+      algorithms = l.map(r=>r.algoname)
+    })
+  }
+  function getalgoindex(){
+    Plotly.d3.csv("looking.csv", function(rows){
+      var l = rows.filter(r => r.algo)
+      algoindex = l.map(r=> r.algo)
+    })
+  }
+  function prepare(){
+    hideoption();
+    getalgoname();
+    getalgoindex();
+    getedgealgoname();
+    getedgealgoindex();
+  }
+</script>
+<body onload = "prepare()">
+
+  <!-- Navigation -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">DPGraph</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="problem.html">Problem Statement</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="frontier.html">Accuracy Frontier</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="performance.html">Performance Frontier</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Empirical Findings
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
+              <a class="dropdown-item" href="finding.html">Finding Overview</a>
+              <a class="dropdown-item" href="#">Competitive Algorithm</a>
+              <a class="dropdown-item" href="#">Effect of Data Shape</a>
+              <a class="dropdown-item" href="#">Comparison Against Baseline</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Background Overview
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
+              <a class="dropdown-item" href="glossary.html">Reference: Glossary</a>
+              <a class="dropdown-item" href="dataset.html">Reference: Dataset</a>
+              <a class="dropdown-item" href="algorithm.html">Reference: Algorithms</a>
+              <a class="dropdown-item" href="DPdefinition.html">Reference: Differential Privacy</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <!-- Following are some text describing how we are interact with the privacy frontier. -->
+
+    <h1 class="text-left">Privacy Accuracy Frontier</h1>
+        <p class="text-left" style= "background-color: PowderBlue"> Given a dataset and a privacy level (epsilon), which algorithm introduce the least error?
+        </p>
+
+        <p class="text-left"> We show below (on the right) the Privacy Accuracy Frontier which is a representation of the best achievable error across different privacy levels (i.e., epsilon values). It plots the error over degree distribution, or subgraph counting, of various algorithms on the chosen input dataset (y-axis) versus the privacy level (epsilon) on the x-axis. </p>
+
+        <p class="text-left"> User first needs to specify which statistics they are interested in investigating (degree distribution of subgraph counting). Then, a privacy accuracy frontier corresponding to that statistic is generated on the right. </p>
+
+        <p class="text-left"> Each dot corresponds to the error of a specific algorithm at a specific epsilon. For the task of degree distribution, Click on a dot to visualize the noisy histogram of the algorithm in the middle. Dots corresponding to the same epsilon are placed along the same vertical line, and dots corresponding to the same algorithms all share the same unique color. *The points that make up the lower convex hull are those that achieve the least error at that privacy level, and are called the frontier. The points on the frontier alone can be visualized by toggling the visualize frontier checkbox on the far right. Click the "Show/Hide Algorithms" button to view the list of algorithms. Algorithms can be included or excluded from the plot using the associated check-boxes.* </p>
+
+        <p class="text-left"> For degree distribution, two histograms are shown. The true degree distribution histogram is shown on the left. The noisy degree distribution histogram is shown in the middle. * Both histograms contain the same number of bins for easier comparison. Clicking on a bin of a histogram displays the number of counts in that bin. *For subgraph counting, the subgraph is plotted on the left. In the middle, the true count and the noisy count are shown next to each other. </p>
+
+        <!--
+        Following are some selections allowing user to specify input settings. 
+        These settings are: 
+        1. Privacy Type: [Node]
+        2. Utility Function: [DD]
+        3. Dataset: [CIT, DBLP, FACEBOOK]
+        -->
+
+        <select id = "Degree Type"> 
+        <option value = "1" selected = "selected">Node DP</option>
+        <option value = "2">Edge DP</option>
+        
+        </select>
+
+        <select id = "Utility"> 
+        <option value = "1" selected = "selected">Degree Distribution</option>
+        <option value = "2">Subgraph Counting_4kclique</option>
+        <option value = "3">Subgraph Counting_3kstar</option>
+        <option value = "4">Subgraph Counting_2ktriangle</option>
+        <option value = "5">Subgraph Counting_0ktriangle</option>
+        </select>
+
+        <select id = "Dataset"> 
+        <option value = "1" selected = "selected">Dataset:</option>
+        <option value = "2">CIT</option>
+        <option value = "3">DBLP</option>
+        <option value = "4">Facebook</option>
+        <option value = "5">WIKI</option>
+        <option value = "6">Toydata</option>
+        <option value = "7">Email_enron</option>
+        </select>
+        
+        <!-- 
+        After clicking on the folloiwng button, user sees the privacy frontier, the true/noisy DD Hist, as well as a graph
+        of the original dataset, given that they have entered valid input settings. 
+        -->
+
+        <button onclick="frontierFn()">Apply Setting</button>
+
+        <br>
+        <script>
+          
+        </script>
+        <p id = "result"> Please specify input settings. </p>
+        
+        <script>
+          var algorithms = [];
+          var algoindex = [];
+          var new_data = [];
+          var index = 0;
+          function plotfrontier(dataChosen){
+            var csvName = dataChosen + '.csv';
+            var dp_chosen = document.getElementById("Degree Type").value;
+            Plotly.d3.csv(csvName, (err, rows) => {
+              //for(var i = 1; i <=max_algorithm;i++){}
+                var tempPlot = document.getElementById('scatterFrontier')
+                if(dp_chosen == 1){                
+                  var data = algoindex.map(y => {
+                  var d = rows.filter(r => r.algorithm == y)
+                  
+                  return {
+                    name: algorithms[y-1],
+                    x: d.map(r => r.epsilon),
+                    y: d.map(r => r.L1error),
+                    error_y: {
+                      type: 'data',
+                      array: d.map(r => r.L1error_sd),
+                      visible: true
+                    },
+                    mode: 'markers',
+                  }
+                })
+              } else {
+                var data = edgealgoindex.map(y => {
+                  var d = rows.filter(r => r.algorithm == y)
+                  
+                  return {
+                    name: algorithms[y-1],
+                    mode: 'markers',
+                    x: d.map(r => r.epsilon),
+                    y: d.map(r => r.L1error),
+                    error_y: {
+                      type: 'data',
+                      array: d.map(r => r.L1error_sd),
+                      visible: true
+                    },
+                  }
+                })
+              }
+
+                var layout = {
+                  autosize: false,
+                  width: 500,
+                  height: 300,
+                  xaxis: {
+                    type: 'log',
+                    title: 'epsilon',
+                    autorange: true
+                  },
+                  yaxis:{
+                    title: 'L1error',
+                    autorange: false
+                  },
+                  margin: {
+                    l: 30,
+                    r: 30,
+                    b: 30,
+                    t: 35,
+                    pad: 4
+                  },
+                  mode:'markers',
+                  hovermode:'closest',
+                  title:'Privacy Frontier '+dataChosen,
+                  showlegend: false
+                };
+                
+                Plotly.newPlot('scatterFrontier', data, layout,{showSendToCloud: true});
+                
+                /*var frames = [
+                  {name: 'new click', data: [{x: [], y: []}]},
+                  {name: 'last click', data: [{x: [], y: []}]},
+                ];*/
+                var time = 0;
+                // This function below determines which noisy histogram to display, based on the point that user clicked on the frontier.
+                tempPlot.on('plotly_click', function(data){
+                  // To uniquely identify which noisy histogram we want to display, we need 1) algorithm 2) epsilon value (x-value)
+                  var curr_time = new Date();
+                  var pts = '';
+                  var curveChosen = '';
+                  var eChosen = '';
+                  var rankChosen = '';
+                  
+                  for(var i=0; i < data.points.length; i++){
+                      rankChosen = data.points[i].curveNumber;
+                      if (dp_chosen == 1){
+                        if (rankChosen == 0) {
+                          curveChosen = "nodeDP_degHis_Lap";
+                        } else if (rankChosen == 1) {
+                          curveChosen = "nodeDP_degSeq_Lap";
+                        } else if (rankChosen == 2){
+                          curveChosen = "nodeDP_nodeTrun_Smooth";
+                        } else if (rankChosen == 3){
+                          curveChosen = "nodeDP_edgeAdd_degHisPart_Lap";
+                        } else if (rankChosen == 4){
+                          curveChosen = "nodeDP_edgeAdd_degCum_Lap";
+                        } else if (rankChosen == 5){
+                          curveChosen = "nodeDP_edgeAdd_degCum_Lap_variant";
+                        } 
+                      } else {
+                        if(rankChosen == 0){
+                          curveChosen = "edgeDP_degHis_lap";
+                        } else if(rankChosen == 1){
+                          curveChosen = "edgeDP_degHis_lap";
+                        }
+                      }
+                      eChosen = data.points[i].x.toPrecision(1);                  
+
+                      // Based on the dataset, algorithm, and epsilon level chosen, we determine the name of the CSV file
+                      // that store the noisy histogram user has chosen 
+                    
+                      var testHeight = 300; // this simply tests that we can use variables for layout parameters
+                      // The following function plost the noisy histogram
+                      var noisyHistName = dataChosen+"algo.csv"
+                      console.log(eChosen);
+                      console.log(rankChosen);
+                      if(eChosen == 1) eChosen = 1.0
+                      else if(eChosen == 2) eChosen = 2.0
+                      else if(eChosen == 5) eChosen = 5.0
+                      else if(eChosen == 10) eChosen = 10.0
+                      Plotly.d3.csv(noisyHistName, function(err, rows){
+                        var d = rows.filter(r => ((r.epsilon == eChosen) && (r.algorithm == rankChosen+1)))
+                        if(dp_chosen == 1) var aname = algorithms[rankChosen]
+                        else var aname = edgealgorithms[rankChosen]
+                        function unpack(rows, key) {
+                          return rows.map(function(row) { return row[key]; });
+                        }
+                        var col = "count"+(time%10+1)
+                        console.log(col);
+                        var data = [{
+                          mode: 'markers',
+                          name: aname,
+                          x: unpack(d, 'degree'),
+                          y: unpack(d, col)
+                        }]
+                        var layout = {
+                          autosize: false,
+                          width: 300,
+                          height: testHeight,
+                          xaxis: {
+                            type: 'log',
+                            title: 'degree',
+                            autorange: true
+                          },
+                          yaxis: {
+                            title: 'count',
+                            autorange: true
+                          },
+                          margin: {
+                            l: 30,
+                            r: 30,
+                            b: 30,
+                            t: 35,
+                            pad: 4
+                          },
+                          mode:'markers',
+                          hovermode:'closest',
+                          title:'Noisy Histogram',
+                          showlegend: false
+                        };
+                        //Plotly.newPlot('noisyHist', data, layout);
+                        Plotly.deleteTraces('trueHist', 1);
+                        Plotly.plot('trueHist', data, layout);
+                        time++;
+                        var finish_time = new Date();
+                        console.log(finish_time - curr_time);
+                      });
+                  }
+                });
+                
+              });
+            
+          }
+          function changevisibility(i){
+            var dataChosen = '';
+            var temp_data = document.getElementById("Dataset").value;
+            var dp_chosen = document.getElementById("Degree Type").value;
+            if (temp_data == 1){
+              // Tell user they need to choose a dataset.
+              document.getElementById("result").innerHTML = "Dataset is not specified !";
+              var dataChosen = 'EMPTY';
+              var graphSource = "PlotBlank.png";
+              console.log(graphSource);
+            } 
+            else {
+              document.getElementById("result").innerHTML = "This input choice is valid.";
+              
+              // dataChosen stores the dataset that user has chosen
+              if (temp_data == 2) {
+                dataChosen = 'CIT';
+              } else if (temp_data == 3) {
+                dataChosen = 'DBLP';
+              } 
+              else if(temp_data == 4){
+                dataChosen = 'FACEBOOK';
+              } else if(temp_data == 5){
+                dataChosen = 'WIKI';
+              } else if(temp_data == 6){
+                dataChosen = 'TOYDATA';
+              }
+              else {
+                dataChosen = 'EMAIL';
+              }
+              // graphSource stores the source (.png) of an image of the original dataset
+              var graphSource = "Plot"+dataChosen+".png";
+            }
+            if(dp_chosen == 1){
+              if(algoindex[i] == -1){
+                algoindex[i] = i+1;
+              }else{
+                algoindex[i] = -1;
+              }
+            } else {
+              if(edgealgoindex[i] == -1){
+                edgealgoindex[i] = i+1;
+              }
+              else edgealgoindex[i] = -1;
+            }
+            console.log(algoindex);
+            console.log(edgealgoindex);
+            if(dp_chosen == 2) dataChosen = dataChosen + "edge";
+            plotfrontier(dataChosen);
+          }
+          function DDFn() {
+            // First determine which dataset we have chosen. If none is, display empty true histogram
+
+            // In this part we should also determine which true graphs we want to show. Set source to be NULL if no dataset is selected.
+            var temp_data = document.getElementById("Dataset").value;
+            var dp_chosen = document.getElementById("Degree Type").value;
+            if (temp_data == 1){
+              // Tell user they need to choose a dataset.
+              document.getElementById("result").innerHTML = "Dataset is not specified !";
+              var dataChosen = 'EMPTY';
+              var graphSource = "PlotBlank.png";
+              console.log(graphSource);
+            } 
+            else {
+              document.getElementById("result").innerHTML = "This input choice is valid.";
+              
+              // dataChosen stores the dataset that user has chosen
+              if (temp_data == 2) {
+                var dataChosen = 'CIT';
+              } else if (temp_data == 3) {
+                var dataChosen = 'DBLP';
+              } 
+              else if(temp_data == 4){
+                var dataChosen = 'FACEBOOK';
+              } else if(temp_data == 5){
+                var dataChosen = 'WIKI';
+              } else if(temp_data == 6){
+                var dataChosen = 'TOYDATA';
+              }
+              else {
+                var dataChosen = 'EMAIL';
+              }
+              // graphSource stores the source (.png) of an image of the original dataset
+              var graphSource = "Plot"+dataChosen+".png";
+            }
+            //if(dp_chosen == 2) dataChosen = dataChosen + "edgedp"
+            // This part draws the frontier 
+            //TODO: This is needed to be updated when we settled with the maximum number of algorithms.
+            if(dp_chosen == 2) var csvName = dataChosen + 'edge.csv';
+            else var csvName = dataChosen + '.csv';
+            Plotly.d3.csv(csvName, (err, rows) => {
+              //for(var i = 1; i <=max_algorithm;i++){}
+                var tempPlot = document.getElementById('scatterFrontier')
+                var data = algoindex.map(y => {
+                  var d = rows.filter(r => r.algorithm == y)
+                  
+                  return {
+                    name: algorithms[y-1],
+                    x: d.map(r => r.epsilon),
+                    y: d.map(r => r.L1error),
+                    error_y: {
+                      type: 'data',
+                      array: d.map(r => r.L1error_sd),
+                      visible: true
+                    },
+                    type: 'scatter'
+                  }
+                })
+
+                var layout = {
+                  autosize: false,
+                  width: 500,
+                  height: 300,
+                  xaxis: {
+                    type: 'log',
+                    title: 'epsilon level',
+                    autorange: true
+                  },
+                  yaxis:{
+                    title: 'L1error',
+                    fixedrange: true,
+                    autorange: false
+                  },
+                  margin: {
+                    l: 30,
+                    r: 30,
+                    b: 30,
+                    t: 35,
+                    pad: 4
+                  },
+                  mode:'markers',
+                  hovermode:'closest',
+                  title:'Privacy Frontier '+dataChosen,
+                  showlegend: false
+                };
+                
+                Plotly.newPlot('scatterFrontier', data, layout,{showSendToCloud: true});
+                
+                /*var frames = [
+                  {name: 'new click', data: [{x: [], y: []}]},
+                  {name: 'last click', data: [{x: [], y: []}]},
+                ];*/
+                var count = 1;
+                var time = 1;
+                // This function below determines which noisy histogram to display, based on the point that user clicked on the frontier.
+                tempPlot.on('plotly_click', function(data){
+                  // To uniquely identify which noisy histogram we want to display, we need 1) algorithm 2) epsilon value (x-value)
+                  var curr_time = new Date();
+                  var pts = '';
+                  var curveChosen = '';
+                  var eChosen = '';
+                  var rankChosen = '';
+                  for(var i=0; i < data.points.length; i++){
+                      rankChosen = data.points[i].curveNumber;
+                      if (dp_chosen == 1){
+                        if (rankChosen == 0) {
+                          curveChosen = "nodeDP_degHis_Lap";
+                        } else if (rankChosen == 1) {
+                          curveChosen = "nodeDP_degSeq_Lap";
+                        } else if (rankChosen == 2){
+                          curveChosen = "nodeDP_nodeTrun_Smooth";
+                        } else if (rankChosen == 3){
+                          curveChosen = "nodeDP_edgeAdd_degHisPart_Lap";
+                        } else if (rankChosen == 4){
+                          curveChosen = "nodeDP_edgeAdd_degCum_Lap";
+                        } else if (rankChosen == 5){
+                          curveChosen = "nodeDP_edgeAdd_degCum_Lap_variant";
+                        } 
+                      } else {
+                        if(rankChosen == 0){
+                          curveChosen = "edgeDP_degHis_lap";
+                        } else if(rankChosen == 1){
+                          curveChosen = "edgeDP_degHis_lap";
+                        }
+                      }
+                      eChosen = data.points[i].x.toPrecision(1);
+                      // Based on the dataset, algorithm, and epsilon level chosen, we determine the name of the CSV file
+                      // that store the noisy histogram user has chosen 
+                    
+                      var testHeight = 300; // this simply tests that we can use variables for layout parameters
+                      // The following function plost the noisy histogram
+                      if(dp_chosen == 1) var noisyHistName = dataChosen+"algo.csv"
+                      else var noisyHistName = dataChosen + "edgealgo.csv"
+                      //var noisyHistName = "output.csv"
+                      if(eChosen == 1) eChosen = 1.0
+                      else if(eChosen == 2) eChosen = 2.0
+                      else if(eChosen == 5) eChosen = 5.0
+                      else if(eChosen == 10) eChosen = 10.0
+                      console.log(noisyHistName);
+                      console.log(eChosen);
+                      console.log(rankChosen);
+                      Plotly.d3.csv(noisyHistName, function(err, rows){
+                        var d = rows.filter(r => ((r.epsilon == eChosen) && (r.algorithm == rankChosen+1)))
+                        if(dp_chosen == 1) var aname = algorithms[rankChosen]
+                        else var aname = edgealgorithms[rankChosen]
+                        function unpack(rows, key) {
+                          return rows.map(function(row) { return row[key]; });
+                        }
+                        var col = "count"+(time%10+1)
+                        console.log(col);
+                        var data = [{
+                          mode: 'markers',
+                          name: aname,
+                          //type: 'bar',
+                          //width: unpack(d, 'width'),
+                          x: unpack(d, 'degree'),
+                          y: unpack(d, col)
+                        }]
+                        console.log(data);
+                        var layout = {
+                          autosize: true,
+                          width: 300,
+                          height: testHeight,
+                          xaxis: {
+                            type: 'log',
+                            title: 'degree',
+                            autorange: true
+                          },
+                          yaxis: {
+                            title: 'count',
+                            autorange: true
+                          },
+                          margin: {
+                            l: 30,
+                            r: 30,
+                            b: 30,
+                            t: 35,
+                            pad: 4
+                          },
+                          mode:'markers',
+                          hovermode:'closest',
+                          title:'Noisy Histogram',
+                          showlegend: false
+                        };
+                        
+                        Plotly.deleteTraces('trueHist', 1);
+                        Plotly.plot('trueHist', data, layout);
+                        var finish_time = new Date();
+                        console.log(finish_time - curr_time);
+                      });
+                      if(dp_chosen == 1) var noisyHistName1 = dataChosen+"cdfalgo.csv"
+                      else var noisyHistName1 = dataChosen + "cdfedgealgo.csv"
+                      Plotly.d3.csv(noisyHistName1, function(err, rows){
+                        var d = rows.filter(r => ((r.epsilon == eChosen) && (r.algorithm == rankChosen+1)))
+                        if(dp_chosen == 1) var aname = algorithms[rankChosen]
+                        else var aname = edgealgorithms[rankChosen]
+                        function unpack(rows, key) {
+                          return rows.map(function(row) { return row[key]; });
+                        }
+                        var col = "count"+(time%10+1)
+                        console.log(col);
+                        var data = [{
+                          mode: 'markers',
+                          name: aname,
+                          x: unpack(d, 'degree'),
+                          y: unpack(d, col)
+                        }]
+                        console.log(data);
+                        var layout = {
+                          autosize: true,
+                          width: 300,
+                          height: testHeight,
+                          xaxis: {
+                            type: 'log',
+                            title: 'degree',
+                            autorange: true
+                          },
+                          yaxis: {
+                            title: 'count',
+                            autorange: true
+                          },
+                          margin: {
+                            l: 30,
+                            r: 30,
+                            b: 30,
+                            t: 35,
+                            pad: 4
+                          },
+                          mode:'markers',
+                          hovermode:'closest',
+                          title:'Noisy Histogram',
+                          showlegend: false
+                        };
+                        Plotly.deleteTraces('noisyHist', 1);
+                        Plotly.plot('noisyHist', data, layout);
+                        time++;
+                      });
+                      
+                    
+                  }
+                });
+                
+              });
+          
+            // The folloiwng function plots the ture DD histogram of a dataset. Note that one dataset has only one true DD. 
+            var cdf = dataChosen+"cdf.csv";
+            Plotly.d3.csv(cdf, (err,rows)=>{
+              function unpack(rows, key, total) {
+                return rows.map(function(row) { return row[key]; });
+              }
+              var trace1 = {
+                mode: 'markers',
+                type: 'line',
+                x: rows.map(function(row) { return row['degree']}),
+                y: unpack(rows, 'count')
+              }
+              var trace2 = {}
+              var data = [trace1,trace2]
+              var layout = {
+                autosize: true,
+                width: 300,
+                height: 300,
+                xaxis: {
+                  title: 'count',
+                  type: 'log',
+                  autorange: true
+                },
+                yaxis: {
+                  fixedrange: true,
+                  zerolin: true,
+                  type: 'log',
+                  title: 'P(K>=k)',
+                  autorange: true
+                },
+                margin: {
+                  l: 30,
+                  r: 30,
+                  b: 30,
+                  t: 35,
+                  pad: 4
+                },
+                mode:'markers',
+                hovermode:'closest',
+                title:'Noisy Histogram',
+                showlegend: false
+                };
+              Plotly.newPlot('noisyHist', data, layout);
+            })
+            var trueHistName = dataChosen+'HistCSV.csv'
+            Plotly.d3.csv(trueHistName, function(err, rows){
+
+            function unpack(rows, key) {
+              return rows.map(function(row) { return row[key]; });
+            }
+
+            var trace1 = {
+              name: 'trueHist',
+              mode: 'markers',
+              x: unpack(rows, 'degree'),
+              y: unpack(rows, 'count')
+            }
+            var trace2 = {}
+            var data = [trace1, trace2]
+            console.log(data);
+            var layout = {
+              autosize: false,
+              width: 300,
+              height: 300,
+              xaxis: {
+                type: 'log',
+                title: 'degree',
+                autorange: true
+              },
+              yaxis: {
+                title: 'count'
+              },
+              margin: {
+                l: 30,
+                r: 30,
+                b: 30,
+                t: 35,
+                pad: 4
+              },
+              mode:'markers',
+              hovermode:'closest',
+              title:'True Histogram',
+              showlegend: false
+            };
+
+            Plotly.newPlot('trueHist', data, layout)
+
+          });
+          
+           
+          // Lastly, we want to update the image of the dataset by changing the source, based on variable variable "graphSource"
+          //var trueGraphSource = document.getElementById("trueGraph").src;
+          //document.getElementById("trueGraph").src = graphSource;
+        };
+
+        function SGCFn() {
+          var temp_data = document.getElementById("Dataset").value;
+          var temp_query = document.getElementById("Query").value;
+          if (temp_data == 1) {
+            // Tell user they need to choose a dataset.
+            document.getElementById("result").innerHTML = "Dataset is not specified !";
+            var dataChosen = 'EMPTY';
+            var graphSource = "PlotBlank.png";
+            console.log(graphSource);
+          } 
+          else {
+            document.getElementById("result").innerHTML = "This input choice is valid.";
+            
+            // dataChosen stores the dataset that user has chosen
+            if (temp_data == 2) {
+              var dataChosen = 'CIT';
+            } else if (temp_data == 3) {
+              var dataChosen = 'DBLP';
+            } 
+            else if (temp_data == 4) {
+              var dataChosen = 'FACEBOOK';
+            } else {
+              var dataChosen = "WIKI";
+            }
+            // graphSource stores the source (.png) of an image of the original dataset
+            var graphSource = "Plot"+dataChosen+".png";
+            // queryChosen stores the query that user has chosen
+            if (temp_query == 1) {
+              var queryChosen = "4kclique"
+            } else if (temp_query == 2) {
+              var queryChosen = "3kstar"
+            } else if (temp_query == 3) {
+              var queryChosen = "2ktriangle"
+            } else {
+              var queryChosen = "0ktriangle"
+            }
+          }
+
+          // This part draws the frontier 
+
+          var algorithms = ['Ladder', 'LAP']
+          var csvName = "accuracy/"+dataChosen + queryChosen+ '.csv';
+          Plotly.d3.csv(csvName, (err, rows) => {
+          var tempPlot = document.getElementById('scatterFrontier')
+          var data = algorithms.map(y => {
+            var d = rows.filter(r => r.algorithm === y)         
+            return {
+              type: 'scatter',
+              name: y,
+              x: d.map(r => r.epsilon),
+              y: d.map(r => r.relError)
+            }
+          })
+
+          var layout = {
+            autosize: false,
+            width: 500,
+            height: 300,
+            xaxis: {
+              type: 'log',
+              autorange: true
+            },
+            margin: {
+              l: 30,
+              r: 30,
+              b: 30,
+              t: 35,
+              pad: 4
+            },
+            mode:'markers',
+            hovermode:'closest',
+            title:'Privacy Frontier '+dataChosen
+          };
+          
+          Plotly.newPlot('scatterFrontier', data, layout,{showSendToCloud: true});
+        });
+      };
+
+        function frontierFn() {
+          prepare();
+          var dp_chosen = document.getElementById("Degree Type").value;
+          document.getElementById("select_algorithm_DD").style.visibility = "visible";
+          if (document.getElementById("Utility").value == 1) {
+            if(dp_chosen == 1) {
+              document.getElementById("nodedp_algo1").style.display = "inline";
+              document.getElementById("edgedp_algo1").style.display = "none";
+              document.getElementById("nodedp_algo2").style.display = "inline";
+              document.getElementById("edgedp_algo2").style.display = "none";
+              document.getElementById("algorithm3").style.visibility = "visible";
+              document.getElementById("nodedp_algo3").style.display = "inline";
+              document.getElementById("algorithm4").style.visibility = "visible";
+              document.getElementById("nodedp_algo4").style.display = "inline";
+              document.getElementById("algorithm5").style.visibility = "visible";
+              document.getElementById("nodedp_algo5").style.display = "inline";
+              document.getElementById("algorithm6").style.visibility = "visible";
+              document.getElementById("nodedp_algo6").style.display = "inline";
+            }
+            else {
+              document.getElementById("nodedp_algo1").style.display = "none";
+              document.getElementById("edgedp_algo1").style.display = "inline";
+              document.getElementById("nodedp_algo2").style.display = "none";
+              document.getElementById("edgedp_algo2").style.display = "inline";
+              document.getElementById("algorithm3").style.visibility = "hidden";
+              document.getElementById("nodedp_algo3").style.display = "none";
+              document.getElementById("algorithm4").style.visibility = "hidden";
+              document.getElementById("nodedp_algo4").style.display = "none";
+              document.getElementById("algorithm5").style.visibility = "hidden";
+              document.getElementById("nodedp_algo5").style.display = "none";
+              document.getElementById("algorithm6").style.visibility = "hidden";
+              document.getElementById("nodedp_algo6").style.display = "none";
+            }
+            document.getElementById("trueHist").style.visibility = "visible";
+            document.getElementById("noisyHist").style.visibility = "visible";
+            document.getElementById("imageOrigin").style.visibility = "visible";
+            DDFn();
+          } else {
+            document.getElementById("trueHist").style.visibility = "hidden";
+            document.getElementById("noisyHist").style.visibility = "hidden";
+            document.getElementById("imageOrigin").style.visibility = "hidden";
+            SGCFn();
+          }
+        }
+      
+      </script>
+<!-- -->
+        <!-- Following are the four graphs we want to display on the page: privacy frontier, true Hist, noisy Hist, and image of dataset -->
+
+        <div id="DDContainer">
+          <div style="float: left;" id="scatterFrontier"></div>
+          <form id = "select_algorithm_DD">
+            <p>Please select the algorithm you want to display</p>
+            <input type = "checkbox" onclick = "changevisibility(0)" id = "algorithm1">
+            <span id="nodedp_algo1" style="display:inline; color:blue;">nodeDP_degHis_Lap.</span>
+            <span id="edgedp_algo1" style="display:none; color:blue;">edgeDP_degHis_Lap</span><br>
+            <input type = "checkbox" onclick = "changevisibility(1)" id = "algorithm2">
+            <span id="nodedp_algo2" style="display:inline; color:orange;">nodeDP_degSeq_Lap</span>
+            <span id="edgedp_algo2" style="display:none; color:orange;">edgeDP_degSeq_Lap</span><br>
+            <input type = "checkbox" onclick = "changevisibility(2)" id = "algorithm3">
+            <span id="nodedp_algo3" style="display:inline; color:green;">nodeDP_nodeTrun_Smooth</span><br>
+            <input type = "checkbox" onclick = "changevisibility(3)" id = "algorithm4">
+            <span id="nodedp_algo4" style="display:inline; color:red;">nodeDP_edgeAdd_degHisPart_Lap</span><br>
+            <input type = "checkbox" onclick = "changevisibility(4)" id = "algorithm5">
+            <span id="nodedp_algo5" style="display:inline; color:purple;">nodeDP_edgeAdd_degCum_Lap</span><br>
+            <input type = "checkbox" onclick = "changevisibility(5)" id = "algorithm6">
+            <span id="nodedp_algo6" style="display:inline; color:brown;">nodeDP_edgeAdd_degCum_Lap_variant</span><br>
+          </form>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <div style="float: left;" id="trueHist" class="trueHist"></div>
+          <div style="float: left;" id="noisyHist" class="noisyHist"></div>
+          <br style="clear: left;" />
+          <div style="float: middle;" id="imageOrigin">
+            <p> Visualization of Original Dataset: </p>
+            <!--<img src="PlotBlank.png" alt="Something has gone wrong" style="width:350px;height:300px;" id="trueGraph">-->
+            <div style="float: left;" id="dotplot"></div>
+            <br><br><br><br><br><br>
+          </div>
+        </div>
+
+        <br>
+
+  </div>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
