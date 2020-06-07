@@ -189,15 +189,15 @@
           var new_data = [];
           var index = 0;
           function plotfrontier(dataChosen){
-            var csvName = dataChosen + '.csv';
             var dp_chosen = document.getElementById("Degree Type").value;
+            if(dp_chosen == 2) var csvName = dataChosen + 'edge.csv';
+            else var csvName = dataChosen + '.csv';
             Plotly.d3.csv(csvName, (err, rows) => {
               //for(var i = 1; i <=max_algorithm;i++){}
-                var tempPlot = document.getElementById('scatterFrontier')
-                if(dp_chosen == 1){                
-                  var data = algoindex.map(y => {
-                  var d = rows.filter(r => r.algorithm == y)
-                  
+              var tempPlot = document.getElementById('scatterFrontier')
+              if(dp_chosen == 1){                
+                var data = algoindex.map(y => {
+                  var d = rows.filter(r => r.algorithm == y)    
                   return {
                     name: algorithms[y-1],
                     x: d.map(r => r.epsilon),
@@ -207,7 +207,7 @@
                       array: d.map(r => r.L1error_sd),
                       visible: true
                     },
-                    mode: 'markers',
+                    type: 'scatter'
                   }
                 })
               } else {
@@ -216,7 +216,6 @@
                   
                   return {
                     name: algorithms[y-1],
-                    mode: 'markers',
                     x: d.map(r => r.epsilon),
                     y: d.map(r => r.L1error),
                     error_y: {
@@ -224,136 +223,182 @@
                       array: d.map(r => r.L1error_sd),
                       visible: true
                     },
+                    type: 'scatter'
                   }
                 })
               }
 
-                var layout = {
-                  autosize: false,
-                  width: 500,
-                  height: 300,
-                  xaxis: {
-                    type: 'log',
-                    title: 'epsilon',
-                    autorange: true
-                  },
-                  yaxis:{
-                    title: 'L1error',
-                    autorange: false
-                  },
-                  margin: {
-                    l: 30,
-                    r: 30,
-                    b: 30,
-                    t: 35,
-                    pad: 4
-                  },
-                  mode:'markers',
-                  hovermode:'closest',
-                  title:'Privacy Frontier '+dataChosen,
-                  showlegend: false
-                };
+              var layout = {
+                autosize: false,
+                width: 500,
+                height: 300,
+                xaxis: {
+                  type: 'log',
+                  title: 'epsilon',
+                  autorange: true
+                },
+                yaxis:{
+                  title: 'L1error',
+                  fixedrange: true,
+                  autorange: false
+                },
+                margin: {
+                  l: 30,
+                  r: 30,
+                  b: 30,
+                  t: 35,
+                  pad: 4
+                },
+                mode:'markers',
+                hovermode:'closest',
+                title:'Privacy Frontier '+dataChosen,
+                showlegend: false
+              };
                 
-                Plotly.newPlot('scatterFrontier', data, layout,{showSendToCloud: true});
+              Plotly.newPlot('scatterFrontier', data, layout,{showSendToCloud: true});
                 
-                /*var frames = [
-                  {name: 'new click', data: [{x: [], y: []}]},
-                  {name: 'last click', data: [{x: [], y: []}]},
-                ];*/
-                var time = 0;
+              var time = 0;
                 // This function below determines which noisy histogram to display, based on the point that user clicked on the frontier.
-                tempPlot.on('plotly_click', function(data){
-                  // To uniquely identify which noisy histogram we want to display, we need 1) algorithm 2) epsilon value (x-value)
-                  var curr_time = new Date();
-                  var pts = '';
-                  var curveChosen = '';
-                  var eChosen = '';
-                  var rankChosen = '';
-                  
-                  for(var i=0; i < data.points.length; i++){
-                      rankChosen = data.points[i].curveNumber;
-                      if (dp_chosen == 1){
-                        if (rankChosen == 0) {
-                          curveChosen = "nodeDP_degHis_Lap";
-                        } else if (rankChosen == 1) {
-                          curveChosen = "nodeDP_degSeq_Lap";
-                        } else if (rankChosen == 2){
-                          curveChosen = "nodeDP_nodeTrun_Smooth";
-                        } else if (rankChosen == 3){
-                          curveChosen = "nodeDP_edgeAdd_degHisPart_Lap";
-                        } else if (rankChosen == 4){
-                          curveChosen = "nodeDP_edgeAdd_degCum_Lap";
-                        } else if (rankChosen == 5){
-                          curveChosen = "nodeDP_edgeAdd_degCum_Lap_variant";
-                        } 
-                      } else {
-                        if(rankChosen == 0){
-                          curveChosen = "edgeDP_degHis_lap";
-                        } else if(rankChosen == 1){
-                          curveChosen = "edgeDP_degHis_lap";
-                        }
+              tempPlot.on('plotly_click', function(data){
+                // To uniquely identify which noisy histogram we want to display, we need 1) algorithm 2) epsilon value (x-value)
+                var curr_time = new Date();
+                var pts = '';
+                var curveChosen = '';
+                var eChosen = '';
+                var rankChosen = '';
+                
+                for(var i=0; i < data.points.length; i++){
+                  rankChosen = data.points[i].curveNumber;
+                    if (dp_chosen == 1){
+                      if (rankChosen == 0) {
+                        curveChosen = "nodeDP_degHis_Lap";
+                      } else if (rankChosen == 1) {
+                        curveChosen = "nodeDP_degSeq_Lap";
+                      } else if (rankChosen == 2){
+                        curveChosen = "nodeDP_nodeTrun_Smooth";
+                      } else if (rankChosen == 3){
+                        curveChosen = "nodeDP_edgeAdd_degHisPart_Lap";
+                      } else if (rankChosen == 4){
+                        curveChosen = "nodeDP_edgeAdd_degCum_Lap";
+                      } else if (rankChosen == 5){
+                        curveChosen = "nodeDP_edgeAdd_degCum_Lap_variant";
+                      } 
+                    } else {
+                      if(rankChosen == 0){
+                        curveChosen = "edgeDP_degHis_lap";
+                      } else if(rankChosen == 1){
+                        curveChosen = "edgeDP_degHis_lap";
                       }
-                      eChosen = data.points[i].x.toPrecision(1);                  
+                    }
+                    eChosen = data.points[i].x.toPrecision(1);                  
 
                       // Based on the dataset, algorithm, and epsilon level chosen, we determine the name of the CSV file
                       // that store the noisy histogram user has chosen 
                     
-                      var testHeight = 300; // this simply tests that we can use variables for layout parameters
+                    var testHeight = 300; // this simply tests that we can use variables for layout parameters
                       // The following function plost the noisy histogram
-                      var noisyHistName = dataChosen+"algo.csv"
-                      console.log(eChosen);
-                      console.log(rankChosen);
-                      if(eChosen == 1) eChosen = 1.0
-                      else if(eChosen == 2) eChosen = 2.0
-                      else if(eChosen == 5) eChosen = 5.0
-                      else if(eChosen == 10) eChosen = 10.0
-                      Plotly.d3.csv(noisyHistName, function(err, rows){
-                        var d = rows.filter(r => ((r.epsilon == eChosen) && (r.algorithm == rankChosen+1)))
-                        if(dp_chosen == 1) var aname = algorithms[rankChosen]
-                        else var aname = edgealgorithms[rankChosen]
-                        function unpack(rows, key) {
-                          return rows.map(function(row) { return row[key]; });
-                        }
-                        var col = "count"+(time%10+1)
-                        console.log(col);
-                        var data = [{
-                          mode: 'markers',
-                          name: aname,
-                          x: unpack(d, 'degree'),
-                          y: unpack(d, col)
-                        }]
-                        var layout = {
-                          autosize: false,
-                          width: 300,
-                          height: testHeight,
-                          xaxis: {
-                            type: 'log',
-                            title: 'degree',
-                            autorange: true
-                          },
-                          yaxis: {
-                            title: 'count',
-                            autorange: true
-                          },
-                          margin: {
-                            l: 30,
-                            r: 30,
-                            b: 30,
-                            t: 35,
-                            pad: 4
-                          },
-                          mode:'markers',
-                          hovermode:'closest',
-                          title:'Noisy Histogram',
-                          showlegend: false
-                        };
-                        //Plotly.newPlot('noisyHist', data, layout);
-                        Plotly.deleteTraces('trueHist', 1);
-                        Plotly.plot('trueHist', data, layout);
-                        time++;
-                        var finish_time = new Date();
-                        console.log(finish_time - curr_time);
-                      });
+                    if(dp_chosen==1) var noisyHistName = dataChosen+"algo.csv"
+                    else var noisyHistName = dataChosen + "edgealgo.csv"
+                    console.log(eChosen);
+                    console.log(rankChosen);
+                    if(eChosen == 1) eChosen = 1.0
+                    else if(eChosen == 2) eChosen = 2.0
+                    else if(eChosen == 5) eChosen = 5.0
+                    else if(eChosen == 10) eChosen = 10.0
+                    Plotly.d3.csv(noisyHistName, function(err, rows){
+                      var d = rows.filter(r => ((r.epsilon == eChosen) && (r.algorithm == rankChosen+1)))
+                      if(dp_chosen == 1) var aname = algorithms[rankChosen]
+                      else var aname = edgealgorithms[rankChosen]
+                      function unpack(rows, key) {
+                        return rows.map(function(row) { return row[key]; });
+                      }
+                      var col = "count"+(time%10+1)
+                      console.log(col);
+                      var data = [{
+                        mode: 'markers',
+                        name: aname,
+                        x: unpack(d, 'degree'),
+                        y: unpack(d, col)
+                      }]
+                      var layout = {
+                        autosize: false,
+                        width: 300,
+                        height: testHeight,
+                        xaxis: {
+                          type: 'log',
+                          title: 'degree',
+                          autorange: true
+                        },
+                        yaxis: {
+                          title: 'count',
+                          autorange: true
+                        },
+                        margin: {
+                          l: 30,
+                          r: 30,
+                          b: 30,
+                          t: 35,
+                          pad: 4
+                        },
+                        mode:'markers',
+                        hovermode:'closest',
+                        title:'Noisy Histogram',
+                        showlegend: false
+                      };
+                      //Plotly.newPlot('noisyHist', data, layout);
+                      Plotly.deleteTraces('trueHist', 1);
+                      Plotly.plot('trueHist', data, layout);
+                      time++;
+                      var finish_time = new Date();
+                      console.log(finish_time - curr_time);
+                    });
+                    if(dp_chosen == 1) var noisyHistName1 = dataChosen+"cdfalgo.csv"
+                    else var noisyHistName1 = dataChosen + "cdfedgealgo.csv"
+                    Plotly.d3.csv(noisyHistName1, function(err, rows){
+                      var d = rows.filter(r => ((r.epsilon == eChosen) && (r.algorithm == rankChosen+1)))
+                      if(dp_chosen == 1) var aname = algorithms[rankChosen]
+                      else var aname = edgealgorithms[rankChosen]
+                      function unpack(rows, key) {
+                        return rows.map(function(row) { return row[key]; });
+                      }
+                      var col = "count"+(time%10+1)
+                      console.log(col);
+                      var data = [{
+                        mode: 'markers',
+                        name: aname,
+                        x: unpack(d, 'degree'),
+                        y: unpack(d, col)
+                      }]
+                      console.log(data);
+                      var layout = {
+                        autosize: true,
+                        width: 300,
+                        height: testHeight,
+                        xaxis: {
+                          type: 'log',
+                          title: 'degree',
+                          autorange: true
+                        },
+                        yaxis: {
+                          title: 'count',
+                          autorange: true
+                        },
+                        margin: {
+                          l: 30,
+                          r: 30,
+                          b: 30,
+                          t: 35,
+                          pad: 4
+                        },
+                        mode:'markers',
+                        hovermode:'closest',
+                        title:'Noisy Histogram',
+                        showlegend: false
+                      };
+                      Plotly.deleteTraces('noisyHist', 1);
+                      Plotly.plot('noisyHist', data, layout);
+                      time++;
+                    });
                   }
                 });
                 
@@ -445,214 +490,7 @@
               // graphSource stores the source (.png) of an image of the original dataset
               var graphSource = "Plot"+dataChosen+".png";
             }
-            //if(dp_chosen == 2) dataChosen = dataChosen + "edgedp"
-            // This part draws the frontier 
-            //TODO: This is needed to be updated when we settled with the maximum number of algorithms.
-            if(dp_chosen == 2) var csvName = dataChosen + 'edge.csv';
-            else var csvName = dataChosen + '.csv';
-            Plotly.d3.csv(csvName, (err, rows) => {
-              //for(var i = 1; i <=max_algorithm;i++){}
-                var tempPlot = document.getElementById('scatterFrontier')
-                var data = algoindex.map(y => {
-                  var d = rows.filter(r => r.algorithm == y)
-                  
-                  return {
-                    name: algorithms[y-1],
-                    x: d.map(r => r.epsilon),
-                    y: d.map(r => r.L1error),
-                    error_y: {
-                      type: 'data',
-                      array: d.map(r => r.L1error_sd),
-                      visible: true
-                    },
-                    type: 'scatter'
-                  }
-                })
-
-                var layout = {
-                  autosize: false,
-                  width: 500,
-                  height: 300,
-                  xaxis: {
-                    type: 'log',
-                    title: 'epsilon level',
-                    autorange: true
-                  },
-                  yaxis:{
-                    title: 'L1error',
-                    fixedrange: true,
-                    autorange: false
-                  },
-                  margin: {
-                    l: 30,
-                    r: 30,
-                    b: 30,
-                    t: 35,
-                    pad: 4
-                  },
-                  mode:'markers',
-                  hovermode:'closest',
-                  title:'Privacy Frontier '+dataChosen,
-                  showlegend: false
-                };
-                
-                Plotly.newPlot('scatterFrontier', data, layout,{showSendToCloud: true});
-                
-                /*var frames = [
-                  {name: 'new click', data: [{x: [], y: []}]},
-                  {name: 'last click', data: [{x: [], y: []}]},
-                ];*/
-                var count = 1;
-                var time = 1;
-                // This function below determines which noisy histogram to display, based on the point that user clicked on the frontier.
-                tempPlot.on('plotly_click', function(data){
-                  // To uniquely identify which noisy histogram we want to display, we need 1) algorithm 2) epsilon value (x-value)
-                  var curr_time = new Date();
-                  var pts = '';
-                  var curveChosen = '';
-                  var eChosen = '';
-                  var rankChosen = '';
-                  for(var i=0; i < data.points.length; i++){
-                      rankChosen = data.points[i].curveNumber;
-                      if (dp_chosen == 1){
-                        if (rankChosen == 0) {
-                          curveChosen = "nodeDP_degHis_Lap";
-                        } else if (rankChosen == 1) {
-                          curveChosen = "nodeDP_degSeq_Lap";
-                        } else if (rankChosen == 2){
-                          curveChosen = "nodeDP_nodeTrun_Smooth";
-                        } else if (rankChosen == 3){
-                          curveChosen = "nodeDP_edgeAdd_degHisPart_Lap";
-                        } else if (rankChosen == 4){
-                          curveChosen = "nodeDP_edgeAdd_degCum_Lap";
-                        } else if (rankChosen == 5){
-                          curveChosen = "nodeDP_edgeAdd_degCum_Lap_variant";
-                        } 
-                      } else {
-                        if(rankChosen == 0){
-                          curveChosen = "edgeDP_degHis_lap";
-                        } else if(rankChosen == 1){
-                          curveChosen = "edgeDP_degHis_lap";
-                        }
-                      }
-                      eChosen = data.points[i].x.toPrecision(1);
-                      // Based on the dataset, algorithm, and epsilon level chosen, we determine the name of the CSV file
-                      // that store the noisy histogram user has chosen 
-                    
-                      var testHeight = 300; // this simply tests that we can use variables for layout parameters
-                      // The following function plost the noisy histogram
-                      if(dp_chosen == 1) var noisyHistName = dataChosen+"algo.csv"
-                      else var noisyHistName = dataChosen + "edgealgo.csv"
-                      //var noisyHistName = "output.csv"
-                      if(eChosen == 1) eChosen = 1.0
-                      else if(eChosen == 2) eChosen = 2.0
-                      else if(eChosen == 5) eChosen = 5.0
-                      else if(eChosen == 10) eChosen = 10.0
-                      console.log(noisyHistName);
-                      console.log(eChosen);
-                      console.log(rankChosen);
-                      Plotly.d3.csv(noisyHistName, function(err, rows){
-                        var d = rows.filter(r => ((r.epsilon == eChosen) && (r.algorithm == rankChosen+1)))
-                        if(dp_chosen == 1) var aname = algorithms[rankChosen]
-                        else var aname = edgealgorithms[rankChosen]
-                        function unpack(rows, key) {
-                          return rows.map(function(row) { return row[key]; });
-                        }
-                        var col = "count"+(time%10+1)
-                        console.log(col);
-                        var data = [{
-                          mode: 'markers',
-                          name: aname,
-                          //type: 'bar',
-                          //width: unpack(d, 'width'),
-                          x: unpack(d, 'degree'),
-                          y: unpack(d, col)
-                        }]
-                        console.log(data);
-                        var layout = {
-                          autosize: true,
-                          width: 300,
-                          height: testHeight,
-                          xaxis: {
-                            type: 'log',
-                            title: 'degree',
-                            autorange: true
-                          },
-                          yaxis: {
-                            title: 'count',
-                            autorange: true
-                          },
-                          margin: {
-                            l: 30,
-                            r: 30,
-                            b: 30,
-                            t: 35,
-                            pad: 4
-                          },
-                          mode:'markers',
-                          hovermode:'closest',
-                          title:'Noisy Histogram',
-                          showlegend: false
-                        };
-                        
-                        Plotly.deleteTraces('trueHist', 1);
-                        Plotly.plot('trueHist', data, layout);
-                        var finish_time = new Date();
-                        console.log(finish_time - curr_time);
-                      });
-                      if(dp_chosen == 1) var noisyHistName1 = dataChosen+"cdfalgo.csv"
-                      else var noisyHistName1 = dataChosen + "cdfedgealgo.csv"
-                      Plotly.d3.csv(noisyHistName1, function(err, rows){
-                        var d = rows.filter(r => ((r.epsilon == eChosen) && (r.algorithm == rankChosen+1)))
-                        if(dp_chosen == 1) var aname = algorithms[rankChosen]
-                        else var aname = edgealgorithms[rankChosen]
-                        function unpack(rows, key) {
-                          return rows.map(function(row) { return row[key]; });
-                        }
-                        var col = "count"+(time%10+1)
-                        console.log(col);
-                        var data = [{
-                          mode: 'markers',
-                          name: aname,
-                          x: unpack(d, 'degree'),
-                          y: unpack(d, col)
-                        }]
-                        console.log(data);
-                        var layout = {
-                          autosize: true,
-                          width: 300,
-                          height: testHeight,
-                          xaxis: {
-                            type: 'log',
-                            title: 'degree',
-                            autorange: true
-                          },
-                          yaxis: {
-                            title: 'count',
-                            autorange: true
-                          },
-                          margin: {
-                            l: 30,
-                            r: 30,
-                            b: 30,
-                            t: 35,
-                            pad: 4
-                          },
-                          mode:'markers',
-                          hovermode:'closest',
-                          title:'Noisy Histogram',
-                          showlegend: false
-                        };
-                        Plotly.deleteTraces('noisyHist', 1);
-                        Plotly.plot('noisyHist', data, layout);
-                        time++;
-                      });
-                      
-                    
-                  }
-                });
-                
-              });
+            plotfrontier(dataChosen)
           
             // The folloiwng function plots the ture DD histogram of a dataset. Note that one dataset has only one true DD. 
             var cdf = dataChosen+"cdf.csv";
@@ -673,7 +511,7 @@
                 width: 300,
                 height: 300,
                 xaxis: {
-                  title: 'count',
+                  title: 'degree',
                   type: 'log',
                   autorange: true
                 },
