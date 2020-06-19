@@ -38,6 +38,12 @@
     //document.getElementById("select_algorithm_DD_edge").style.visibility = "hidden";
     //document.getElementById("algorithm1").label = "testing";
     document.getElementById("algorithm1").checked = true;
+    document.getElementById("algorithm1").style.visibility = "hidden";
+    document.getElementById("algorithm2").style.visibility = "hidden";
+    document.getElementById("algorithm3").style.visibility = "hidden";
+    document.getElementById("algorithm4").style.visibility = "hidden";
+    document.getElementById("algorithm5").style.visibility = "hidden";
+    document.getElementById("algorithm6").style.visibility = "hidden";
     document.getElementById("algorithm2").checked = true;
     document.getElementById("algorithm3").checked = true;
     document.getElementById("algorithm4").checked = true;
@@ -140,14 +146,7 @@
 
         <p class="text-left"> For degree distribution, two histograms are shown. The true degree distribution histogram is shown on the left. The noisy degree distribution histogram is shown in the middle. * Both histograms contain the same number of bins for easier comparison. Clicking on a bin of a histogram displays the number of counts in that bin. *For subgraph counting, the subgraph is plotted on the left. In the middle, the true count and the noisy count are shown next to each other. </p>
 
-        <!--
-        Following are some selections allowing user to specify input settings. 
-        These settings are: 
-        1. Privacy Type: [Node]
-        2. Utility Function: [DD]
-        3. Dataset: [CIT, DBLP, FACEBOOK]
-        -->
-
+        
         <select id = "Degree Type"> 
         <option value = "1" selected = "selected">Node DP</option>
         <option value = "2">Edge DP</option>
@@ -224,6 +223,24 @@
                 y: unpack(rows, 'count')
               }
             })
+          }
+          function getxrange(){
+            var temp_data = document.getElementById("Dataset").value;
+            if(temp_data == 1) return [0,300]
+            else if(temp_data == 2) return [0,200]
+            else if(temp_data == 3) return [0,100]
+            else if(temp_data == 4) return [0,300]
+            else if(temp_data == 5) return [0,10]
+            else if(temp_data == 6) return [0,300]
+          }
+          function getyrange(){
+            var temp_data = document.getElementById("Dataset").value;
+            if(temp_data == 1) return [0,120]
+            else if(temp_data == 2) return [0,1500]
+            else if(temp_data == 3) return [0,10000]
+            else if(temp_data == 4) return [0,300]
+            else if(temp_data == 5) return [0,5]
+            else if(temp_data == 6) return [0,500]
           }
           function show_algorithm(){
             var dp_chosen = document.getElementById("Degree Type").value;
@@ -411,10 +428,8 @@
                       }
                     }
                     eChosen = data.points[i].x.toPrecision(1);                  
-
                       // Based on the dataset, algorithm, and epsilon level chosen, we determine the name of the CSV file
                       // that store the noisy histogram user has chosen 
-                    
                     var testHeight = 300; // this simply tests that we can use variables for layout parameters
                       // The following function plost the noisy histogram
                     if(dp_chosen==1) var noisyHistName = dataChosen+"algo.csv"
@@ -466,7 +481,6 @@
                         title:'Noisy Histogram',
                         showlegend: false
                       };
-                      //Plotly.newPlot('noisyHist', data, layout);
                       Plotly.deleteTraces('trueHist', 1);
                       Plotly.plot('trueHist', data, layout);
                       time++;
@@ -475,7 +489,6 @@
                     });
                     if(dp_chosen == 1) var noisyHistName1 = dataChosen+"cdfalgo.csv"
                     else var noisyHistName1 = dataChosen + "cdfedgealgo.csv"
-                    
                     Plotly.d3.csv(noisyHistName1, function(err, rows){
                       var d = rows.filter(r => ((r.epsilon == eChosen) && (r.algorithm == rankChosen+1)))
                       if(dp_chosen == 1) var aname = algorithms[rankChosen]
@@ -568,7 +581,6 @@
             var dataChosen = '';
             var temp_data = document.getElementById("Dataset").value;
             var dp_chosen = document.getElementById("Degree Type").value;
-            
               // dataChosen stores the dataset that user has chosen
             if (temp_data == 2) {
               dataChosen = 'CIT';
@@ -697,13 +709,12 @@
               height: 300,
               xaxis: {
                 title: 'degree',
-                range: [0, 300],
+                range: getxrange(),
                 //autorange: true
               },
               yaxis: {
-                fixedrange:true,
                 title: 'count',
-                range: [0,1000]
+                range: getyrange()
               },
               margin: {
                 l: 30,
