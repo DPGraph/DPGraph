@@ -75,6 +75,7 @@
     })
   }
   function prepare(){
+    document.getElementById("gif").style.visibility = "hidden";
     hideoption();
     getalgoname();
     getalgoindex();
@@ -186,9 +187,12 @@
           var algorithms = [];
           var algoindex = [];
           var new_data = [];
-          var index = 0;
           var data = {};
           var csvdata = {};
+          var curveChosen = '';
+          var eChosen = '';
+          var rankChosen = '';
+          var time = 6;
           function getdata(){
             var temp_data = document.getElementById("Dataset").value;
             var dp_chosen = document.getElementById("Degree Type").value;
@@ -400,11 +404,10 @@
                 // To uniquely identify which noisy histogram we want to display, we need 1) algorithm 2) epsilon value (x-value)
                 var curr_time = new Date();
                 var pts = '';
-                var curveChosen = '';
-                var eChosen = '';
-                var rankChosen = '';
+                
                 
                 for(var i=0; i < data.points.length; i++){
+                  document.getElementById("gif").style.visibility = "visible"
                   rankChosen = data.points[i].curveNumber;
                     if (dp_chosen == 1){
                       if (rankChosen == 0) {
@@ -432,7 +435,7 @@
                       // that store the noisy histogram user has chosen 
                     var testHeight = 300; // this simply tests that we can use variables for layout parameters
                       // The following function plost the noisy histogram
-                    if(dp_chosen==1) var noisyHistName = dataChosen+"algo.csv"
+                    if(dp_chosen==1) var noisyHistName =dataChosen+"algo.csv"
                     else var noisyHistName = dataChosen + "edgealgo.csv"
                     console.log("Epsilon Chosen is "+eChosen);
                     //noisyHistName = "outputmodify.csv"
@@ -687,7 +690,7 @@
 
 
             // The folloiwng function plots the ture DD histogram of a dataset. Note that one dataset has only one true DD. 
-            var trueHistName = dataChosen+'HistCSV.csv'
+            var trueHistName =dataChosen+'HistCSV.csv'
             Plotly.d3.csv(trueHistName, function(err, rows){
 
             function unpack(rows, key) {
@@ -815,8 +818,102 @@
           
           Plotly.newPlot('scatterFrontier', data, layout,{showSendToCloud: true});
         });
-      };
-
+        };
+        var animation = 1;
+        function started(){
+          
+          if(animation == 1){
+            console.log("start");
+            animation = 2;
+            time = 6;
+            gif(1);
+          } else {
+            animation = 1;
+            console.log("stop")
+            time = 11;
+          }
+        }
+        function gif(type_chosen){
+          if(time >10) return;
+          var dataChosen = '';
+          var dp_chosen = document.getElementById("Degree Type").value;
+          var temp_data = document.getElementById("Dataset").value;
+              // dataChosen stores the dataset that user has chosen
+          if (temp_data == 2) {
+            dataChosen = 'CIT';
+          } else if (temp_data == 3) {
+            dataChosen = 'DBLP';
+          } 
+          else if(temp_data == 1){
+            dataChosen = 'FACEBOOK';
+          } else if(temp_data == 4){
+            dataChosen = 'WIKI';
+          } else if(temp_data == 5){
+            dataChosen = 'TOYDATA';
+          }
+          else {
+            dataChosen = 'EMAIL';
+          }
+          if(dp_chosen == 1 && type_chosen == 1) var noisyHistName = dataChosen+"algo.csv"
+          else if(dp_chosen == 2 && type_chosen == 1)var noisyHistName = dataChosen + "edgealgo.csv"
+          else if(dp_chosen == 1 && type_chosen == 2)var noisyHistName = dataChosen + "cdfalgo.csv"
+          else var noisyHistName = dataChosen + "cdfedgealgo.csv"
+          Plotly.d3.csv(noisyHistName, function(err, rows){
+            var d = rows.filter(r => ((r.epsilon == eChosen) && (r.algorithm == rankChosen+1)))
+            if(dp_chosen == 1) var aname = algorithms[rankChosen]
+            else var aname = edgealgorithms[rankChosen]
+            function unpack(rows, key) {
+              return rows.map(function(row) { return row[key]; });
+            }
+            var col = "count"+time
+            console.log(col)
+            if(time >10) return;
+            var data = [{
+              mode: 'markers',
+              name: "test",
+              x: unpack(d, 'degree'),
+              y: unpack(d, col)
+            }]
+            var layout = {
+              autosize: true,
+              width: 300,
+              height: 300,
+              xaxis: {
+                type: 'log',
+                title: 'degree',
+                          //autorange: true
+              },
+              yaxis: {
+                title: 'count',
+                          //autorange: true
+              },
+              margin: {
+                l: 30,
+                r: 30,
+                b: 30,
+                t: 35,
+                pad: 4
+              },
+              mode:'markers',
+              hovermode:'closest',
+              title:'Noisy Histogram',
+              showlegend: false
+            };
+            if(type_chosen == 1){
+              Plotly.deleteTraces('trueHist', 1);
+              Plotly.plot('trueHist', data, layout);
+            } else {
+              Plotly.deleteTraces('noisyHist', 1);
+              Plotly.plot('noisyHist', data, layout);
+            }            
+            if(type_chosen == 2) time++;
+            if(time == 11) time = 1;
+            if(type_chosen == 1) gif(2);
+            else gif(1)
+          })
+          
+          
+        }
         function frontierFn() {
           prepare();
           document.getElementById("show_algorithm").style.visibility = "visible";
@@ -859,7 +956,10 @@
             <span id="nodedp_algo5" style="display:inline; color:purple;">edgeAdd_degCum_Lap</span><br>
             <input type = "checkbox" onclick = "changevisibility(5)" id = "algorithm6">
             <span id="nodedp_algo6" style="display:inline; color:brown;">edgeAdd_degCum_Lap_variant</span><br>
-          </form>
+          </form><br>
+          <br>
+          <br>
+          <button id="gif" onclick="started()">Animate</button>
           <br>
           <br>
           <br>
