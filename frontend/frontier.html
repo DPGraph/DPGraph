@@ -76,6 +76,8 @@
   }
   function prepare(){
     document.getElementById("gif").style.visibility = "hidden";
+    document.getElementById("true_explain").style.visibility = "hidden";
+    document.getElementById("noisy_explain").style.visibility = "hidden";
     hideoption();
     getalgoname();
     getalgoindex();
@@ -397,15 +399,15 @@
               };
                 
               Plotly.newPlot('scatterFrontier', data, layout,{showSendToCloud: true});
-              
+              document.getElementById("true_explain").style.visibility = "visible";
               var time = 0;
                 // This function below determines which noisy histogram to display, based on the point that user clicked on the frontier.
               tempPlot.on('plotly_click', function(data){
                 // To uniquely identify which noisy histogram we want to display, we need 1) algorithm 2) epsilon value (x-value)
                 var curr_time = new Date();
                 var pts = '';
-                
-                
+                Plotly.deleteTraces('noisyHist', 1);
+                Plotly.deleteTraces('trueHist', 1);
                 for(var i=0; i < data.points.length; i++){
                   document.getElementById("gif").style.visibility = "visible"
                   rankChosen = data.points[i].curveNumber;
@@ -484,7 +486,6 @@
                         title:'Noisy Histogram',
                         showlegend: false
                       };
-                      Plotly.deleteTraces('trueHist', 1);
                       Plotly.plot('trueHist', data, layout);
                       time++;
                       var finish_time = new Date();
@@ -532,47 +533,9 @@
                         title:'Noisy Histogram',
                         showlegend: false
                       };
-                      Plotly.deleteTraces('noisyHist', 1);
                       Plotly.plot('noisyHist', data, layout);
                       time++;
-                    /*function compute(){
-                      var time = new Date();
-                      var aname = "count"+(time%10+1)
-                      return aname;
-                    }
-                    function update(){
-                        var aname = compute();
-                        var trace1 = {};
-                        
-                        function unpack(rows, key) {
-                          return rows.map(function(row) { return row[key]; });
-                        }
-                        var cdf = dataChosen+"cdf.csv"
-                        Plotly.d3.csv(cdf, (err,rows)=>{
-                          trace1 = {
-                            name: 'cdf',
-                            mode: 'markers',
-                            x: unpack(rows, 'degree'),
-                            y: unpack(rows, 'count')
-                          }
-                        })
-
-                          Plotly.animate('noisyHist',{data:
-                            [trace1, 
-                              {x:unpack(d,'degree'),y:unpack(d,aname)}
-                            ]},{
-                            transition:{
-                              duration: 0,
-                            },
-                            frame:{
-                              duration: 0,
-                              redraw: false
-                            }
-                          });
-                          console.log("update")
-                          requestAnimationFrame(update);
-                      }
-                      requestAnimationFrame(update);*/
+                      document.getElementById("noisy_explain").style.visibility = "visible";
                     });
                   }
                 });
@@ -641,6 +604,8 @@
               dataChosen = 'EMAIL';
             }
             var cdf = dataChosen+"cdf.csv";
+            //CLear the graph after a new click on the frontier; generate a random Toy dataset; Add words for the data points;
+            //Challenge: upload their own algorithm
             Plotly.d3.csv(cdf, (err,rows)=>{
               function unpack(rows, key, total) {
                 return rows.map(function(row) { return row[key]; });
@@ -920,13 +885,11 @@
           if (document.getElementById("Utility").value == 1) {
             document.getElementById("trueHist").style.visibility = "visible";
             document.getElementById("noisyHist").style.visibility = "visible";
-            document.getElementById("imageOrigin").style.visibility = "visible";
             DDFn();
             
           } else {
             document.getElementById("trueHist").style.visibility = "hidden";
             document.getElementById("noisyHist").style.visibility = "hidden";
-            document.getElementById("imageOrigin").style.visibility = "hidden";
             SGCFn();
           }
         }
@@ -960,6 +923,8 @@
           <br>
           <br>
           <button id="gif" onclick="started()">Animate</button>
+          <p id="true_explain">The <span style="color:blue;font-weight:bold;">blue</span> graph represent the true dataset. </p>
+          <p id="noisy_explain">The <span style="color:orange;font-weight:bold;">orange</span> graph represent the noisy dataset</p>
           <br>
           <br>
           <br>
@@ -967,13 +932,7 @@
           <br>
           <br>
           
-          <br style="clear: left;" />
-          <div style="float: middle;" id="imageOrigin">
-            <p> Visualization of Original Dataset: </p>
-            <!--<img src="PlotBlank.png" alt="Something has gone wrong" style="width:350px;height:300px;" id="trueGraph">-->
-            <div style="float: left;" id="dotplot"></div>
-            <br><br><br><br><br><br>
-          </div>
+          
         </div>
 
         <br>
