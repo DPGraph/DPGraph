@@ -50,39 +50,13 @@
     document.getElementById("algorithm5").checked = true;
     document.getElementById("algorithm6").checked = true;
   }
-  function getedgealgoname(){
-    Plotly.d3.csv("lookingedge.csv", function(rows){
-      var l = rows.filter(r => r.algoname)
-      edgealgorithms = l.map(r=>r.algoname)
-    })
-  }
-  function getedgealgoindex(){
-    Plotly.d3.csv("lookingedge.csv", function(rows){
-      var l = rows.filter(r => r.algo)
-      edgealgoindex = l.map(r=> r.algo)
-    })
-  }
-  function getalgoname(){
-    Plotly.d3.csv("looking.csv", function(rows){
-      var l = rows.filter(r => r.algoname)
-      algorithms = l.map(r=>r.algoname)
-    })
-  }
-  function getalgoindex(){
-    Plotly.d3.csv("looking.csv", function(rows){
-      var l = rows.filter(r => r.algo)
-      algoindex = l.map(r=> r.algo)
-    })
-  }
+ 
   function prepare(){
+    hideoption();
     document.getElementById("gif").style.visibility = "hidden";
     document.getElementById("true_explain").style.visibility = "hidden";
     document.getElementById("noisy_explain").style.visibility = "hidden";
-    hideoption();
-    getalgoname();
-    getalgoindex();
-    getedgealgoname();
-    getedgealgoindex();
+    document.getElementById("noisy_detail").style.visibility = "hidden";
   }
 </script>
 <body onload = "frontierFn()">
@@ -150,7 +124,7 @@
         <p class="text-left"> For degree distribution, two histograms are shown. The true degree distribution histogram is shown on the left. The noisy degree distribution histogram is shown in the middle. * Both histograms contain the same number of bins for easier comparison. Clicking on a bin of a histogram displays the number of counts in that bin. *For subgraph counting, the subgraph is plotted on the left. In the middle, the true count and the noisy count are shown next to each other. </p>
 
         
-        <select id = "Degree Type"> 
+        <select id = "Degree Type" onchange = "frontierFn()"> 
         <option value = "1" selected = "selected">Node DP</option>
         <option value = "2">Edge DP</option>
         
@@ -186,15 +160,14 @@
         </script>
         
         <script>
-          var algorithms = [];
-          var algoindex = [];
-          var new_data = [];
           var data = {};
-          var csvdata = {};
           var curveChosen = '';
           var eChosen = '';
           var rankChosen = '';
           var time = 6;
+          var count = 1;
+          var algoindex = {};
+          var algorithms = {};
           function getdata(){
             var temp_data = document.getElementById("Dataset").value;
             var dp_chosen = document.getElementById("Degree Type").value;
@@ -301,6 +274,14 @@
             var dp_chosen = document.getElementById("Degree Type").value;
             if(dp_chosen == 2) var csvName = dataChosen + 'edge.csv';
             else var csvName = dataChosen + '.csv';
+            if(dp_chosen == 2) var lookingname = "lookingedge.csv"
+            else var lookingname = "looking.csv"
+            Plotly.d3.csv(lookingname, (err, rows)=>{
+              var l = rows.filter(r=>r.algo)
+              if(count == 1)algoindex = l.map(r => r.algo)
+              var k = rows.filter(r => r.algoname)
+              if(count == 1)algorithms = k.map(r=>r.algoname)
+              count++;
             Plotly.d3.csv(csvName, (err, rows) => {
               var tempPlot = document.getElementById('scatterFrontier')
               function getcolor(y){
@@ -311,7 +292,7 @@
                 else if(y==5) return "purple";
                 else if(y==6) return "brown";
               }
-              if(dp_chosen == 1){                
+              
                 var data = algoindex.map(y => {
                   var d = rows.filter(r => r.algorithm == y)    
                   return {
@@ -327,24 +308,10 @@
                     type: 'scatter'
                   }
                 })
-              } else {
-                var data = edgealgoindex.map(y => {
-                  var d = rows.filter(r => r.algorithm == y)
-                  
-                  return {
-                    name: algorithms[y-1],
-                    x: d.map(r => r.epsilon),
-                    y: d.map(r => r.L1error),
-                    error_y: {
-                      type: 'data',
-                      array: d.map(r => r.L1error_sd),
-                      visible: true
-                    },
-                    type: 'scatter'
-                  }
-                })
-              }
-
+               
+              console.log(data);
+              console.log(algorithms);
+              console.log(algoindex);
               var layout = {
                 autosize: false,
                 width: 300,
@@ -536,11 +503,16 @@
                       Plotly.plot('noisyHist', data, layout);
                       time++;
                       document.getElementById("noisy_explain").style.visibility = "visible";
+                      document.getElementById("noisy_detail").style.visibility = "visible";
+                      console.log(aname);
+                      console.log(eChosen);
+                      document.getElementById("noisy_detail").innerHTML = "The data point being displayed is algorithm: "+aname+" ,and the epsilon chosen is "+eChosen;
                     });
                   }
                 });
                 
               });
+            })
             
           }
           function changevisibility(i){
@@ -564,6 +536,7 @@
               dataChosen = 'EMAIL';
             }
               // graphSource stores the source (.png) of an image of the original dataset
+            console.log(algoindex);
             var graphSource = "Plot"+dataChosen+".png";
             if(dp_chosen == 1){
               if(algoindex[i] == -1){
@@ -785,8 +758,7 @@
         });
         };
         var animation = 1;
-        function started(){
-          
+        function started(){  
           if(animation == 1){
             console.log("start");
             animation = 2;
@@ -925,6 +897,14 @@
           <button id="gif" onclick="started()">Animate</button>
           <p id="true_explain">The <span style="color:blue;font-weight:bold;">blue</span> graph represent the true dataset. </p>
           <p id="noisy_explain">The <span style="color:orange;font-weight:bold;">orange</span> graph represent the noisy dataset</p>
+          <p id="noisy_detail">The data point being displayed is algorithm: ,and the epsilon chosen is </p>
+          <form action="/upload.php" method="post" enctype="multipart/form-data">
+            Select image to upload:
+            <input type="file" name="fileToUpload" id="fileToUpload">
+            <input type="submit" value="Upload Image" name="submit">
+          </form>
+          
+          
           <br>
           <br>
           <br>
