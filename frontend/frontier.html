@@ -27,11 +27,6 @@
 
 </head>
 <script>
-  var algorithms = [];
-  var algoindex = [];
-  var edgealgorithms = [];
-  var edgealgoindex = [];
-  
   function hideoption(){
     document.getElementById("show_algorithm").style.visibility = "hidden";
     document.getElementById("select_algorithm_DD").style.visibility = "hidden";
@@ -165,44 +160,10 @@
           var eChosen = '';
           var rankChosen = '';
           var time = 6;
-          var count = 1;
           var algoindex = {};
           var algorithms = {};
-          function getdata(){
-            var temp_data = document.getElementById("Dataset").value;
-            var dp_chosen = document.getElementById("Degree Type").value;
-            
-              // dataChosen stores the dataset that user has chosen
-            if (temp_data == 2) {
-              dataChosen = 'CIT';
-            } else if (temp_data == 3) {
-              dataChosen = 'DBLP';
-            } 
-            else if(temp_data == 1){
-              dataChosen = 'FACEBOOK';
-            } else if(temp_data == 4){
-              dataChosen = 'WIKI';
-            } else if(temp_data == 5){
-              dataChosen = 'TOYDATA';
-            }
-            else {
-              dataChosen = 'EMAIL';
-            }
-            if(dp_chosen == 2) dataChosen = dataChosen + "edge";
-            var truehist = dataChosen + "HistCSV.csv"
-            Plotly.d3.csv(truehist, (rows,error)=>{
-              function unpack(rows, key) {
-                return rows.map(function(row) { return row[key]; });
-              }
-
-              data = {
-                name: 'trueHist',
-                mode: 'markers',
-                x: unpack(rows, 'degree'),
-                y: unpack(rows, 'count')
-              }
-            })
-          }
+          var edgealgoindex = {};
+          var edgealgorithms = {};        
           function getxrange(){
             var temp_data = document.getElementById("Dataset").value;
             if(temp_data == 1) return [0,300]
@@ -272,16 +233,11 @@
           }
           function plotfrontier(dataChosen){
             var dp_chosen = document.getElementById("Degree Type").value;
-            if(dp_chosen == 2) var csvName = dataChosen + 'edge.csv';
-            else var csvName = dataChosen + '.csv';
-            if(dp_chosen == 2) var lookingname = "lookingedge.csv"
-            else var lookingname = "looking.csv"
-            Plotly.d3.csv(lookingname, (err, rows)=>{
-              var l = rows.filter(r=>r.algo)
-              if(count == 1)algoindex = l.map(r => r.algo)
-              var k = rows.filter(r => r.algoname)
-              if(count == 1)algorithms = k.map(r=>r.algoname)
-              count++;
+            if(dp_chosen == 2)var csvName = dataChosen + "edge.csv";
+            else var csvName = dataChosen + ".csv";
+            console.log(csvName);
+
+            
             Plotly.d3.csv(csvName, (err, rows) => {
               var tempPlot = document.getElementById('scatterFrontier')
               function getcolor(y){
@@ -292,7 +248,7 @@
                 else if(y==5) return "purple";
                 else if(y==6) return "brown";
               }
-              
+              if(dp_chosen == 1){
                 var data = algoindex.map(y => {
                   var d = rows.filter(r => r.algorithm == y)    
                   return {
@@ -308,10 +264,24 @@
                     type: 'scatter'
                   }
                 })
-               
+              } else {
+                var data = edgealgoindex.map(y => {
+                  var d = rows.filter(r => r.algorithm == y)    
+                  return {
+                    name: algorithms[y-1],
+                    x: d.map(r => r.epsilon),
+                    y: d.map(r => r.L1error),
+                    color: getcolor(y),
+                    error_y: {
+                      type: 'data',
+                      array: d.map(r => r.L1error_sd),
+                      visible: true
+                    },
+                    type: 'scatter'
+                  }
+                })
+              }
               console.log(data);
-              console.log(algorithms);
-              console.log(algoindex);
               var layout = {
                 autosize: false,
                 width: 300,
@@ -504,15 +474,13 @@
                       time++;
                       document.getElementById("noisy_explain").style.visibility = "visible";
                       document.getElementById("noisy_detail").style.visibility = "visible";
-                      console.log(aname);
-                      console.log(eChosen);
                       document.getElementById("noisy_detail").innerHTML = "The data point being displayed is algorithm: "+aname+" ,and the epsilon chosen is "+eChosen;
                     });
                   }
                 });
                 
               });
-            })
+            
             
           }
           function changevisibility(i){
@@ -550,9 +518,8 @@
               }
               else edgealgoindex[i] = -1;
             }
-            console.log(algoindex);
-            console.log(edgealgoindex);
-            if(dp_chosen == 2) dataChosen = dataChosen + "edge";
+
+            console.log(dataChosen);
             plotfrontier(dataChosen);
           }
           function DDFn() {
@@ -577,6 +544,16 @@
               dataChosen = 'EMAIL';
             }
             var cdf = dataChosen+"cdf.csv";
+            if(dp_chosen == 2) var lookingname = "lookingedge.csv"
+            else var lookingname = "looking.csv"         
+            Plotly.d3.csv(lookingname, (err, rows)=>{
+              var l = rows.filter(r=>r.algo)
+              algoindex = l.map(r => r.algo)
+              edgealgoindex = l.map(r => r.algo);
+              var k = rows.filter(r => r.algoname)
+              algorithms = k.map(r=>r.algoname)
+              edgealgorithms = k.map(r=>r.algoname)
+            })
             //CLear the graph after a new click on the frontier; generate a random Toy dataset; Add words for the data points;
             //Challenge: upload their own algorithm
             Plotly.d3.csv(cdf, (err,rows)=>{
@@ -898,7 +875,8 @@
           <p id="true_explain">The <span style="color:blue;font-weight:bold;">blue</span> graph represent the true dataset. </p>
           <p id="noisy_explain">The <span style="color:orange;font-weight:bold;">orange</span> graph represent the noisy dataset</p>
           <p id="noisy_detail">The data point being displayed is algorithm: ,and the epsilon chosen is </p>
-          <form action="/upload.php" method="post" enctype="multipart/form-data">
+          
+          <form action="upload.php" method="POST" enctype="multipart/form-data">
             Select image to upload:
             <input type="file" name="fileToUpload" id="fileToUpload">
             <input type="submit" value="Upload Image" name="submit">
