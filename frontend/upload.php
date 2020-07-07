@@ -146,6 +146,7 @@ if(isset($_POST["submit"])) {
               document.getElementById("algorithm6").style.visibility = "visible";
               document.getElementById("algorithm1").style.visibility = "visible";
               document.getElementById("algorithm2").style.visibility = "visible";
+              document.getElementById("algorithm7").style.visibility = "visible";
               if(dp_chosen == 1) {
                 document.getElementById("nodedp_algo1").style.display = "inline";
                 document.getElementById("edgedp_algo1").style.display = "none";
@@ -159,6 +160,8 @@ if(isset($_POST["submit"])) {
                 document.getElementById("nodedp_algo5").style.display = "inline";
                 document.getElementById("algorithm6").style.visibility = "visible";
                 document.getElementById("nodedp_algo6").style.display = "inline";
+                document.getElementById("algorithm7").style.visibility = "visible";
+                document.getElementById("nodedp_algo7").style.display = "inline";
               } 
               else {
                 document.getElementById("nodedp_algo1").style.display = "none";
@@ -173,6 +176,8 @@ if(isset($_POST["submit"])) {
                 document.getElementById("nodedp_algo5").style.display = "none";
                 document.getElementById("algorithm6").style.visibility = "hidden";
                 document.getElementById("nodedp_algo6").style.display = "none";
+                document.getElementById("algorithm7").style.visibility = "hidden";
+                document.getElementById("nodedp_algo7").style.display = "none";
               }
             } else {
               document.getElementById("select_algorithm_DD").style.visibility = "hidden";
@@ -182,13 +187,13 @@ if(isset($_POST["submit"])) {
               document.getElementById("algorithm6").style.visibility = "hidden";
               document.getElementById("algorithm1").style.visibility = "hidden";
               document.getElementById("algorithm2").style.visibility = "hidden";
-              
+              document.getElementById("algorithm7").style.visibility = "hidden";
             }
           }
           function plotfrontier(dataChosen){
             var dp_chosen = document.getElementById("Degree Type").value;
-            if(dp_chosen == 2) var csvName = dataChosen + 'edge.csv';
-            else var csvName = dataChosen + '.csv';
+            if(dp_chosen == 2) var csvName = 'uploads/'+dataChosen + 'edge.csv';
+            else var csvName = 'uploads/'+dataChosen + '.csv';
             
             Plotly.d3.csv(csvName, (err, rows) => {
               var tempPlot = document.getElementById('scatterFrontier')
@@ -199,6 +204,7 @@ if(isset($_POST["submit"])) {
                 else if(y==4) return "red";
                 else if(y==5) return "purple";
                 else if(y==6) return "brown";
+                else if(y==7) return "black";
               }
               
               if(dp_chosen == 1){
@@ -326,8 +332,8 @@ if(isset($_POST["submit"])) {
                       // that store the noisy histogram user has chosen 
                     var testHeight = 300; // this simply tests that we can use variables for layout parameters
                       // The following function plost the noisy histogram
-                    if(dp_chosen==1) var noisyHistName =dataChosen+"algo.csv"
-                    else var noisyHistName = dataChosen + "edgealgo.csv"
+                    if(dp_chosen==1) var noisyHistName ='uploads/'+dataChosen+"algo.csv"
+                    else var noisyHistName = 'uploads/'+dataChosen + "edgealgo.csv"
                     console.log("Epsilon Chosen is "+eChosen);
                     //noisyHistName = "outputmodify.csv"
                     if(eChosen == 1) eChosen = 1.0
@@ -380,8 +386,8 @@ if(isset($_POST["submit"])) {
                       var finish_time = new Date();
                       console.log("Time to compute is "+(finish_time - curr_time));
                     });
-                    if(dp_chosen == 1) var noisyHistName1 = dataChosen+"cdfalgo.csv"
-                    else var noisyHistName1 = dataChosen + "cdfedgealgo.csv"
+                    if(dp_chosen == 1) var noisyHistName1 = 'uploads/'+dataChosen+"cdfalgo.csv"
+                    else var noisyHistName1 = 'uploads/'+dataChosen + "cdfedgealgo.csv"
                     Plotly.d3.csv(noisyHistName1, function(err, rows){
                       var d = rows.filter(r => ((r.epsilon == eChosen) && (r.algorithm == rankChosen+1)))
                       if(dp_chosen == 1) var aname = algorithms[rankChosen]
@@ -493,9 +499,9 @@ if(isset($_POST["submit"])) {
             else {
               dataChosen = 'EMAIL';
             }
-            var cdf = dataChosen+"cdf.csv";
-            if(dp_chosen == 2) var lookingname = "lookingedge.csv"
-            else var lookingname = "looking.csv"         
+            var cdf = 'uploads/'+dataChosen+"cdf.csv";
+            if(dp_chosen == 2) var lookingname = 'uploads/'+"lookingedge.csv"
+            else var lookingname = 'uploads/'+"looking.csv"         
             Plotly.d3.csv(lookingname, (err, rows)=>{
               var l = rows.filter(r=>r.algo)
               algoindex = l.map(r => r.algo)
@@ -555,7 +561,7 @@ if(isset($_POST["submit"])) {
 
 
             // The folloiwng function plots the ture DD histogram of a dataset. Note that one dataset has only one true DD. 
-            var trueHistName =dataChosen+'HistCSV.csv'
+            var trueHistName ='uploads/'+dataChosen+'HistCSV.csv'
             Plotly.d3.csv(trueHistName, function(err, rows){
               function unpack(rows, key) {
                 return rows.map(function(row) { return row[key]; });
@@ -817,7 +823,7 @@ if(isset($_POST["submit"])) {
             <input type = "checkbox" onclick = "changevisibility(5)" id = "algorithm6">
             <span id="nodedp_algo6" style="display:inline; color:brown;">edgeAdd_degCum_Lap_variant</span><br>
             <input type = "checkbox" onclick = "changevisibility(6)" id = "algorithm7">
-            <span id="nodedp_algo7" style="display:inline; color:yellow">new_algorithm<span><br>
+            <span id="nodedp_algo7" style="display:inline; color:black;">new_algorithm</span><br>
           </form><br>
           <br>
           <br>
