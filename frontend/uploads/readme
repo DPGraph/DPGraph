@@ -1,1 +1,5 @@
-uploads
+This is where the new_algorithm.py will be stored.
+
+Make sure have a folder called Datasets exactly the same as the Dataset in the frontend folder that contains the raw data of the datasets.
+
+Make sure create_new.sh is executable  
