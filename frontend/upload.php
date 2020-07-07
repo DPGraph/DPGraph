@@ -54,7 +54,7 @@ if(isset($_POST["submit"])) {
     echo "You cannot upload files of this type";
   }
 }
-$out = exec("uploads/create_new.sh");
+//$out = exec("uploads/create_new.sh");
 ?>   
 <br>  
 <body onload="frontierFn()">
@@ -79,7 +79,7 @@ $out = exec("uploads/create_new.sh");
   <option value = "5">Toydata</option>
   <option value = "6">Email_enron</option>
   </select>  
-<!--
+
         <br>
         
         <script>
@@ -93,7 +93,9 @@ $out = exec("uploads/create_new.sh");
               document.getElementById("algorithm4").style.visibility = "hidden";
               document.getElementById("algorithm5").style.visibility = "hidden";
               document.getElementById("algorithm6").style.visibility = "hidden";
+              document.getElementById("algorithm7").style.visibility = "hidden";
               document.getElementById("algorithm2").checked = true;
+              document.getElementById("algorithm7").checked = true;
               document.getElementById("algorithm3").checked = true;
               document.getElementById("algorithm4").checked = true;
               document.getElementById("algorithm5").checked = true;
@@ -814,6 +816,8 @@ $out = exec("uploads/create_new.sh");
             <span id="nodedp_algo5" style="display:inline; color:purple;">edgeAdd_degCum_Lap</span><br>
             <input type = "checkbox" onclick = "changevisibility(5)" id = "algorithm6">
             <span id="nodedp_algo6" style="display:inline; color:brown;">edgeAdd_degCum_Lap_variant</span><br>
+            <input type = "checkbox" onclick = "changevisibility(6)" id = "algorithm7">
+            <span id="nodedp_algo7" style="display:inline; color:yellow">new_algorithm<span><br>
           </form><br>
           <br>
           <br>
@@ -832,7 +836,6 @@ $out = exec("uploads/create_new.sh");
         </div>
 
         <br>
-      -->
   </div>
 
   <!-- Bootstrap core JavaScript -->
