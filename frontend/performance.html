@@ -26,8 +26,31 @@
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 </head>
-
-<body>
+<script>
+  function hideoption(){
+    document.getElementById("show_algorithm").style.visibility = "hidden";
+    document.getElementById("select_algorithm_DD").style.visibility = "hidden";
+    //document.getElementById("select_algorithm_DD_edge").style.visibility = "hidden";
+    //document.getElementById("algorithm1").label = "testing";
+    document.getElementById("algorithm1").checked = false;
+    document.getElementById("algorithm1").style.visibility = "hidden";
+    document.getElementById("algorithm2").style.visibility = "hidden";
+    document.getElementById("algorithm3").style.visibility = "hidden";
+    document.getElementById("algorithm4").style.visibility = "hidden";
+    document.getElementById("algorithm5").style.visibility = "hidden";
+    document.getElementById("algorithm6").style.visibility = "hidden";
+    document.getElementById("algorithm2").checked = false;
+    document.getElementById("algorithm3").checked = false;
+    document.getElementById("algorithm4").checked = true;
+    document.getElementById("algorithm5").checked = true;
+    document.getElementById("algorithm6").checked = true;
+  }
+ 
+  function prepare(){
+    hideoption();
+  }
+</script>
+<body onload="frontierFn()">
 
   <!-- Navigation -->
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -79,7 +102,7 @@
 
     <h1 class="text-left">Privacy Performance Frontier</h1>
 
-    <select id = "Degree Type"> 
+    <select id = "Degree Type" onchange="frontierFn()"> 
       <option value = "1" selected = "selected">Node DP</option>
       <option value = "2">Edge DP</option>
       
@@ -93,68 +116,204 @@
       <option value = "5">Subgraph Counting_0ktriangle</option>
       </select>
 
-      <select id = "Dataset"> 
-      <option value = "1" selected = "selected">Dataset:</option>
+      <select id = "Dataset" onchange="frontierFn()"> 
+      <option value = "1" selected = "selected">FACEBOOK</option>
       <option value = "2">CIT</option>
       <option value = "3">DBLP</option>
-      <option value = "4">Facebook</option>
       <option value = "5">WIKI</option>
-      <option value = "6">Toyota</option>
+      <option value = "6">TOYDATA</option>
       <option value = "7">Email_enron</option>
       </select>
 
-    <button onclick="frontierFn()">Apply Setting</button>
     <br>
-    <p id = "result"> Please specify input settings. </p>
-
-    <div id="DDContainer">
-      <div style="float: left;" id="scatterFrontier"></div>
-    </div>
-
     <script>
+      var algoindex = [];
+      var algorithms = [];
+      var edgealgoindex =[];
+      var edgealgorithms = [];
 // TODO: run time analysis based on the python code, time versus dataset
-      function DDFn(){
-        var temp_data = document.getElementById("Dataset").value;
-        if (temp_data == 2) {
-          var dataChosen = 'CIT';
-        } else if (temp_data == 3) {
-          var dataChosen = 'DBLP';
-        } else if(temp_data == 4){
-          var dataChosen = 'FACEBOOK';
-        } else if(temp_data == 5){
-          var dataChosen = 'WIKI';
-        } else if(temp_data == 6){
-          var dataChosen = 'TOYOTA';
+      function show_algorithm(){
+        var dp_chosen = document.getElementById("Degree Type").value;
+        if(document.getElementById("select_algorithm_DD").style.visibility != "visible"){
+          document.getElementById("select_algorithm_DD").style.visibility = "visible";
+          document.getElementById("algorithm3").style.visibility = "visible";
+          document.getElementById("algorithm4").style.visibility = "visible";
+          document.getElementById("algorithm5").style.visibility = "visible";
+          document.getElementById("algorithm6").style.visibility = "visible";
+          document.getElementById("algorithm1").style.visibility = "visible";
+          document.getElementById("algorithm2").style.visibility = "visible";
+          if(dp_chosen == 1) {
+            document.getElementById("nodedp_algo1").style.display = "inline";
+            document.getElementById("edgedp_algo1").style.display = "none";
+            document.getElementById("nodedp_algo2").style.display = "inline";
+            document.getElementById("edgedp_algo2").style.display = "none";
+            document.getElementById("algorithm3").style.visibility = "visible";
+            document.getElementById("nodedp_algo3").style.display = "inline";
+            document.getElementById("algorithm4").style.visibility = "visible";
+            document.getElementById("nodedp_algo4").style.display = "inline";
+            document.getElementById("algorithm5").style.visibility = "visible";
+            document.getElementById("nodedp_algo5").style.display = "inline";
+            document.getElementById("algorithm6").style.visibility = "visible";
+            document.getElementById("nodedp_algo6").style.display = "inline";
+          } 
+          else {
+            document.getElementById("nodedp_algo1").style.display = "none";
+            document.getElementById("edgedp_algo1").style.display = "inline";
+            document.getElementById("nodedp_algo2").style.display = "none";
+            document.getElementById("edgedp_algo2").style.display = "inline";
+            document.getElementById("algorithm3").style.visibility = "hidden";
+            document.getElementById("nodedp_algo3").style.display = "none";
+            document.getElementById("algorithm4").style.visibility = "hidden";
+            document.getElementById("nodedp_algo4").style.display = "none";
+            document.getElementById("algorithm5").style.visibility = "hidden";
+            document.getElementById("nodedp_algo5").style.display = "none";
+            document.getElementById("algorithm6").style.visibility = "hidden";
+            document.getElementById("nodedp_algo6").style.display = "none";
+          }
         } else {
-          var dataChosen = 'email_enron';
+          document.getElementById("select_algorithm_DD").style.visibility = "hidden";
+          document.getElementById("algorithm3").style.visibility = "hidden";
+          document.getElementById("algorithm4").style.visibility = "hidden";
+          document.getElementById("algorithm5").style.visibility = "hidden";
+          document.getElementById("algorithm6").style.visibility = "hidden";
+          document.getElementById("algorithm1").style.visibility = "hidden";
+          document.getElementById("algorithm2").style.visibility = "hidden";            
         }
-        var csvName = dataChosen + '.csv';
+      }
+      function changevisibility(i){
+        var dataChosen = '';
+        var temp_data = document.getElementById("Dataset").value;
+        var dp_chosen = document.getElementById("Degree Type").value;
+              // dataChosen stores the dataset that user has chosen
+        if (temp_data == 2) {
+          dataChosen = 'CIT';
+        } else if (temp_data == 3) {
+          dataChosen = 'DBLP';
+        } 
+        else if(temp_data == 1){
+          dataChosen = 'FACEBOOK';
+        } else if(temp_data == 4){
+          dataChosen = 'WIKI';
+        } else if(temp_data == 5){
+          dataChosen = 'TOYDATA';
+        }
+        else {
+          dataChosen = 'EMAIL';
+        }
+        if(dp_chosen == 2) dataChosen = dataChosen+'edge';
+        var graphSource = "Plot"+dataChosen+".png";
+        if(dp_chosen == 1){
+          if(algoindex[i] == -1){
+            algoindex[i] = i+1;
+          }else{
+            algoindex[i] = -1;
+          }
+        } else {
+          if(edgealgoindex[i] == -1){
+            edgealgoindex[i] = i+1;
+          }
+          else edgealgoindex[i] = -1;
+        }
+        plot_time(dataChosen);
+      }
+      function plot_time(dataChosen){
+        var dp_chosen = document.getElementById("Degree Type").value;
+        var csvName = dataChosen +'.csv';
+        console.log(csvName);
         Plotly.d3.csv(csvName, (error, rows) => {
-          var data = algoindex.map(y => {
-            var d = rows.filter(r => r.algorithm == y)
-                  
-            return {
-              name: algorithms[y-1],
-              x: d.map(r => r.epsilon),
-              y: d.map(r => r.time),
-              error_y: {
-                type: 'data',
-                array: d.map(r => r.time_sd),
-                visible: true
-              },
-              type: 'scatter'
-            }
-          })
+          function getcolor(y){
+            if(y==1)return "blue";
+            else if(y==2) return "orange";
+            else if(y==3) return "green";
+            else if(y==4) return "red";
+            else if(y==5) return "purple";
+            else if(y==6) return "brown";
+          }
+          if(dp_chosen == 1){
+            var data = algoindex.map(y => {
+              var d = rows.filter(r => r.algorithm == y)    
+              return {
+                name: algorithms[y-1],
+                x: d.map(r => r.epsilon),
+                y: d.map(r => r.time),
+                color: getcolor(y),
+                error_y: {
+                  type: 'data',
+                  array: d.map(r => r.time_sd),
+                  visible: true
+                },
+                type: 'dotplot',
+              }
+            })
+          } else {
+            var data = edgealgoindex.map(y => {
+              var d = rows.filter(r => r.algorithm == y)    
+              return {
+                name: algorithms[y-1],
+                x: d.map(r => r.epsilon),
+                y: d.map(r => r.time),
+                color: getcolor(y),
+                error_y: {
+                  type: 'data',
+                  array: d.map(r => r.time_sd),
+                  visible: true
+                },
+                type: 'scatter'
+              }
+            })
+          }
+          function getrange(dataChosen){
+            if(dataChosen == "FACEBOOK") return [0,1.5];
+            else if(dataChosen == "CIT") return [0, 8];
+            else if(dataChosen == "DBLP") return [0, 1.7];
+            else if(dataChosen == "EMAIL") return [0, 3.5];
+            else if(dataChosen == "TOYDATA") return [0, 0.01];
+            else if(dataChosen == "WIKI") return [0,1.7];
+            if(dataChosen == "FACEBOOKedge") return [0,0.06];
+            else if(dataChosen == "CITedge") return [0, 0.05];
+            else if(dataChosen == "DBLPedge") return [0, 0.01];
+            else if(dataChosen == "EMAILedge") return [0, 0.06];
+            else if(dataChosen == "TOYDATAedge") return [0, 0.01];
+            else if(dataChosen == "WIKIedge") return [0,0.01];
+          }
+          console.log(data);
           var layout = {
             autosize: false,
-            width: 500,
+            width: 300,
             height: 300,
             xaxis: {
               type: 'log',
-              autorange: true
+              title: 'epsilon',
+              autorange: true,
+              tickangle: 'auto',
+              tickfont: {
+                family: 'Old Standard TT, serif',
+                size: 14,
+                color: 'lightgrey'
+              },
+              titlefont: {
+                family: 'Arial, sans-serif',
+                size: 18,
+                color: 'black'
+              },
             },
             yaxis:{
-              autorange: false
+              title: 'Time(s)',
+              autorange: true,
+              //range: getrange(dataChosen),
+              tickangle: 45,
+              titlefont: {
+                family: 'Arial, sans-serif',
+                size: 18,
+                color: 'black'
+              },
+              tickfont: {
+                family: 'Old Standard TT, serif',
+                size: 14,
+                color: 'lightgrey'
+              },
+              exponentformat: 'e',
+              showexponent: 'all',              
             },
             margin: {
               l: 30,
@@ -165,11 +324,48 @@
             },
             mode:'markers',
             hovermode:'closest',
-            title:'Time taken for '+dataChosen,
+            title:'Time Taken for'+dataChosen,
             showlegend: false
           };
-          Plotly.newPlot("scatterFrontier", data, layout)
+          Plotly.newPlot("scatterFrontier", data, layout);
         })
+      }
+      function DDFn(){
+        var temp_data = document.getElementById("Dataset").value;
+        var dp_chosen = document.getElementById("Degree Type").value;
+        if (temp_data == 2) {
+          var dataChosen = 'CIT';
+        } else if (temp_data == 3) {
+          var dataChosen = 'DBLP';
+        } else if(temp_data == 1){
+          var dataChosen = 'FACEBOOK';
+        } else if(temp_data == 5){
+          var dataChosen = 'WIKI';
+        } else if(temp_data == 6){
+          var dataChosen = 'TOYDATA';
+        } else {
+          var dataChosen = 'EMAIL';
+        }
+        if(dp_chosen == 2) dataChosen = dataChosen+'edge';
+        if(dp_chosen == 2) var lookingname = "lookingedge.csv"
+        else var lookingname = "looking.csv";         
+        Plotly.d3.csv(lookingname, (err, rows)=>{
+          var l = rows.filter(r=>r.algo)
+          algoindex = l.map(r => r.algo)
+          edgealgoindex = l.map(r => r.algo);
+          var k = rows.filter(r => r.algoname);
+          algorithms = k.map(r=>r.algoname)
+          edgealgorithms = k.map(r=>r.algoname)
+          algoindex[0] = -1;
+          algoindex[1] = -1;
+          algoindex[2] = -1;
+          if(dp_chosen == 2) {
+            document.getElementById("algorithm1").checked = true;
+            document.getElementById("algorithm2").checked = true;
+          }
+        })
+        console.log(dataChosen);
+        plot_time(dataChosen);
       }
       function SGCFn() {
           var temp_data = document.getElementById("Dataset").value;
@@ -249,8 +445,10 @@
       };
 
       function frontierFn() {
-        if (document.getElementById("Dataset").value == 1) document.getElementById("result").innerHTML = "Dataset is not specified !";
-        if (document.getElementById("Degree Type").value == 1 && document.getElementById("Utility").value == 1) {
+        prepare();
+        document.getElementById("show_algorithm").style.visibility = "visible";
+        if (document.getElementById("Utility").value == 1) {
+          document.getElementById("scatterFrontier").style.visibility = "visible";
           DDFn();
         } else {
           SGCFn();
@@ -258,7 +456,27 @@
       }
 
     </script>
-
+<div id="DDContainer">
+  <div style="float: left;" id="scatterFrontier"></div>
+  <button id = "show_algorithm" onclick = "show_algorithm()">show algorithms</button><br>
+  <form id = "select_algorithm_DD">
+    <p>Please select the algorithm you want to display</p>
+    <input type = "checkbox" onclick = "changevisibility(0)" id = "algorithm1">
+    <span id="nodedp_algo1" style="display:inline; color:blue;">degHis_Lap.</span>
+    <span id="edgedp_algo1" style="display:none; color:blue;">degHis_Lap</span><br>
+    <input type = "checkbox" onclick = "changevisibility(1)" id = "algorithm2">
+    <span id="nodedp_algo2" style="display:inline; color:orange;">degSeq_Lap</span>
+    <span id="edgedp_algo2" style="display:none; color:orange;">degSeq_Lap</span><br>
+    <input type = "checkbox" onclick = "changevisibility(2)" id = "algorithm3">
+    <span id="nodedp_algo3" style="display:inline; color:green;">nodeTrun_Smooth</span><br>
+    <input type = "checkbox" onclick = "changevisibility(3)" id = "algorithm4">
+    <span id="nodedp_algo4" style="display:inline; color:red;">edgeAdd_degHisPart_Lap</span><br>
+    <input type = "checkbox" onclick = "changevisibility(4)" id = "algorithm5">
+    <span id="nodedp_algo5" style="display:inline; color:purple;">edgeAdd_degCum_Lap</span><br>
+    <input type = "checkbox" onclick = "changevisibility(5)" id = "algorithm6">
+    <span id="nodedp_algo6" style="display:inline; color:brown;">edgeAdd_degCum_Lap_variant</span><br>
+  </form><br>
+  <br>
   </div>
 
   <!-- Bootstrap core JavaScript -->

@@ -69,7 +69,7 @@
 <div class="container">
         <body onload = "prepare()">
         <select id = "Degree Type" onchange = "frontierFn()"> 
-        <option value = "1" selected = "selected">Node DP</option>
+        <option value = "2" selected = "selected">Edge DP</option>
         
         </select>
 
@@ -173,7 +173,8 @@
                 document.getElementById("edgedp_algo1").style.display = "inline";
                 document.getElementById("nodedp_algo2").style.display = "none";
                 document.getElementById("edgedp_algo2").style.display = "inline";
-                document.getElementById("algorithm3").style.visibility = "hidden";
+                document.getElementById("edgedp_algo3").style.display = "inline";
+                document.getElementById("algorithm3").style.visibility = "visible";
                 document.getElementById("nodedp_algo3").style.display = "none";
                 document.getElementById("algorithm4").style.visibility = "hidden";
                 document.getElementById("nodedp_algo4").style.display = "none";
@@ -822,7 +823,8 @@
             <span id="nodedp_algo2" style="display:inline; color:orange;">degSeq_Lap</span>
             <span id="edgedp_algo2" style="display:none; color:orange;">degSeq_Lap</span><br>
             <input type = "checkbox" onclick = "changevisibility(2)" id = "algorithm3">
-            <span id="nodedp_algo3" style="display:inline; color:green;">nodeTrun_Smooth</span><br>
+            <span id="nodedp_algo3" style="display:inline; color:green;">nodeTrun_Smooth</span>
+            <span id="edgedp_algo3" style="display:none; color:green;">new_algorithm</span><br>
             <input type = "checkbox" onclick = "changevisibility(3)" id = "algorithm4">
             <span id="nodedp_algo4" style="display:inline; color:red;">edgeAdd_degHisPart_Lap</span><br>
             <input type = "checkbox" onclick = "changevisibility(4)" id = "algorithm5">
@@ -877,7 +879,7 @@ if(isset($_POST["submit"])) {
     echo "You cannot upload files of this type";
   }
 }
-$out = '';//exec("uploads/create_new.sh 2>&1");
+$out = '';//exec("uploads/create_newedge.sh 2>&1");
 $empty = "";
 if(empty($out)){
   echo '<script type="text/javascript">
