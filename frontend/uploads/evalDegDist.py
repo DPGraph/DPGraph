@@ -4,8 +4,8 @@ import sys
 import timeit
 from util import *
 from edgeDP_degDist import *
-from nodeDP_degDist import new_algorthm 
-
+from nodeDP_degDist import * 
+from new_algorithm import *
 
 dataDir ="Datasets/"
 #dataNames = ["toydata.txt", "facebook_combined.txt", "wiki-Vote.txt", "email-Enron.txt",  "cit-HepTh.txt", "com-dblp.ungraph.txt"]
@@ -54,7 +54,6 @@ thetaCandidates = [20,40,60,80,100,120,140,160,180,200]
 if maxTheta < 200:
     thetaCandidates = [i+1 for i in range(maxTheta)]
 
-basil = int(sys.argv[3])
 for epsilon in epsList:
     errors = []
     time = []
@@ -99,7 +98,7 @@ for epsilon in epsList:
             start = timeit.default_timer();
             noisyDegHis = nodeDP_flowgraph_degSeq_Lap(G,maxDeg,epsilon, maxTheta) #works for small graph
             end = timeit.default_timer();
-        elif algo == "new_algorithm"
+        elif algo == "new_algorithm":
             start = timeit.default_timer();
             noisyDegHis = new_algorithm(G,maxDeg,epsilon,thetaCandidates)
             end = timeit.default_timer();

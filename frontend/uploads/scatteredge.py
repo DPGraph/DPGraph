@@ -29,7 +29,8 @@ trueHis = getDegHis(G,maxDeg)
 
 algoNames = ["edgeDP_degHis_Lap", 
              "edgeDP_degSeq_Lap", 
-             "nodeDP_degHis_Lap", 
+	     "new_algorithm",	             
+	     "nodeDP_degHis_Lap", 
              "nodeDP_degSeq_Lap", 
              "nodeDP_nodeTrun_Smooth", 
              "nodeDP_edgeAdd_degHisPart_Lap", 
@@ -51,7 +52,6 @@ thetaCandidates = [20,40,60,80,100,120,140,160,180,200]
 if maxTheta < 200:
     thetaCandidates = [i+1 for i in range(maxTheta)]
 
-basil = int(sys.argv[3])
 for epsilon in epsList:
     errors = []
     time = []

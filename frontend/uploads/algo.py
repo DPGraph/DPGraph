@@ -5,7 +5,7 @@ import timeit
 from util import *
 from edgeDP_degDist import *
 from nodeDP_degDist import * 
-from new_algo import *
+from new_algorithm import *
 
 dataDir ="Datasets/"
 dataNames = ["facebook_combined.txt", "cit-HepTh.txt", "com-dblp.ungraph.txt", "toydata.txt", "wiki-Vote.txt", "email-Enron.txt"]
@@ -183,17 +183,17 @@ for epsilon in epsList:
         noisyDegHis10 = nodeDP_flowgraph_degSeq_Lap(G,maxDeg,epsilon, maxTheta) #works for small graph
         end = timeit.default_timer();
     elif algo == "new_algorithm":
-        start = timeit.default.timer();
-        noisyDegHis1 = new_algorithm(G,magDeg,epsilon,thetaCandidates)
-        noisyDegHis2 = new_algorithm(G,magDeg,epsilon,thetaCandidates)
-        noisyDegHis3 = new_algorithm(G,magDeg,epsilon,thetaCandidates)
-        noisyDegHis4 = new_algorithm(G,magDeg,epsilon,thetaCandidates)
-        noisyDegHis5 = new_algorithm(G,magDeg,epsilon,thetaCandidates)
-        noisyDegHis6 = new_algorithm(G,magDeg,epsilon,thetaCandidates)
-        noisyDegHis7 = new_algorithm(G,magDeg,epsilon,thetaCandidates)
-        noisyDegHis8 = new_algorithm(G,magDeg,epsilon,thetaCandidates)
-        noisyDegHis9 = new_algorithm(G,magDeg,epsilon,thetaCandidates)
-        noisyDegHis10 = new_algorithm(G,magDeg,epsilon,thetaCandidates)
+        start = timeit.default_timer();
+        noisyDegHis1 = new_algorithm(G,maxDeg,epsilon,thetaCandidates)
+        noisyDegHis2 = new_algorithm(G,maxDeg,epsilon,thetaCandidates)
+        noisyDegHis3 = new_algorithm(G,maxDeg,epsilon,thetaCandidates)
+        noisyDegHis4 = new_algorithm(G,maxDeg,epsilon,thetaCandidates)
+        noisyDegHis5 = new_algorithm(G,maxDeg,epsilon,thetaCandidates)
+        noisyDegHis6 = new_algorithm(G,maxDeg,epsilon,thetaCandidates)
+        noisyDegHis7 = new_algorithm(G,maxDeg,epsilon,thetaCandidates)
+        noisyDegHis8 = new_algorithm(G,maxDeg,epsilon,thetaCandidates)
+        noisyDegHis9 = new_algorithm(G,maxDeg,epsilon,thetaCandidates)
+        noisyDegHis10 = new_algorithm(G,maxDeg,epsilon,thetaCandidates)
         end = timeit.default_timer();
     else:
             print("no valid algo")
@@ -205,7 +205,6 @@ for epsilon in epsList:
         #plotCum(trueHis/nodesNum,noisyDegHis/nodesNum)
     j = 0
     while j < nodesNum:
-        print(nodesNum)
         rounds = 10
         n1 = 0
         n2 = 2
@@ -231,7 +230,7 @@ for epsilon in epsList:
                 n10 += noisyDegHis10[j+i]
 
         j += 5    
-        #print(algoKey-1,epsilon,j,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10)
+        print(algoKey-1,epsilon,j,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10)
         j += 5
         #print(algoKey-1,epsilon, np.mean(errors), np.std(errors),np.mean(time),np.std(time))
 
