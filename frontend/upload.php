@@ -65,9 +65,9 @@
   </nav>
   <br>
   
-  
+
 <div class="container">
-        <body onload = "prepare()">
+        <body >
         <select id = "Degree Type" onchange = "frontierFn()"> 
         <option value = "1" selected = "selected">Node DP</option>
         
@@ -83,6 +83,8 @@
   <select id = "Dataset"> 
   <option value = "1">FACEBOOK</option>
   </select>  
+  <p> Here is the result by compiling the python file you have uploaded:</p> 
+  
     <script type="text/javascript">
       function hideoption(){
         document.getElementById("show_algorithm").style.visibility = "hidden";
@@ -112,7 +114,7 @@
     document.getElementById("Dataset").style.visibility = "hidden";
     document.getElementById("Utility").style.visibility = "hidden";
     document.getElementById("Degree Type").style.visibility = "hidden";
-    document.getElementById("show_algorithm").style.visibility = "visible";
+    
   }
           var data = {};
           var curveChosen = '';
@@ -213,6 +215,10 @@
               }
               console.log(algoindex)
               if(dp_chosen == 1){
+                function getwidth(y){
+                  if(y==7)return 3;
+                  else return 1;
+                }
                 var data = algoindex.map(y => {
                   var d = rows.filter(r => r.algorithm == y)    
                   return {
@@ -220,6 +226,7 @@
                     x: d.map(r => r.epsilon),
                     y: d.map(r => r.L1error),
                     color: getcolor(y),
+                    width: getwidth(y),
                     error_y: {
                       type: 'data',
                       array: d.map(r => r.L1error_sd),
@@ -229,6 +236,10 @@
                   }
                 })
               } else {
+                function getwidthedge(y){
+                  if(y==3)return 3;
+                  else return 1;
+                }
                 var data = edgealgoindex.map(y => {
                   var d = rows.filter(r => r.algorithm == y)    
                   return {
@@ -236,10 +247,11 @@
                     x: d.map(r => r.epsilon),
                     y: d.map(r => r.L1error),
                     color: getcolor(y),
+                    width: getwidthedge(y),
                     error_y: {
                       type: 'data',
                       array: d.map(r => r.L1error_sd),
-                      visible: true
+                      visible: true,
                     },
                     type: 'scatter'
                   }
@@ -514,6 +526,9 @@
               var k = rows.filter(r => r.algoname)
               algorithms = k.map(r=>r.algoname)
               edgealgorithms = k.map(r=>r.algoname)
+              algoindex[0] = -1;
+              algoindex[1] = -1;
+              algoindex[2] = -1;
             })
             //CLear the graph after a new click on the frontier; generate a random Toy dataset; Add words for the data points;
             //Challenge: upload their own algorithm
@@ -830,7 +845,7 @@
             <input type = "checkbox" onclick = "changevisibility(5)" id = "algorithm6">
             <span id="nodedp_algo6" style="display:inline; color:brown;">edgeAdd_degCum_Lap_variant</span><br>
             <input type = "checkbox" onclick = "changevisibility(6)" id = "algorithm7">
-            <span id="nodedp_algo7" style="display:inline; color:pink;">new_algorithm</span><br>
+            <span id="nodedp_algo7" style="display:inline; color:blue;">new_algorithm</span><br>
           </form><br>
           <br>
           <br>
@@ -838,15 +853,7 @@
           <p id="true_explain">The <span style="color:blue;font-weight:bold;">blue</span> graph represent the true dataset. </p>
           <p id="noisy_explain">The <span style="color:orange;font-weight:bold;">orange</span> graph represent the noisy dataset</p>
           <p id="noisy_detail">The data point being displayed is algorithm: ,and the epsilon chosen is </p>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-        </div>
-  </div>
-        <?php
+          <?php
 // Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
   $file = $_FILE['fileToUpload'];
@@ -886,12 +893,26 @@ if(empty($out)){
 ;
 } else {
   echo $out;
+  echo '<script type="text/javascript">
+  hideoption();
+  </script>'
+;
 }
-//Change the name of the new algorithm
-//Create a zip file and uploads the new_algorithm.py 
-?> 
-        <br>
-  </div>
+
+
+
+//more space on the plot
+?>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+        </div>
+</div>
+ 
+  <br>
   
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>

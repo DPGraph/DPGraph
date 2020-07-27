@@ -65,7 +65,7 @@
   </nav>
   <br>
   
-  
+
 <div class="container">
         <body onload = "prepare()">
         <select id = "Degree Type" onchange = "frontierFn()"> 
@@ -83,6 +83,8 @@
   <select id = "Dataset"> 
   <option value = "1">FACEBOOK</option>
   </select>  
+  <p> Here is the result by compiling the python file you have uploaded:</p> 
+  
     <script type="text/javascript">
       function hideoption(){
         document.getElementById("show_algorithm").style.visibility = "hidden";
@@ -112,7 +114,7 @@
     document.getElementById("Dataset").style.visibility = "hidden";
     document.getElementById("Utility").style.visibility = "hidden";
     document.getElementById("Degree Type").style.visibility = "hidden";
-    document.getElementById("show_algorithm").style.visibility = "visible";
+    
   }
           var data = {};
           var curveChosen = '';
@@ -173,8 +175,7 @@
                 document.getElementById("edgedp_algo1").style.display = "inline";
                 document.getElementById("nodedp_algo2").style.display = "none";
                 document.getElementById("edgedp_algo2").style.display = "inline";
-                document.getElementById("edgedp_algo3").style.display = "inline";
-                document.getElementById("algorithm3").style.visibility = "visible";
+                document.getElementById("algorithm3").style.visibility = "hidden";
                 document.getElementById("nodedp_algo3").style.display = "none";
                 document.getElementById("algorithm4").style.visibility = "hidden";
                 document.getElementById("nodedp_algo4").style.display = "none";
@@ -214,6 +215,10 @@
               }
               console.log(algoindex)
               if(dp_chosen == 1){
+                function getwidth(y){
+                  if(y==7)return 3;
+                  else return 1;
+                }
                 var data = algoindex.map(y => {
                   var d = rows.filter(r => r.algorithm == y)    
                   return {
@@ -221,6 +226,7 @@
                     x: d.map(r => r.epsilon),
                     y: d.map(r => r.L1error),
                     color: getcolor(y),
+                    width: getwidth(y),
                     error_y: {
                       type: 'data',
                       array: d.map(r => r.L1error_sd),
@@ -230,6 +236,10 @@
                   }
                 })
               } else {
+                function getwidthedge(y){
+                  if(y==3)return 3;
+                  else return 1;
+                }
                 var data = edgealgoindex.map(y => {
                   var d = rows.filter(r => r.algorithm == y)    
                   return {
@@ -237,10 +247,11 @@
                     x: d.map(r => r.epsilon),
                     y: d.map(r => r.L1error),
                     color: getcolor(y),
+                    width: getwidthedge(y),
                     error_y: {
                       type: 'data',
                       array: d.map(r => r.L1error_sd),
-                      visible: true
+                      visible: true,
                     },
                     type: 'scatter'
                   }
@@ -823,8 +834,7 @@
             <span id="nodedp_algo2" style="display:inline; color:orange;">degSeq_Lap</span>
             <span id="edgedp_algo2" style="display:none; color:orange;">degSeq_Lap</span><br>
             <input type = "checkbox" onclick = "changevisibility(2)" id = "algorithm3">
-            <span id="nodedp_algo3" style="display:inline; color:green;">nodeTrun_Smooth</span>
-            <span id="edgedp_algo3" style="display:none; color:green;">new_algorithm</span><br>
+            <span id="nodedp_algo3" style="display:inline; color:green;">nodeTrun_Smooth</span><br>
             <input type = "checkbox" onclick = "changevisibility(3)" id = "algorithm4">
             <span id="nodedp_algo4" style="display:inline; color:red;">edgeAdd_degHisPart_Lap</span><br>
             <input type = "checkbox" onclick = "changevisibility(4)" id = "algorithm5">
@@ -840,15 +850,7 @@
           <p id="true_explain">The <span style="color:blue;font-weight:bold;">blue</span> graph represent the true dataset. </p>
           <p id="noisy_explain">The <span style="color:orange;font-weight:bold;">orange</span> graph represent the noisy dataset</p>
           <p id="noisy_detail">The data point being displayed is algorithm: ,and the epsilon chosen is </p>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-        </div>
-  </div>
-        <?php
+          <?php
 // Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
   $file = $_FILE['fileToUpload'];
@@ -879,7 +881,7 @@ if(isset($_POST["submit"])) {
     echo "You cannot upload files of this type";
   }
 }
-$out = '';//exec("uploads/create_newedge.sh 2>&1");
+$out = exec("uploads/create_newedge.sh 2>&1");
 $empty = "";
 if(empty($out)){
   echo '<script type="text/javascript">
@@ -888,12 +890,26 @@ if(empty($out)){
 ;
 } else {
   echo $out;
+  echo '<script type="text/javascript">
+  hideoption();
+  </script>'
+;
 }
-//Change the name of the new algorithm
-//Create a zip file and uploads the new_algorithm.py 
-?> 
-        <br>
-  </div>
+//distinguish the new algorithm - with the other type of line
+//hide the first 3 algorithms
+//add comments for the uploading php
+//more space on the plot
+?>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+        </div>
+</div>
+ 
+  <br>
   
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>

@@ -32,15 +32,15 @@
     document.getElementById("select_algorithm_DD").style.visibility = "hidden";
     //document.getElementById("select_algorithm_DD_edge").style.visibility = "hidden";
     //document.getElementById("algorithm1").label = "testing";
-    document.getElementById("algorithm1").checked = true;
+    document.getElementById("algorithm1").checked = false;
     document.getElementById("algorithm1").style.visibility = "hidden";
     document.getElementById("algorithm2").style.visibility = "hidden";
     document.getElementById("algorithm3").style.visibility = "hidden";
     document.getElementById("algorithm4").style.visibility = "hidden";
     document.getElementById("algorithm5").style.visibility = "hidden";
     document.getElementById("algorithm6").style.visibility = "hidden";
-    document.getElementById("algorithm2").checked = true;
-    document.getElementById("algorithm3").checked = true;
+    document.getElementById("algorithm2").checked = false;
+    document.getElementById("algorithm3").checked = false;
     document.getElementById("algorithm4").checked = true;
     document.getElementById("algorithm5").checked = true;
     document.getElementById("algorithm6").checked = true;
@@ -261,7 +261,7 @@
                       array: d.map(r => r.L1error_sd),
                       visible: true
                     },
-                    type: 'scatter'
+                    type: 'dotplot',
                   }
                 })
               } else {
@@ -553,6 +553,13 @@
               var k = rows.filter(r => r.algoname)
               algorithms = k.map(r=>r.algoname)
               edgealgorithms = k.map(r=>r.algoname)
+              algoindex[0] = -1;
+              algoindex[1] = -1;
+              algoindex[2] = -1;
+              if(dp_chosen == 2) {
+                document.getElementById("algorithm1").checked = true;
+                document.getElementById("algorithm2").checked = true;
+              }
             })
             //CLear the graph after a new click on the frontier; generate a random Toy dataset; Add words for the data points;
             //Challenge: upload their own algorithm
@@ -599,11 +606,6 @@
                 };
               Plotly.newPlot('noisyHist', data, layout);
             })
-            
-            // range, normalization of the scatter plot? Histogram shorter, name of the algorithm, number of bins smaller, button?
-            //Subgraph-counting
-
-
             // The folloiwng function plots the ture DD histogram of a dataset. Note that one dataset has only one true DD. 
             var trueHistName =dataChosen+'HistCSV.csv'
             Plotly.d3.csv(trueHistName, function(err, rows){
@@ -643,7 +645,7 @@
               },
               mode:'markers',
               hovermode:'closest',
-              title:'Scatter Plot',
+              title:'Histogram',
               showlegend: false
             };
 
@@ -876,11 +878,8 @@
           <p id="noisy_explain">The <span style="color:orange;font-weight:bold;">orange</span> graph represent the noisy dataset</p>
           <p id="noisy_detail">The data point being displayed is algorithm: ,and the epsilon chosen is </p>
           
-          <form action="upload.php" method="POST" enctype="multipart/form-data">
-            Select image to upload:
-            <input type="file" name="fileToUpload" id="fileToUpload">
-            <input type="submit" value="Upload Python File" name="submit">
-          </form>
+          
+          <p><a href="uploading.html">Upload your own algorithm</a></p>
           
           
           <br>

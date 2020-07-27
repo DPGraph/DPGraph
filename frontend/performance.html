@@ -305,12 +305,12 @@
               titlefont: {
                 family: 'Arial, sans-serif',
                 size: 18,
-                color: 'black'
+                color: 'lightrgrey'
               },
               tickfont: {
                 family: 'Old Standard TT, serif',
                 size: 14,
-                color: 'lightgrey'
+                color: 'black'
               },
               exponentformat: 'e',
               showexponent: 'all',              
@@ -356,9 +356,6 @@
           var k = rows.filter(r => r.algoname);
           algorithms = k.map(r=>r.algoname)
           edgealgorithms = k.map(r=>r.algoname)
-          algoindex[0] = -1;
-          algoindex[1] = -1;
-          algoindex[2] = -1;
           if(dp_chosen == 2) {
             document.getElementById("algorithm1").checked = true;
             document.getElementById("algorithm2").checked = true;
