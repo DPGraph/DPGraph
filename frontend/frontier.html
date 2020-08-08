@@ -235,9 +235,6 @@
             var dp_chosen = document.getElementById("Degree Type").value;
             if(dp_chosen == 2)var csvName = dataChosen + "edge.csv";
             else var csvName = dataChosen + ".csv";
-            console.log(csvName);
-
-            
             Plotly.d3.csv(csvName, (err, rows) => {
               var tempPlot = document.getElementById('scatterFrontier')
               function getcolor(y){
@@ -654,87 +651,109 @@
             });
             plotfrontier(dataChosen);
             document.getElementById("show_algorithm").style.visibility = "visible";
-          // Lastly, we want to update the image of the dataset by changing the source, based on variable variable "graphSource"
-          //var trueGraphSource = document.getElementById("trueGraph").src;
-          //document.getElementById("trueGraph").src = graphSource;
         };
 
-        function SGCFn() {
-          var temp_data = document.getElementById("Dataset").value;
-          var temp_query = document.getElementById("Query").value;
-          if (temp_data == 1) {
-            // Tell user they need to choose a dataset.
-            document.getElementById("result").innerHTML = "Dataset is not specified !";
-            var dataChosen = 'EMPTY';
-            var graphSource = "PlotBlank.png";
-            console.log(graphSource);
-          } 
-          else {
-            document.getElementById("result").innerHTML = "This input choice is valid.";
-            
-            // dataChosen stores the dataset that user has chosen
+          function SGCFn() {
+            var temp_data = document.getElementById("Dataset").value;
+            var temp_query = document.getElementById("Utility").value;
             if (temp_data == 2) {
-              var dataChosen = 'CIT';
+              dataChosen = 'CIT';
             } else if (temp_data == 3) {
-              var dataChosen = 'DBLP';
+              dataChosen = 'DBLP';
             } 
-            else if (temp_data == 4) {
-              var dataChosen = 'FACEBOOK';
-            } else {
-              var dataChosen = "WIKI";
+            else if(temp_data == 1){
+              dataChosen = 'FACEBOOK';
+            } else if(temp_data == 4){
+              dataChosen = 'WIKI';
+            } else if(temp_data == 5){
+              dataChosen = 'TOYDATA';
             }
-            // graphSource stores the source (.png) of an image of the original dataset
-            var graphSource = "Plot"+dataChosen+".png";
-            // queryChosen stores the query that user has chosen
-            if (temp_query == 1) {
-              var queryChosen = "4kclique"
-            } else if (temp_query == 2) {
-              var queryChosen = "3kstar"
-            } else if (temp_query == 3) {
-              var queryChosen = "2ktriangle"
-            } else {
-              var queryChosen = "0ktriangle"
+            else {
+              dataChosen = 'EMAIL';
             }
-          }
-
-          // This part draws the frontier 
-
-          var algorithms = ['Ladder', 'LAP']
-          var csvName = "accuracy/"+dataChosen + queryChosen+ '.csv';
-          Plotly.d3.csv(csvName, (err, rows) => {
-          var tempPlot = document.getElementById('scatterFrontier')
-          var data = algorithms.map(y => {
-            var d = rows.filter(r => r.algorithm === y)         
-            return {
-              type: 'scatter',
-              name: y,
-              x: d.map(r => r.epsilon),
-              y: d.map(r => r.relError)
+            var lookingname = "looking"
+            if(temp_query == 2) {
+              lookingname = lookingname + "4kclique"
+              dataChosen = dataChosen+ "4kclique"
             }
-          })
+            else if(temp_query ==3) {
+              lookingname = lookingname + "3kstar"
+              dataChosen = dataChosen+ "3kstar"
+            }
+            else if(temp_query ==4){
+              dataChosen = dataChosen+ "2ktriangle"
+              lookingname = lookingname + "2ktriangle"
+            }
+            else if(temp_query ==5){
+              lookingname = lookingname + "0ktriangle"
+              dataChosen = dataChosen+ "0ktriangle"
+            }
+            // This part draws the frontier 
+            if(dp_chosen == 2) lookingname = lookingname+"edge"
+            lookingname = lookingname + ".csv"       
+            Plotly.d3.csv(lookingname, (err, rows)=>{
+              var l = rows.filter(r=>r.algo)
+              algoindex = l.map(r => r.algo)
+              edgealgoindex = l.map(r => r.algo);
+              var k = rows.filter(r => r.algoname)
+              algorithms = k.map(r=>r.algoname)
+              edgealgorithms = k.map(r=>r.algoname)
+              algoindex[0] = -1;
+              algoindex[1] = -1;
+              algoindex[2] = -1;
+              if(dp_chosen == 2) {
+                document.getElementById("algorithm1").checked = true;
+                document.getElementById("algorithm2").checked = true;
+              }
+            })
+            if(temp_query == 1)var trueHistName =dataChosen+'HistCSV.csv'
+            else var trurHistName = dataChosen+'.csv'
+            Plotly.d3.csv(trueHistName, function(err, rows){
 
-          var layout = {
-            autosize: false,
-            width: 500,
-            height: 300,
-            xaxis: {
-              type: 'log',
-              autorange: true
-            },
-            margin: {
-              l: 30,
-              r: 30,
-              b: 30,
-              t: 35,
-              pad: 4
-            },
-            mode:'markers',
-            hovermode:'closest',
-            title:'Privacy Frontier '+dataChosen
-          };
-          
-          Plotly.newPlot('scatterFrontier', data, layout,{showSendToCloud: true});
-        });
+            function unpack(rows, key) {
+              return rows.map(function(row) { return row[key]; });
+            }
+
+            var trace1 = {
+              name: 'trueHist',
+              mode: 'markers',
+              type: 'bar',
+              x: unpack(rows, 'degree'),
+              y: unpack(rows, 'count')
+            }
+            var trace2 = {}
+            var data = [trace1, trace2]
+            var layout = {
+              autosize: false,
+              width: 250,
+              height: 300,
+              xaxis: {
+                title: 'degree',
+                range: getxrange(),
+                //autorange: true
+              },
+              yaxis: {
+                title: 'count',
+                range: getyrange()
+              },
+              margin: {
+                l: 30,
+                r: 30,
+                b: 30,
+                t: 35,
+                pad: 4
+              },
+              mode:'markers',
+              hovermode:'closest',
+              title:'Histogram',
+              showlegend: false
+            };
+
+            Plotly.newPlot('trueHist', data, layout)
+
+            });
+            plotfrontier(dataChosen);
+            document.getElementById("show_algorithm").style.visibility = "visible";
         };
         var animation = 1;
         function started(){  
@@ -846,7 +865,6 @@
         }
       
       </script>
-<!-- -->
         <!-- Following are the four graphs we want to display on the page: privacy frontier, true Hist, noisy Hist, and image of dataset -->
 
         <div id="DDContainer">
