@@ -2,4 +2,6 @@ This is where the new_algorithm.py will be stored.
 
 Make sure have a folder called Datasets exactly the same as the Dataset in the frontend folder that contains the raw data of the datasets.
 
-Make sure create_new.sh is executable  
+Make sure create_new.sh is executable 
+
+Loading the php file on the web page may take long depending on the new_algorithm you wrote, it should display the result as soon as all the code are done running. Please make sure the file you upload have the same template as the one in the uploading.html
