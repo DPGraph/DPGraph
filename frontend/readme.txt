@@ -19,3 +19,12 @@ which then you can then open frontier.html at this address: http://127.0.0.1:800
 Uploads folder:
 
 The download folder is for the ability to allow users to upload their own algorithm for the corresponding algorithm to view their own result. For more details about the upload folder, please take a look at the readme file in the upload folder
+
+The details about the csv files:
+The file with "edge" is about the edge DP and the files without it is about node DP
+
+The file with "cdf" is about the cdf graph plotting
+
+The file with "algo" is about the noisy part of the graph
+
+The "HistCSV" is the original histogram plotting of the dataset. 
