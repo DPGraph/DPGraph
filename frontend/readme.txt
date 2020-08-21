@@ -27,4 +27,8 @@ The file with "cdf" is about the cdf graph plotting
 
 The file with "algo" is about the noisy part of the graph
 
+For the way to generate those files above, please take a look at the python code in the uploads folder and that will give you an idea how those files are generated.
+
 The "HistCSV" is the original histogram plotting of the dataset. 
+
+For this file to be generated, please take a look at the uploads truehist.py
