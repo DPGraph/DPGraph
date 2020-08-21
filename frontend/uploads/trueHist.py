@@ -22,16 +22,13 @@ maxDeg = nodesNum -1  #assume this is given
 
 trueHis = getDegHis(G,maxDeg)
 
-#j = 0;
-#while j < len(trueHis):
-#    rounds = 10
-#    total = 0
-#    for i in range(rounds):
-#        if j+i < nodesNum : 
-#            total += trueHis[j+i]
-#        j+=1
+j = 0;
+while j < nodesNum:
+    rounds = 10
+    total = 0
+    for i in range(rounds):
+        if j+i < nodesNum : 
+            total += trueHis[j+i]
+        j+=1
 
- #   print(j-5, total)
-
-for i in range(len(trueHis)):
-    print(i, trueHis[i])
+    print(j-5, total)
