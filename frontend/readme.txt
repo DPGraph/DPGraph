@@ -4,6 +4,8 @@ To download the full dataset, please go to https://drive.google.com/drive/folder
 
 Download all the csv files from this folder from the link above and put all of them into the same folder(frontend). Do not put the csv files in a Dataset.
 
+To get the correct style, extract the "Archive" zip folder in the "frontend" folder.
+
 Note: Please make sure that you have all the files in the same way we have in the folder. 
 
 new_algorithm.py cannot change the name of it due to that it is the template of the files that can be downloaded for the User. Or you can change the name that is used for download in the uploading.html with the name you desire. 
