@@ -913,6 +913,9 @@
         };
         var animation = 1;
         function started(){  
+
+          animateTextFn();
+
           if(animation == 1){
             console.log("start");
             animation = 2;
@@ -1089,6 +1092,17 @@
           }
           else {
             buttonEle.innerHTML = "show algorithms";
+          }
+        }
+
+        function animateTextFn() {
+          var buttonEle = document.getElementById("gif");
+
+          if (buttonEle.innerHTML === "Animate") {
+            buttonEle.innerHTML = "Stop";
+          }
+          else {
+            buttonEle.innerHTML = "Animate";
           }
         }
       
