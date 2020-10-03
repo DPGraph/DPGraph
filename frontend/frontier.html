@@ -184,6 +184,9 @@
             else if(temp_data == 6) return [0,500]
           }
           function show_algorithm(){
+
+            buttonTextFn();
+
             var dp_chosen = document.getElementById("Degree Type").value;
             var temp_query = document.getElementById("Utility").value;
             if(document.getElementById("select_algorithm_DD").style.visibility != "visible"){
@@ -1059,6 +1062,10 @@
         function frontierFn() {
           prepare();
           document.getElementById("show_algorithm").style.visibility = "visible";
+
+          // Need to change button text to "show algorithms"
+          document.getElementById("show_algorithm").innerHTML = "show algorithms";
+
           if (document.getElementById("Utility").value == 1) {
             document.getElementById("trueHist").style.visibility = "visible";
             document.getElementById("noisyHist").style.visibility = "visible";
@@ -1068,6 +1075,20 @@
             document.getElementById("trueHist").style.visibility = "visible";
             document.getElementById("noisyHist").style.visibility = "hidden";
             SGCFn();
+          }
+        }
+
+        function buttonTextFn() {
+          // The first few lines deal with button text change
+          var buttonEle = document.getElementById("show_algorithm");
+
+          // console.log(buttonEle.innerHTML);
+
+          if (buttonEle.innerHTML =="show algorithms") {
+            buttonEle.innerHTML = "hide algorithms";
+          }
+          else {
+            buttonEle.innerHTML = "show algorithms";
           }
         }
       
