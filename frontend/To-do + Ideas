@@ -8,7 +8,7 @@
     - Maybe decide on shorter names.
     
 4. "Animate" button should change its name to "stop", once it has been clicked. and so forth. 
-5. Same thing for the "show algorithm" button. (Should change to "hide algorithm" button)
+5. Same thing for the "show algorithm" button. (Done)
 
 6. There should more explanation of what the "animate" button is doing. I got confused of what it is doing when I am trying it.
 
