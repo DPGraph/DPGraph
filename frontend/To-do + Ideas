@@ -19,9 +19,7 @@
      
 8. Less decimal places to display for the L1error, currently there are 8 decimal places, which seem to be a bit too much.
 
-9. The checkboxes for the subgraph counting algorithms seem to be messed up. (Sometimes the checkboxes are toggled off, but the plot still shows).
-    - This seems to be coming from the fact that "Ladder" and "Lap" are not initially checked, which they should be.
-    - Currently, "Smooth" does not seem to have any associated plots.
+9. Discuss this: Currently, SGC, 4k-clique for Smooth is not implemented. (results is missing). What should we do about it?
 
 10. For subgraph counting, we are not using "blue" graph to represent the true count, but rather the "purple" graph.
 
