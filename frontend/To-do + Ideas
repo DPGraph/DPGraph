@@ -7,7 +7,7 @@
 3. Some algorithms seem to have very long names. "The data point being displayed is algorithm: nodeDP_edgeAdd_degCum_Lap_variant ,and the epsilon chosen is 0.02"
     - Maybe decide on shorter names.
     
-4. "Animate" button should change its name to "stop", once it has been clicked. and so forth. 
+4. "Animate" button should change its name to "stop", once it has been clicked. and so forth. (Done)
 5. Same thing for the "show algorithm" button. (Done)
 
 6. There should more explanation of what the "animate" button is doing. I got confused of what it is doing when I am trying it.
@@ -29,7 +29,7 @@
     it turns to orange.
 
 13. Currently, there is nothing to show for the empirical findings tab.
-    - Do we want to keep this section? 
+    - We do want to keep this section. (Oct 1 meeting)
     - If yes, we need to think about which content we should put in it, and how we want to display it. (which can make up for another
       section in the demo video/usage scenario I think).
       

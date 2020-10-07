@@ -381,6 +381,7 @@
                   },
                   exponentformat: 'e',
                   showexponent: 'all',
+                  hoverformat: '.2r',
                 },
                 margin: {
                   l: 30,
@@ -392,7 +393,7 @@
                 mode:'markers',
                 hovermode:'closest',
                 title:'Privacy Frontier '+dataset,
-                showlegend: false
+                showlegend: false,
               };
                 
               Plotly.newPlot('scatterFrontier', data, layout,{showSendToCloud: true});
@@ -750,7 +751,8 @@
                   zerolin: true,
                   type: 'log',
                   title: 'P(K>=k)',
-                  autorange: true
+                  autorange: true,
+                  hoverformat: '.2r',
                 },
                 margin: {
                   l: 30,
@@ -889,14 +891,14 @@
               xaxis: {
                 //title: 'degree',
                 //range: getxrange(),
-                autorange: true
+                autorange: true,
               },
               yaxis: {
                 title: 'count',
                 type: 'log',
                 //range: getyrange(),
                 autorange: false,
-                range:[1,15]
+                range:[1,15],
               },
               margin: {
                 l: 30,
