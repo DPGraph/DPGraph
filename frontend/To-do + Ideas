@@ -17,7 +17,7 @@
       1) Choose between different parameters, then show how the "animate" button works (as well as explaining what it does)
       2) "Upload" your own algorithm (this should be an interesting thing to demo)
      
-8. Less decimal places to display for the L1error, currently there are 8 decimal places, which seem to be a bit too much.
+8. Less decimal places to display for the L1error, currently there are 8 decimal places, which seem to be a bit too much. (Done, 2sigdigs)
 
 9. Discuss this: Currently, SGC, 4k-clique for Smooth is not implemented. (results is missing). What should we do about it?
 
