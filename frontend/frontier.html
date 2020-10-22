@@ -51,6 +51,7 @@
     document.getElementById("gif").style.visibility = "hidden";
     document.getElementById("true_explain").style.visibility = "hidden";
     document.getElementById("noisy_explain").style.visibility = "hidden";
+    document.getElementById("subgraph").style.visibility = "hidden";
     document.getElementById("noisy_detail").style.visibility = "hidden";
   }
 </script>
@@ -1085,6 +1086,23 @@
           } else {
             document.getElementById("trueHist").style.visibility = "visible";
             document.getElementById("noisyHist").style.visibility = "hidden";
+            // In this case we also want to set the visibility of "subgraph" to be visible
+            document.getElementById("subgraph").style.visibility = "visible";
+            // In addition, let's set the source for subgraph_png
+            var image_name = "";
+            if (document.getElementById("Utility").value == 2) {
+              image_name = "triangle"
+            }
+            else if (document.getElementById("Utility").value == 3) {
+              image_name = "3star"
+            }
+            else if (document.getElementById("Utility").value == 4) {
+              image_name = "4clique"
+            }
+            else {
+              image_name = "2triangle"
+            }
+            document.getElementById("subgraph_png").src = image_name + ".png";
             SGCFn();
           }
         }
@@ -1145,6 +1163,9 @@
           <br>
           <br>
           <button id="gif" onclick="started()">Animate</button>
+          <p id="subgraph">
+            The shape of the subgraph is <img id="subgraph_png" src="3star.png" alt="subgraph pic" style="width:75px;height:75px;">
+          </p>
           <p id="true_explain">The <span style="color:blue;font-weight:bold;">blue</span> graph represent the true dataset. </p>
           <p id="noisy_explain">The <span style="color:orange;font-weight:bold;">orange</span> graph represent the noisy dataset</p>
           <p id="noisy_detail">The data point being displayed is algorithm: ,and the epsilon chosen is </p>
