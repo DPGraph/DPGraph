@@ -28,25 +28,14 @@
           <li class="nav-item">
             <a class="nav-link" href="index.html">DPGraph</a>
           </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="problem.html">Problem Statement</a>
-          </li> -->
           <li class="nav-item">
             <a class="nav-link" href="frontier.html">Accuracy Frontier</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="performance.html">Performance Frontier</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Empirical Findings
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
-              <a class="dropdown-item" href="finding.html">Finding Overview</a>
-              <a class="dropdown-item" href="#">Competitive Algorithm</a>
-              <a class="dropdown-item" href="#">Effect of Data Shape</a>
-              <a class="dropdown-item" href="#">Comparison Against Baseline</a>
-            </div>
+          <li class="nav-item">
+            <a class="nav-link" href="finding.html">Empirical Findings</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -71,20 +60,84 @@
     <!-- Following are some text describing the empirical findings of this project -->
 
     <h1 class="text-left">Overview of Empirical Findings</h1>
-        <p class="text-left" style= "background-color: PowderBlue"> These are three of the research findings that emerged from our empirical investigation. Each is supported with more detailed analysis on the pages linked below. Please see the background discussion for details on experimental methodology and key concepts underlying the empirical findings.
-        </p>
+        <div class="text-left"> 
+          There are four input variables that we can adjust when calculating the output of graph-DP algorithms. 
+          These four variables are:
+          <ul>
+            <li>Algorithm</li>
+            <li>Dataset</li>
+            <li>Query</li>
+            <li>Epsilon</li>
+          </ul>
+          It's interesting to investigate the effect of each of these variables on the accuracy of output.
+          More specifically, fixing three of the four variables, we may be interested in whether or not the fourth variable affects the results,
+          and if yes, how does it do so.
+          We aim to address these questions from the empirical findings of our experiments.
+          To see more details for each variable, click on the corresponding titles.
+        </div>
 
-        <h4 class="text-left"><a href= "https://www.google.ca/">Competitive Algorithms:</a></h4>
-        <p class="text-left"> Is there one algorithm that outperforms the rest, across various input settings? </p>
-        <p class="text-left" style= "background-color: yellow"> Finding: No, there is no single algorithm that can outperform the rest in all input settings.</p>
+        <br />
 
-        <h4 class="text-left"><a href= "https://www.google.ca/">Effect of Data Shape on Accuracy:</a></h4>
-        <p class="text-left"> Do graph-DP algorithms’ performances vary on graph datasets with different shapes? </p>
-        <p class="text-left" style= "background-color: yellow"> Finding: Yes, graph datasets' shapes have an impact on algorithms' performances.</p>
+        <div class="card bg-light text-dark">
+          <div>
+            <h4 class="text-center">
+              Algorithm:
+            </h4>
+            <p class="text-left"> 
+              Q: Is there one algorithm that outperforms the rest, across various input settings? 
+            </p>
+            <p class="text-left"> 
+              A: For degree distribution, no single algorithm dominates all others. 
+              For subgraph counting, Ladder is the dominant algorithm.
+            </p>
+          </div>
+        </div>
+        <br />
 
-        <h4 class="text-left"><a href= "https://www.google.ca/">Comparison with Baseline Methods:</a></h4>
-        <p class="text-left"> Do sophisticated algorithms always perform simple baseline methods? </p>
-        <p class="text-left"> Finding: </p>
+        <div class="card bg-light text-dark">
+          <div>
+            <h4 class="text-center">
+              Dataset:
+            </h4>
+            <p class="text-left"> 
+              Q: Do graph-DP algorithms’ performances vary on graph datasets with different shapes? 
+            </p>
+            <p class="text-left"> 
+              A: Yes, graph datasets' shapes have an impact on algorithms' performances.
+            </p>
+          </div>
+        </div>
+        <br />
+
+        <div class="card bg-light text-dark">
+          <div>
+            <h4 class="text-center">
+              Query:
+            </h4>
+            <p class="text-left"> 
+              Q: (For SGC queries) Do graph-DP algorithms’ performances vary on different queries?
+            </p>
+            <p class="text-left"> 
+              A: Yes, queries have an impact on graph-DP algorithms' performances.
+            </p>
+          </div>
+        </div>
+        <br />
+
+        <div class="card bg-light text-dark">
+          <div>
+            <h4 class="text-center">
+              Epsilon:
+            </h4>
+            <p class="text-left"> 
+              Q: Do graph-DP algorithms' performances vary on different epsilon values? 
+            </p>
+            <p class="text-left"> 
+              A: Yes. As we expected, algorithms' performances increases as epsilon increases.
+            </p>
+          </div>
+        </div>
+        <br />
 
   </div>
 
