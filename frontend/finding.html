@@ -91,6 +91,30 @@
               For subgraph counting, Ladder is the dominant algorithm.
             </p>
           </div>
+          <div>
+            <a href="#algo-collapse" class="btn btn-info" data-toggle="collapse">More details</a>
+            <div id="algo-collapse" class="collapse">
+              <br />
+              <p>
+                For degree distribution Node-DP algorithms, <b>edgeAdd_degHisPart_Lap</b>, 
+                <b>edgeAdd_degCum_Lap</b>, and <b>edgeAdd_degCum_Lap_variant</b>
+                consistently outperforms degHis_Lap, degSeq_Lap, and nodeTrun_Smooth, across all input settings.
+              </p>
+              <p>
+                For smaller values of e, edgeAdd_degHisPart_Lap is the best performing algorithm.
+              </p>
+              <p>
+                For larger values of e, edgeAdd_degCum_Lap is the best performing algorithm.
+              </p>
+              <p>
+                For degree distribution Edge-DP algorithms, <b>degHis_Lap</b> outperforms degSeq_Lap.
+              </p>
+              <p>
+                For subgraph counting algorithms, <b>Ladder</b> outperforms Laplace and Smooth across all input settings.
+                This is consistent with findigns in the paper. [?]
+              </p>
+            </div>
+          </div>
         </div>
         <br />
 
@@ -105,6 +129,23 @@
             <p class="text-left"> 
               A: Yes, graph datasets' shapes have an impact on algorithms' performances.
             </p>
+          </div>
+          <div>
+            <a href="#dataset-collapse" class="btn btn-info" data-toggle="collapse">More details</a>
+            <div id="dataset-collapse" class="collapse">
+              <br />
+              <p>
+                For subgraph counting queries, Laplace algorithm's error increases with the number of nodes in a graph dataset.
+                This is because Laplace algorithm achieves differential privacy 
+                by adding noise proportional to the global sensitivity of a dataset. 
+                And the global sensitiviy of a graph dataset increases with the number of nodes.
+              </p>
+              <p>
+                For Ladder and Smooth algorithm, graph datasets' shape have an impact on their performances.
+                But exact which properties of the graph dataset have the most impact on the algorithms' performances
+                remain to be answered.
+              </p>
+            </div>
           </div>
         </div>
         <br />
@@ -121,6 +162,26 @@
               A: Yes, queries have an impact on graph-DP algorithms' performances.
             </p>
           </div>
+          <div>
+            <a href="#query-collapse" class="btn btn-info" data-toggle="collapse">More details</a>
+            <div id="query-collapse" class="collapse">
+              <br />
+              <p>
+                For subgraph counting queries, some queries have more accurate results than others, fixing all other input variables.
+              </p>
+              <p>
+                Here is the observed ranking of errors for the subgraph counting queries:
+              </p>
+              <p class="text-center"> 
+                <i><b>Err(Triangle) & Err(3-kstar)</b> < <b>Err(2-ktriangle)</b> < <b>Err(4-kclique)</b></i>
+              </p>
+              <p>
+                Intuitively, 4-kclique and 2-ktriangle are the "harder" queries to answer. 
+                On the other hand, there is no clear ordering of the errors for triangle counting and 3-kstar counting.
+                One query has more accurate results than the other for some combinations of algorithm and dataset, and vise versa.
+              </p>
+            </div>
+          </div>
         </div>
         <br />
 
@@ -135,6 +196,20 @@
             <p class="text-left"> 
               A: Yes. As we expected, algorithms' performances increases as epsilon increases.
             </p>
+          </div>
+          <div>
+            <a href="#epsilon-collapse" class="btn btn-info" data-toggle="collapse">More details</a>
+            <div id="epsilon-collapse" class="collapse">
+              <br />
+              <p>
+                Intuitively, a larger epsilon corresponds to a weaker level of privacy guarantee. 
+                Thus, less noise is needed, which leads to higher accuracy of output.
+              </p>
+              <p>
+                This behavior is observed across all input settings. 
+                To take a look at epsilon's effect, set all the other variables.
+              </p>
+            </div>
           </div>
         </div>
         <br />
