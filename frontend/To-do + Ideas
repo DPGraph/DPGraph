@@ -1,14 +1,5 @@
-1. The part that says "Modern Business" in the tab title should be fixed. (Done)
-
-2. "Problem statement" link is currently broken. (Done)
-    - Looks like this link is probably not needed, as we won't be putting much content there. 
-    - Should we just remove this?
-    
-3. Some algorithms seem to have very long names. "The data point being displayed is algorithm: nodeDP_edgeAdd_degCum_Lap_variant ,and the epsilon chosen is 0.02"
-    - Maybe decide on shorter names.
-    
-4. "Animate" button should change its name to "stop", once it has been clicked. and so forth. (Done)
-5. Same thing for the "show algorithm" button. (Done)
+1. Some algorithms seem to have very long names. "The data point being displayed is algorithm: nodeDP_edgeAdd_degCum_Lap_variant ,and the epsilon chosen is 0.02"
+    - Karl fixed this part. Remember to put this into interface.
 
 6. There should more explanation of what the "animate" button is doing. I got confused of what it is doing when I am trying it.
 
@@ -16,23 +7,12 @@
     - Things that we can showcase: 
       1) Choose between different parameters, then show how the "animate" button works (as well as explaining what it does)
       2) "Upload" your own algorithm (this should be an interesting thing to demo)
-     
-8. Less decimal places to display for the L1error, currently there are 8 decimal places, which seem to be a bit too much. (Done, 2sigdigs)
-
-9. Discuss this: Currently, SGC, 4k-clique for Smooth is not implemented. (results is missing). What should we do about it? （No need to worry)
 
 10. For subgraph counting, we are not using "blue" graph to represent the true count, but rather the "purple" graph.
-
-11. In addition to showing only the counts, we should also show a picture of the actual subgraphs, to give a better visual representation to readers of what we are doing.
 
 12. (SC) One things I am noticing is that when we clicked on a point from the Ladder line, which is blue, noisy hist shows up as blue. But once we click on animate, 
     it turns to orange.
 
 13. Currently, there is nothing to show for the empirical findings tab.
-    - We do want to keep this section. (Oct 1 meeting)
     - If yes, we need to think about which content we should put in it, and how we want to display it. (which can make up for another
       section in the demo video/usage scenario I think).
-      
-14. There are checkbox display inconsistencies for the Performance frontier. (checkboxes do not correspond correctly to the graphs being displayed)
-
-15. Change "0ktriangle" to "triangle". (Done)
