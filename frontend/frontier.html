@@ -342,8 +342,12 @@
                 width: 300,
                 height: 300,
                 xaxis: {
+                  automargin: true,
                   type: 'log',
-                  title: 'epsilon',
+                  title: {
+                    text: 'epsilon',
+                    standoff: 1,
+                  },
                   autorange: true,
                   tickangle: 'auto',
                   tickfont: {
@@ -358,7 +362,11 @@
                   },
                 },
                 yaxis:{
-                  title: gettitle(),
+                  automargin: true,
+                  title: {
+                    text: gettitle(),
+                    standoff: 1,
+                  },
                   autorange: false,
                   range: errorrange(),
                   tickangle: 45,
@@ -385,7 +393,7 @@
                 },
                 mode:'markers',
                 hovermode:'closest',
-                title:'Privacy Frontier '+dataset,
+                title:'Accuracy Frontier '+dataset,
                 showlegend: false,
               };
                 
@@ -498,6 +506,7 @@
                         
                         var layout = {
                           autosize: false,
+                          // dragmode: false,
                           width: 300,
                           height: testHeight,
                           xaxis: {
@@ -544,6 +553,7 @@
                         }];
                         var layout = {
                           autosize: false,
+                          dragmode: false,
                           width: 250,
                           height: 300,
                           xaxis: {
@@ -553,7 +563,11 @@
                           },
                           colorway: ['orange'],
                           yaxis: {
-                            title: 'count',
+                            automargin: true,
+                            title: {
+                              text: 'count',
+                              standoff: 1,
+                            },
                             type: 'log',
                             //range: getyrange(),
                             autorange: false,
@@ -732,18 +746,27 @@
               var data = [trace1,trace2]
               var layout = {
                 autosize: true,
+                dragmode: "pan",
                 width: 250,
                 height: 300,
                 xaxis: {
-                  title: 'degree',
+                  automargin: true,
+                  title: {
+                    text: 'degree',
+                    standoff: 1,
+                  },
                   type: 'log',
-                  autorange: true
+                  autorange: true, 
                 },
                 yaxis: {
                   fixedrange: true,
+                  automargin: true,
                   zerolin: true,
-                  type: 'log',
-                  title: 'P(K>=k)',
+                  // type: 'log',
+                  title: {
+                    text: 'P(K>=k)',
+                    standoff: 1,
+                  },
                   autorange: true,
                   hoverformat: '.2r',
                 },
@@ -784,12 +807,19 @@
               width: 250,
               height: 300,
               xaxis: {
-                title: 'degree',
+                automargin: true,
+                title: {
+                  text: 'degree',
+                  standoff: 1,
+                },
                 range: getxrange(),
-                //autorange: true
               },
               yaxis: {
-                title: 'count',
+                automargin: true,
+                title: {
+                  text: 'count',
+                  standoff: 1,
+                },
                 range: getyrange()
               },
               margin: {
@@ -880,6 +910,7 @@
             var data = [trace1, trace2]
             var layout = {
               autosize: false,
+              dragmode: false,
               width: 250,
               height: 300,
               xaxis: {
@@ -888,7 +919,11 @@
                 autorange: true,
               },
               yaxis: {
-                title: 'count',
+                automargin: true,
+                title: {
+                  text: 'count',
+                  standoff: 1,
+                },
                 type: 'log',
                 //range: getyrange(),
                 autorange: false,
@@ -1051,7 +1086,7 @@
                 },
                 mode:'markers',
                 hovermode:'closest',
-                title:'Noisy Histogram',
+                title:'Noisy Count',
                 showlegend: false
               };
               Plotly.newPlot('noisyHist', data, layout);
@@ -1157,7 +1192,7 @@
           <br>
           <button id="gif" onclick="started()">Animate</button>
           <p id="subgraph">
-            The shape of the subgraph is <img id="subgraph_png" src="3star.png" alt="subgraph pic" style="width:75px;height:75px;">
+            The shape of the subgraph is <img id="subgraph_png" src="3star.png" alt="subgraph pic" style="width:75px;height:60px;">
           </p>
           <p id="true_explain">The <span style="color:blue;font-weight:bold;">blue</span> graph represent the true dataset. </p>
           <p id="noisy_explain">The <span style="color:orange;font-weight:bold;">orange</span> graph represent the noisy dataset</p>
