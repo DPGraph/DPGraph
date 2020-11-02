@@ -128,12 +128,41 @@
         </select>
 
         <select id = "Dataset" onchange = "frontierFn()"> 
-        <option value = "1" >FACEBOOK</option>
-        <option value = "2">CIT</option>
-        <option value = "3">DBLP</option>
-        <option value = "4">WIKI</option>
-        <option value = "5">Toydata</option>
-        <option value = "6">Email_enron</option>
+        <option 
+          value = "1" 
+          title = "4k nodes; 88k edges"
+        >
+          FACEBOOK
+        </option>
+        <option 
+          value = "2"
+          title = "7k nodes; 100k edges"
+        >
+          CIT
+        </option>
+        <option 
+          value = "3"
+          title = "28k nodes; 350k edges"
+        >
+          DBLP
+        </option>
+        <option 
+          value = "4"
+          title = "37k nodes; 180k edges"
+        >
+          WIKI
+        </option>
+        <option 
+          value = "5"
+        >
+          Toydata
+        </option>
+        <option 
+          value = "6"
+          title = "320k nodes; 1M edges"
+        >
+          Email_enron
+        </option>
         </select>
         
         <!-- 
@@ -1152,7 +1181,9 @@
         function animateTextFn() {
           var buttonEle = document.getElementById("gif");
 
-          if (buttonEle.innerHTML === "Animate") {
+          console.log(buttonEle.innerHTML);
+
+          if (buttonEle.innerHTML.includes("Animate")) {
             buttonEle.innerHTML = "Stop";
           }
           else {
@@ -1167,7 +1198,15 @@
           <div style="float: left;" id="trueHist" class="trueHist"></div>
           <div style="float: left;" id="noisyHist" class="noisyHist"></div>
           <div style="float: left;" id="scatterFrontier"></div>
-          <button id = "show_algorithm" onclick = "show_algorithm()">show algorithms</button><br>
+          <button 
+            id = "show_algorithm" 
+            onclick = "show_algorithm()"
+            type="button" 
+            class="btn btn-secondary"
+          >
+            show algorithms
+          </button>
+          <br>
           <form id = "select_algorithm_DD">
             <p>Please select the algorithm you want to display</p>
             <input type = "checkbox" onclick = "changevisibility(0)" id = "algorithm1">
@@ -1190,7 +1229,14 @@
           </form><br>
           <br>
           <br>
-          <button id="gif" onclick="started()">Animate</button>
+          <button 
+            id="gif" 
+            onclick="started()"
+            type="button" 
+            class="btn btn-secondary"
+          >
+            Animate
+          </button>
           <p id="subgraph">
             The shape of the subgraph is <img id="subgraph_png" src="3star.png" alt="subgraph pic" style="width:75px;height:60px;">
           </p>
