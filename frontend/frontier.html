@@ -111,15 +111,19 @@
         <p class="text-left"> Each dot corresponds to the error of a specific algorithm at a specific epsilon. For the task of degree distribution, Click on a dot to visualize the noisy histogram of the algorithm in the middle. Dots corresponding to the same epsilon are placed along the same vertical line, and dots corresponding to the same algorithms all share the same unique color. *The points that make up the lower convex hull are those that achieve the least error at that privacy level, and are called the frontier. The points on the frontier alone can be visualized by toggling the visualize frontier checkbox on the far right. Click the "Show/Hide Algorithms" button to view the list of algorithms. Algorithms can be included or excluded from the plot using the associated check-boxes.* </p>
 
         <p class="text-left"> For degree distribution, two histograms are shown. The true degree distribution histogram is shown on the left. The noisy degree distribution histogram is shown in the middle. * Both histograms contain the same number of bins for easier comparison. Clicking on a bin of a histogram displays the number of counts in that bin. *For subgraph counting, the subgraph is plotted on the left. In the middle, the true count and the noisy count are shown next to each other. </p>
-
         
-        <select id = "Degree Type" onchange = "frontierFn()"> 
+        <select 
+          id = "Degree Type" 
+          onchange = "frontierFn()"
+        > 
         <option value = "1" selected = "selected">Node DP</option>
         <option value = "2">Edge DP</option>
         
         </select>
 
-        <select id = "Utility" onchange = "frontierFn()"> 
+        <select id = "Utility" 
+          onchange = "frontierFn()"
+        > 
         <option value = "1" selected = "selected">Degree Distribution</option>
         <option value = "4">Subgraph Counting_4kclique</option>
         <option value = "3">Subgraph Counting_3kstar</option>
@@ -127,7 +131,10 @@
         <option value = "2">Subgraph Counting_triangle</option>
         </select>
 
-        <select id = "Dataset" onchange = "frontierFn()"> 
+        <select 
+          id = "Dataset" 
+          onchange = "frontierFn()"
+        > 
         <option 
           value = "1" 
           title = "4k nodes; 88k edges"
@@ -277,9 +284,9 @@
               document.getElementById("algorithm6").style.visibility = "hidden";
               document.getElementById("algorithm1").style.visibility = "hidden";
               document.getElementById("algorithm2").style.visibility = "hidden";
-              
             }
           }
+
           function plotfrontier(dataChosen){
             var dp_chosen = document.getElementById("Degree Type").value;
             var temp_query = document.getElementById("Utility").value;
@@ -296,6 +303,12 @@
                 else if(y==4) return 'red';
                 else if(y==5) return 'purple';
                 else if(y==6) return 'brown';
+                // if(y==1)return 'red';
+                // else if(y==2) return 'red';
+                // else if(y==3) return 'red';
+                // else if(y==4) return 'red';
+                // else if(y==5) return 'red';
+                // else if(y==6) return 'red';
               }
               if(dp_chosen == 1){
                 var data = algoindex.map(y => {
@@ -317,7 +330,9 @@
                     name: algorithms[y-1],
                     x: filter_x(),
                     y: filter_y(),
-                    color: getcolor(y),
+                    marker:{
+                      color: getcolor(y),
+                    },
                     error_y: {
                       type: 'data',
                       array: filter_error(),
@@ -326,7 +341,8 @@
                     type: 'dotplot',
                   }
                 })
-              } else {
+              } 
+              else {
                 var data = edgealgoindex.map(y => {
                   var d = rows.filter(r => r.algorithm == y)
                   var l = rows.filter(r => (r.query == temp_query-1) && (r.algorithm == y))
@@ -1138,9 +1154,12 @@
           if (document.getElementById("Utility").value == 1) {
             document.getElementById("trueHist").style.visibility = "visible";
             document.getElementById("noisyHist").style.visibility = "visible";
+            // if query is DD, we want to set "subgraph" to be hidden
+            document.getElementById("subgraph").style.visibility = "hidden";
+            document.getElementById("subgraph_png").style.height = "0px";
             DDFn();
-            
-          } else {
+          } 
+          else {
             document.getElementById("trueHist").style.visibility = "visible";
             document.getElementById("noisyHist").style.visibility = "hidden";
             // In this case we also want to set the visibility of "subgraph" to be visible
@@ -1160,6 +1179,7 @@
               image_name = "2triangle"
             }
             document.getElementById("subgraph_png").src = image_name + ".png";
+            document.getElementById("subgraph_png").style.height = "60px";
             SGCFn();
           }
         }
@@ -1265,6 +1285,14 @@
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
 
 </body>
 
