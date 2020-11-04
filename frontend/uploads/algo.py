@@ -45,7 +45,7 @@ epsList = [0.01,0.02,0.05,0.1,0.2,0.5,1.0,2.0,5.0,10.0]
 #epsList = [0.1, 0.5, 1.0, 1.5, 2.0]
 #epsList = [0.1]
 repeats = 3 
-
+print("algorithm,epsilon,L1error,L1error_sd,time,time_sd")
 maxTheta = min(nodesNum-1,200)
 thetaCandidates = [20,40,60,80,100,120,140,160,180,200]
 if maxTheta < 200:
@@ -230,7 +230,6 @@ for epsilon in epsList:
                 n10 += noisyDegHis10[j+i]
 
         j += 5    
-        print(algoKey-1,epsilon,j,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10)
+        print(str(algoKey-1)+','+str(epsilon)+','+str(j)+','+str(n1)+','+str(n2)+','+str(n3)+','+str(n4)+','+str(n5)+','+str(n6)+','+str(n7)+','+str(n8)+','+str(n9)+','+str(n10))
         j += 5
-        #print(algoKey-1,epsilon, np.mean(errors), np.std(errors),np.mean(time),np.std(time))
 

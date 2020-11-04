@@ -1,4 +1,5 @@
 #!/bin/bash
+cd uploads/
 rm *.csv
 chmod u+x *.sh
 cp ../*.csv .

@@ -110,9 +110,4 @@ for epsilon in epsList:
         time.append(end-start)
         #plotHis(trueHis/nodesNum,noisyDegHis/nodesNum)
         #plotCum(trueHis/nodesNum,noisyDegHis/nodesNum)
-    
-    #for j in range(nodesNum):
-        
-     #   print(algoKey-1,epsilon,basil,j,noisyDegHis[j])
-    print(algoKey-1,epsilon, np.mean(errors), np.std(errors),np.mean(time),np.std(time))
-
+    print(str(algoKey+1)+','+str(epsilon)+','+str( np.mean(errors))+','+str( np.std(errors))+','+str(np.mean(time))+','+str(np.std(time)))
