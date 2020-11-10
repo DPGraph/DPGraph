@@ -214,7 +214,9 @@
                     name: algorithms[y-1],
                     x: d.map(r => r.epsilon),
                     y: d.map(r => r.L1error),
-                    color: getcolor(y),
+                    marker:{
+                      color: getcolor(y)
+                    },
                     width: getwidth(y),
                     error_y: {
                       type: 'data',
@@ -235,7 +237,9 @@
                     name: algorithms[y-1],
                     x: d.map(r => r.epsilon),
                     y: d.map(r => r.L1error),
-                    color: getcolor(y),
+                    marker:{
+                      color: getcolor(y)
+                    },
                     width: getwidthedge(y),
                     error_y: {
                       type: 'data',
@@ -518,6 +522,9 @@
               algoindex[0] = -1;
               algoindex[1] = -1;
               algoindex[2] = -1;
+              document.getElementById("algorithm1").checked = false;
+              document.getElementById("algorithm2").checked = false;
+              document.getElementById("algorithm3").checked = false;
             })
             //CLear the graph after a new click on the frontier; generate a random Toy dataset; Add words for the data points;
             //Challenge: upload their own algorithm
@@ -845,7 +852,7 @@
           <?php
 // Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
-  $file = $_FILES[‘filesToUpload’];
+  $file = $_FILE['fileToUpload'];
   print_r($file);
 
   $fileName = $_FILES['fileToUpload']['name'];

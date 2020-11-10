@@ -12,6 +12,8 @@ algo.py and edgealgo.py will print the unmodified data of the noisy histogram an
 
 Note that the algo.py and edgealgo.py are the files that modified from evalDegDist.py from the DPGraph folder. 
 
+time.py is used for extracting the data with different algovalue and epsilon value.
+
 evalDegDist.py and evalDegDistedge.py will print the unmodified data and it will go through clear that actually produced the data needed to plot the frontier plot. 
 
 Note that the evalDegDist.py and evalDegDistedge.py are the files that modified from evalDegDist.py from the DPGraph folder. 

@@ -67,7 +67,7 @@
   
 
 <div class="container">
-        <body onload = "prepare()">
+        <body >
         <select id = "Degree Type" onchange = "frontierFn()"> 
         <option value = "2" selected = "selected">Edge DP</option>
         
@@ -145,6 +145,8 @@
           }
           function show_algorithm(){
             var dp_chosen = document.getElementById("Degree Type").value;
+            document.getElementById("algorithm7").style.visibility = "hidden";
+            document.getElementById("nodedp_algo7").style.display = "none";
             if(document.getElementById("select_algorithm_DD").style.visibility != "visible"){
               document.getElementById("select_algorithm_DD").style.visibility = "visible";
               document.getElementById("algorithm3").style.visibility = "visible";
@@ -153,7 +155,7 @@
               document.getElementById("algorithm6").style.visibility = "visible";
               document.getElementById("algorithm1").style.visibility = "visible";
               document.getElementById("algorithm2").style.visibility = "visible";
-              document.getElementById("algorithm7").style.visibility = "visible";
+              //document.getElementById("algorithm7").style.visibility = "visible";
               if(dp_chosen == 1) {
                 document.getElementById("nodedp_algo1").style.display = "inline";
                 document.getElementById("edgedp_algo1").style.display = "none";
@@ -167,24 +169,25 @@
                 document.getElementById("nodedp_algo5").style.display = "inline";
                 document.getElementById("algorithm6").style.visibility = "visible";
                 document.getElementById("nodedp_algo6").style.display = "inline";
-                document.getElementById("algorithm7").style.visibility = "visible";
-                document.getElementById("nodedp_algo7").style.display = "inline";
+                //document.getElementById("algorithm7").style.visibility = "visible";
+                //document.getElementById("nodedp_algo7").style.display = "inline";
               } 
               else {
                 document.getElementById("nodedp_algo1").style.display = "none";
                 document.getElementById("edgedp_algo1").style.display = "inline";
                 document.getElementById("nodedp_algo2").style.display = "none";
                 document.getElementById("edgedp_algo2").style.display = "inline";
-                document.getElementById("algorithm3").style.visibility = "hidden";
                 document.getElementById("nodedp_algo3").style.display = "none";
+                document.getElementById("edgedp_algo3").style.display = "inline";
+                document.getElementById("algorithm3").style.visibility = "visible";
                 document.getElementById("algorithm4").style.visibility = "hidden";
                 document.getElementById("nodedp_algo4").style.display = "none";
                 document.getElementById("algorithm5").style.visibility = "hidden";
                 document.getElementById("nodedp_algo5").style.display = "none";
                 document.getElementById("algorithm6").style.visibility = "hidden";
                 document.getElementById("nodedp_algo6").style.display = "none";
-                document.getElementById("algorithm7").style.visibility = "hidden";
-                document.getElementById("nodedp_algo7").style.display = "none";
+                //document.getElementById("algorithm7").style.visibility = "hidden";
+                //document.getElementById("nodedp_algo7").style.display = "none";
               }
             } else {
               document.getElementById("select_algorithm_DD").style.visibility = "hidden";
@@ -194,7 +197,7 @@
               document.getElementById("algorithm6").style.visibility = "hidden";
               document.getElementById("algorithm1").style.visibility = "hidden";
               document.getElementById("algorithm2").style.visibility = "hidden";
-              document.getElementById("algorithm7").style.visibility = "hidden";
+              //document.getElementById("algorithm7").style.visibility = "hidden";
             }
           }
           function plotfrontier(dataChosen){
@@ -213,10 +216,9 @@
                 else if(y==6) return "brown";
                 else if(y==7) return "pink";
               }
-              console.log(algoindex)
               if(dp_chosen == 1){
                 function getwidth(y){
-                  if(y==7)return 3;
+                  if(y==3)return 3;
                   else return 1;
                 }
                 var data = algoindex.map(y => {
@@ -225,7 +227,9 @@
                     name: algorithms[y-1],
                     x: d.map(r => r.epsilon),
                     y: d.map(r => r.L1error),
-                    color: getcolor(y),
+                    marker:{
+                      color:getcolor(y)
+                    },
                     width: getwidth(y),
                     error_y: {
                       type: 'data',
@@ -246,7 +250,9 @@
                     name: algorithms[y-1],
                     x: d.map(r => r.epsilon),
                     y: d.map(r => r.L1error),
-                    color: getcolor(y),
+                    marker:{
+                      color: getcolor(y)
+                    },
                     width: getwidthedge(y),
                     error_y: {
                       type: 'data',
@@ -256,7 +262,9 @@
                     type: 'scatter'
                   }
                 })
+                
               }
+              console.log(data)
               var layout = {
                 autosize: false,
                 width: 300,
@@ -518,7 +526,7 @@
             }
             var cdf = 'uploads/'+dataChosen+"cdf.csv";
             if(dp_chosen == 2) var lookingname = 'uploads/'+"lookingedge.csv"
-            else var lookingname = 'uploads/'+"looking.csv"         
+            else var lookingname = 'uploads/'+"lookingedge.csv"         
             Plotly.d3.csv(lookingname, (err, rows)=>{
               var l = rows.filter(r=>r.algo)
               algoindex = l.map(r => r.algo)
@@ -834,7 +842,8 @@
             <span id="nodedp_algo2" style="display:inline; color:orange;">degSeq_Lap</span>
             <span id="edgedp_algo2" style="display:none; color:orange;">degSeq_Lap</span><br>
             <input type = "checkbox" onclick = "changevisibility(2)" id = "algorithm3">
-            <span id="nodedp_algo3" style="display:inline; color:green;">nodeTrun_Smooth</span><br>
+            <span id="nodedp_algo3" style="display:inline; color:green;">nodeTrun_Smooth</span>
+            <span id="edgedp_algo3" style="display:none; color:green;">new_algorithm</span><br>
             <input type = "checkbox" onclick = "changevisibility(3)" id = "algorithm4">
             <span id="nodedp_algo4" style="display:inline; color:red;">edgeAdd_degHisPart_Lap</span><br>
             <input type = "checkbox" onclick = "changevisibility(4)" id = "algorithm5">
