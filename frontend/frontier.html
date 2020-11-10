@@ -101,8 +101,10 @@
 
     <h1 class="text-left">Privacy Accuracy Frontier</h1>
 
-        <p class="text-left" style= "background-color: PowderBlue"> Given a dataset and a privacy level (epsilon), which algorithm introduce the least error?
-        </p>
+      <div class="card bg-light text-dark">
+        Given a dataset and a privacy level (epsilon), which algorithm introduce the least error?
+      </div>
+      <br />
 
         <p class="text-left"> We show below (on the right) the Privacy Accuracy Frontier which is a representation of the best achievable error across different privacy levels (i.e., epsilon values). It plots the error over degree distribution, or subgraph counting, of various algorithms on the chosen input dataset (y-axis) versus the privacy level (epsilon) on the x-axis. </p>
 
@@ -185,6 +187,19 @@
         </script>
         
         <script>
+          // Color codes used to these plots:
+
+          // #c83349 is the first displayed line
+          // #622569 is the second displayed line
+          // #3fbf5b is the third displayed line
+
+          // #e06377 is the first hidden line
+          // #eeac99 is the second hidden line
+          // #b8a9c9 is the third hidden line
+
+          // #eeac99 should correspond to all the noisy colors (noisy Hist & gif, noisy CDF & gif, noisy count & gif)
+          // #5e9aa0 should correspond to all the true colors (true Hist, true CDF, true count)
+
           var data = {};
           var curveChosen = '';
           var eChosen = '';
@@ -296,19 +311,29 @@
             else var csvName = dataChosen + ".csv";
             Plotly.d3.csv(csvName, (err, rows) => {
               var tempPlot = document.getElementById('scatterFrontier')
+              // The following function determines the color for the lines on the accuracy frontier
+              // We return color based on the current DP type and query chosen
               function getcolor(y){
-                if(y==1)return 'blue';
-                else if(y==2) return 'orange';
-                else if(y==3) return 'green';
-                else if(y==4) return 'red';
-                else if(y==5) return 'purple';
-                else if(y==6) return 'brown';
-                // if(y==1)return 'red';
-                // else if(y==2) return 'red';
-                // else if(y==3) return 'red';
-                // else if(y==4) return 'red';
-                // else if(y==5) return 'red';
-                // else if(y==6) return 'red';
+                // Case 1: dp type is node-DP, query chosen is DD
+                if (dp_chosen == 1 && temp_query == 1) {
+                  if(y==1)return '#e06377';
+                  else if(y==2) return '#85E3FF';
+                  else if(y==3) return '#b8a9c9';
+                  else if(y==4) return '#c83349';
+                  else if(y==5) return '#622569';
+                  else if(y==6) return '#3fbf5b';
+                }
+                // Case 2: dp type is edge-dp, query chosen is DD
+                else if (dp_chosen == 2 && temp_query == 1) {
+                  if (y == 1) return '#c83349';
+                  else return '#622569';
+                }
+                // Case 3: SGC queries
+                else {
+                  if (y == 1) return '#c83349';
+                  else if (y == 2) return '#622569';
+                  else return '#3fbf5b';
+                }
               }
               if(dp_chosen == 1){
                 var data = algoindex.map(y => {
@@ -362,7 +387,9 @@
                     name: algorithms[y-1],
                     x: filter_x(),
                     y: filter_y(),
-                    color: getcolor(y),
+                    marker: {
+                      color: getcolor(y),
+                    },
                     error_y: {
                       type: 'data',
                       array: filter_error(),
@@ -526,14 +553,6 @@
                         if(temp_query == 1) return 'scatter';
                         else return 'bar';
                       }
-                      function getcolor_data(){
-                        if(temp_query != 1){
-                          if(rankChosen == 0) return 'blue'
-                          else if(rankChosen == 1) return 'orange'
-                          else if(rankChosen == 2) return 'green'
-                        }
-                        else return 'orange'
-                      }
                       var data = [{
                         mode: 'markers',
                         type: get_type(),
@@ -542,10 +561,10 @@
                         textposition: 'auto',
                         x: data_x(),
                         y: data_y(),
-                        
-                          color: getcolor_data(),
-                      }];
-                      
+                        marker: {
+                          color: "#eeac99",
+                        },
+                      }];      
                       
                       if(temp_query == 1){
                         
@@ -578,11 +597,12 @@
                         };
                         Plotly.deleteTraces('trueHist', 1);
                         Plotly.plot('trueHist', data, layout);
-                      }else {
+                      }
+                      else {
                         function getcolor(){
-                          if(rankChosen == 0) return 'blue'
-                          else if(rankChosen == 1) return 'orange'
-                          else if(rankChosen == 2) return 'green'
+                          // This function is for SGC onclick
+                          // It determines the color of the noisy count ONCLICK. We always return the noisy color
+                          return "#eeac99"
                         }
                         var data = [{
                           mode: 'markers',
@@ -606,7 +626,7 @@
                             //range: getxrange(),
                             autorange: true
                           },
-                          colorway: ['orange'],
+                          colorway: ['#eeac99'],
                           yaxis: {
                             automargin: true,
                             title: {
@@ -635,10 +655,23 @@
                       }
                       time++;
                       var finish_time = new Date();
-                      console.log("Time to compute is "+(finish_time - curr_time));
+                      // Now we want to render a shorter algorithm name, so let's use another variable
+                      short_name = ""
+                      if (aname == "nodeDP_degHis_Lap") short_name = "degHis*" 
+                      else if (aname == "nodeDP_degSeq_Lap") short_name = "degSeq*"
+                      else if (aname == "nodeDP_nodeTrun_Smooth") short_name = "nodeTrun"
+                      else if (aname == "nodeDP_edgeAdd_degHisPart_Lap") short_name = "edgeAdd_degHisPart"
+                      else if (aname == "nodeDP_edgeAdd_degCum_Lap") short_name = "edgeAdd_degCum"
+                      else if (aname == "nodeDP_edgeAdd_degCum_Lap_variant") short_name = "edgeAdd_degCumV"
+                      else if (aname == "edgeDP_degSeq_Lap") short_name = "degSeq"
+                      else if (aname == "edgeDP_degHis_Lap") short_name = "degHis"
+                      else if (aname == "ladder") short_name = "Ladder"
+                      else short_name = aname
+                      // console.log("Time to compute is "+(finish_time - curr_time));
                       document.getElementById("noisy_explain").style.visibility = "visible";
                       document.getElementById("noisy_detail").style.visibility = "visible";
-                      document.getElementById("noisy_detail").innerHTML = "The data point being displayed is algorithm: "+aname+" ,and the epsilon chosen is "+eChosen;
+                      document.getElementById("noisy_detail").innerHTML = 
+                        "Data point being displayed is algorithm: " + short_name + ". Epsilon chosen is " + eChosen;
                     });
                     if(dp_chosen == 1) var noisyHistName1 = dataChosen+"cdfalgo.csv"
                     else var noisyHistName1 = dataChosen + "cdfedgealgo.csv"
@@ -656,7 +689,10 @@
                           mode: 'markers',
                           name: aname,
                           x: unpack(d, 'degree'),
-                          y: unpack(d, col)
+                          y: unpack(d, col),
+                          marker:{
+                            color: "#eeac99",
+                          },
                         }]
                         console.log(data);
                         var layout = {
@@ -666,11 +702,9 @@
                           xaxis: {
                             type: 'log',
                             title: 'degree',
-                          //autorange: true
                           },
                           yaxis: {
                             title: 'count',
-                          //autorange: true
                           },
                           margin: {
                             l: 30,
@@ -735,6 +769,7 @@
             console.log(dataChosen);
             plotfrontier(dataChosen);
           }
+
           function DDFn() {
             // First determine which dataset we have chosen. If none is, display empty true histogram
 
@@ -774,8 +809,9 @@
                 document.getElementById("algorithm2").checked = true;
               }
             })
-            //CLear the graph after a new click on the frontier; generate a random Toy dataset; Add words for the data points;
-            //Challenge: upload their own algorithm
+
+            // clear the graph after a new click on the frontier; generate a random Toy dataset; Add words for the data points;
+            // In this part we plot the CDF's of true and noisy DD. 
             Plotly.d3.csv(cdf, (err,rows)=>{
               function unpack(rows, key, total) {
                 return rows.map(function(row) { return row[key]; });
@@ -784,6 +820,9 @@
                 mode: 'markers',
                 type: 'line',
                 name: 'true cdf',
+                marker: {
+                  color: "#5e9aa0",
+                },
                 x: rows.map(function(row) { return row['degree']}),
                 y: unpack(rows, 'count')
               }
@@ -829,6 +868,7 @@
                 };
               Plotly.newPlot('noisyHist', data, layout);
             })
+
             // The folloiwng function plots the ture DD histogram of a dataset. Note that one dataset has only one true DD. 
             var trueHistName =dataChosen+'HistCSV.csv'
             Plotly.d3.csv(trueHistName, function(err, rows){
@@ -837,10 +877,14 @@
               return rows.map(function(row) { return row[key]; });
             }
 
+            // In this part of the code we set data, chart type and color for true histogram
             var trace1 = {
               name: 'trueHist',
               mode: 'markers',
               type: 'bar',
+              marker: {
+                color: "#5e9aa0",
+              },
               x: unpack(rows, 'degree'),
               y: unpack(rows, 'count')
             }
@@ -946,7 +990,7 @@
               text: unpack(d, 'count'),
               textposition: 'auto',
               marker: {
-                color: 'purple'
+                color: '#5e9aa0'
               },
               x: ["True count"],
               y: unpack(d, 'count')
@@ -1046,9 +1090,13 @@
               var col = "count"+time
               console.log(col)
               if(time >10) return;
+              // The color passed in the following "data" variable determines the color of noisy hist/cdf in gif animations
               var data = [{
                 mode: 'markers',
                 name: "test",
+                marker: {
+                  color: "#eeac99"
+                },
                 x: unpack(d, 'degree'),
                 y: unpack(d, col)
               }]
@@ -1058,9 +1106,9 @@
                 height: 300,
                 xaxis: {
                   type: 'log',
-                  
                 },
                 yaxis: {
+                  automargin: true,
                   title: 'count',
                 },
                 margin: {
@@ -1115,10 +1163,14 @@
                 xaxis: {
                   
                 },
-                colorway: ['orange'],
+                colorway: ["#eeac99"],
                 yaxis: {
                   type: 'log',
-                  title: 'count',
+                  automargin: true,
+                  title: {
+                    text: 'count',
+                    standoff: 1,
+                  },
                   autorange: false,
                   range:[1,15]
                 },
@@ -1230,22 +1282,22 @@
           <form id = "select_algorithm_DD">
             <p>Please select the algorithm you want to display</p>
             <input type = "checkbox" onclick = "changevisibility(0)" id = "algorithm1">
-            <span id="nodedp_algo1" style="display:inline; color:blue;">degHis_Lap.</span>
-            <span id="sgcedgedp_algo1" style="display:inline; color:blue;">Ladder.</span>
-            <span id="edgedp_algo1" style="display:none; color:blue;">degHis_Lap</span><br>
+            <span id="nodedp_algo1" style="display:inline; color:#e06377;">degHis*</span>
+            <span id="sgcedgedp_algo1" style="display:inline; color:#c83349;">Ladder</span>
+            <span id="edgedp_algo1" style="display:none; color:#c83349;">degHis</span><br>
             <input type = "checkbox" onclick = "changevisibility(1)" id = "algorithm2">
-            <span id="nodedp_algo2" style="display:inline; color:orange;">degSeq_Lap</span>
-            <span id="sgcedgedp_algo2" style="display:inline; color:orange;">LAP</span>
-            <span id="edgedp_algo2" style="display:none; color:orange;">degSeq_Lap</span><br>
+            <span id="nodedp_algo2" style="display:inline; color:#85E3FF;">degSeq*</span>
+            <span id="sgcedgedp_algo2" style="display:inline; color:#622569;">LAP</span>
+            <span id="edgedp_algo2" style="display:none; color:#622569;">degSeq</span><br>
             <input type = "checkbox" onclick = "changevisibility(2)" id = "algorithm3">
-            <span id="sgcedgedp_algo3" style="display:inline; color:green;">Smooth</span>
-            <span id="nodedp_algo3" style="display:inline; color:green;">nodeTrun_Smooth</span><br>
+            <span id="nodedp_algo3" style="display:inline; color:#b8a9c9;">nodeTrun</span>
+            <span id="sgcedgedp_algo3" style="display:inline; color:#3fbf5b;">Smooth</span><br>
             <input type = "checkbox" onclick = "changevisibility(3)" id = "algorithm4">
-            <span id="nodedp_algo4" style="display:inline; color:red;">edgeAdd_degHisPart_Lap</span><br>
+            <span id="nodedp_algo4" style="display:inline; color:#c83349;">edgeAdd_degHisPart</span><br>
             <input type = "checkbox" onclick = "changevisibility(4)" id = "algorithm5">
-            <span id="nodedp_algo5" style="display:inline; color:purple;">edgeAdd_degCum_Lap</span><br>
+            <span id="nodedp_algo5" style="display:inline; color:#622569;">edgeAdd_degCum</span><br>
             <input type = "checkbox" onclick = "changevisibility(5)" id = "algorithm6">
-            <span id="nodedp_algo6" style="display:inline; color:brown;">edgeAdd_degCum_Lap_variant</span><br>
+            <span id="nodedp_algo6" style="display:inline; color:#3fbf5b;">edgeAdd_degCumV</span><br>
           </form><br>
           <br>
           <br>
@@ -1260,9 +1312,13 @@
           <p id="subgraph">
             The shape of the subgraph is <img id="subgraph_png" src="3star.png" alt="subgraph pic" style="width:75px;height:60px;">
           </p>
-          <p id="true_explain">The <span style="color:blue;font-weight:bold;">blue</span> graph represent the true dataset. </p>
-          <p id="noisy_explain">The <span style="color:orange;font-weight:bold;">orange</span> graph represent the noisy dataset</p>
-          <p id="noisy_detail">The data point being displayed is algorithm: ,and the epsilon chosen is </p>
+          <p id="true_explain">
+            The <span style="color:#5e9aa0;font-weight:bold;">left</span> graph represents the true dataset output. 
+          </p>
+          <p id="noisy_explain">
+            The <span style="color:#eeac99;font-weight:bold;">middle</span> graph represents the noisy dataset output.
+          </p>
+          <p id="noisy_detail">Data point being displayed is algorithm: . Epsilon chosen is </p>
           
           
           <p><a href="uploading.html">Upload your own algorithm</a></p>
