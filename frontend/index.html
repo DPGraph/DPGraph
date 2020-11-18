@@ -37,9 +37,6 @@
           <li class="nav-item">
             <a class="nav-link" href="index.html">DPGraph</a>
           </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="problem.html">Problem Statement</a>
-          </li> -->
           <li class="nav-item">
             <a class="nav-link" href="frontier.html">Accuracy Frontier</a>
           </li>
@@ -67,11 +64,70 @@
 
 
   <!-- Page Content -->
+
+  <!-- Title element -->
   <div class="container">
 
-    <h1 class="text-center">Welcome to GraphDP</h1>
-    <p class="text-center"> A web-based tool designed to help both practitioners and researchers evaluate the accuracy of state-of-the-art differentially private algorithms on graphs.</p>
+    <br />
+    <br />
 
+    <div class="card bg-light text-dark intro-card">
+      <div>
+        <br />
+        <h1 class="welcome-msg">Welcome to DPGraph</h1>
+        <br />
+        <p class="card-para"> 
+          A web-based tool designed to help researchers and practitioners 
+          evaluate the accuracy and efficiency of state-of-the-art 
+          differentially private algorithms on graphs.
+        </p>
+        <br />
+      </div>
+      <div>
+        <a 
+          href="#motivation-para" 
+          class="btn btn-info space-left-bottom" 
+          data-toggle="collapse"
+        >
+          What's DP & Why should we care
+        </a>
+        <div id="motivation-para" class="collapse">
+          <p class="card-para">
+            As the influence of the Internet rapidly grows, data privacy has been increasingly important for everyone.  
+            Differential privacy is the gold standard that offers strong privacy protection on many data types, while 
+            allowing analysts to perform sensitive data analysis.
+          </p>
+          <p class="card-para">
+            Although much research has been done on private algorithms for graph analysis,  
+            practitioners have difficulties using these algorithms due to their complexity.
+            <b>DPGraph aims to bridge this gap between theory and practice.</b> 
+          </p>
+          <p class="card-para">
+            For graph datasets, two most commonly used types of differential privacy are NodeDP and edgeDP.
+            NodeDP hides the inclusion/removal of a node and all its adjacent edges (an entity), 
+            and edgeDP hides the inclusion/remoal of an edge (a relation).
+            Thus, NodeDP offers stronger privacy protection.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Logo Element: link to DSG -->
+
+  <div class="container">
+
+    <br />
+
+    <a href="https://uwaterloo.ca/data-systems-group/">
+      <img 
+        id="logo_png" 
+        src="DSGLogo.png" 
+        alt="DSG logo"
+        class="logo"
+      >
+    </a>
   </div>
 
   <!-- Bootstrap core JavaScript -->

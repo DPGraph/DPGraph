@@ -852,7 +852,7 @@
           <?php
 // Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
-  $file = $_FILE['fileToUpload'];
+  $file = $_FILES['fileToUpload'];
   print_r($file);
 
   $fileName = $_FILES['fileToUpload']['name'];

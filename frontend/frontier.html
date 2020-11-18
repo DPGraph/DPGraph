@@ -725,16 +725,17 @@
                     }
                   }
                 });
-                
               });
-            
-            
           }
+
+          // This function is called when user checks/unchecks an algorithm for the accuracy frontier
+  
           function changevisibility(i){
             var dataChosen = '';
             var temp_data = document.getElementById("Dataset").value;
             var dp_chosen = document.getElementById("Degree Type").value;
-              // dataChosen stores the dataset that user has chosen
+            
+            // dataChosen stores the dataset that user has chosen
             if (temp_data == 2) {
               dataChosen = 'CIT';
             } else if (temp_data == 3) {
@@ -750,7 +751,8 @@
             else {
               dataChosen = 'EMAIL';
             }
-              // graphSource stores the source (.png) of an image of the original dataset
+            
+            // graphSource stores the source (.png) of an image of the original dataset
             console.log(algoindex);
             var graphSource = "Plot"+dataChosen+".png";
             if(dp_chosen == 1){
@@ -765,8 +767,10 @@
               }
               else edgealgoindex[i] = -1;
             }
+            // In here we check if we are plotting the right dataset
+            console.log("The dataset chosen is " + dataChosen);
 
-            console.log(dataChosen);
+            // Lastly we call plotfrontier to create the plot
             plotfrontier(dataChosen);
           }
 
