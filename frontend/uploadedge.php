@@ -35,9 +35,6 @@
             <a class="nav-link" href="frontier.html">Accuracy Frontier</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="performance.html">Performance Frontier</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="finding.html">Empirical Findings</a>
           </li>
           <li class="nav-item dropdown">
