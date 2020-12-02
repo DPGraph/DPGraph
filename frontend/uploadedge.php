@@ -29,9 +29,6 @@
             <a class="nav-link" href="index.html">DPGraph</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="problem.html">Problem Statement</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="frontier.html">Accuracy Frontier</a>
           </li>
           <li class="nav-item">
