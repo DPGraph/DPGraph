@@ -76,7 +76,6 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="finding.html">Empirical Findings</a>
-          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Background Overview
@@ -100,11 +99,10 @@
     <!-- Following are some text describing how we are interact with the privacy frontier. -->
 
     <h1 class="text-left">Privacy Accuracy Frontier</h1>
-
-      <div class="card bg-light text-dark">
-        Given a dataset and a privacy level (epsilon), which algorithm introduce the least error?
-      </div>
-      <br />
+    <div class="card bg-light text-dark">
+      Given a dataset and a privacy level (epsilon), which algorithm introduce the least error?
+    </div>
+    <br />
 
         <p class="text-left"> We show below (on the right) the Privacy Accuracy Frontier which is a representation of the best achievable error across different privacy levels (i.e., epsilon values). It plots the error over degree distribution, or subgraph counting, of various algorithms on the chosen input dataset (y-axis) versus the privacy level (epsilon) on the x-axis. </p>
 
@@ -113,19 +111,15 @@
         <p class="text-left"> Each dot corresponds to the error of a specific algorithm at a specific epsilon. For the task of degree distribution, Click on a dot to visualize the noisy histogram of the algorithm in the middle. Dots corresponding to the same epsilon are placed along the same vertical line, and dots corresponding to the same algorithms all share the same unique color. *The points that make up the lower convex hull are those that achieve the least error at that privacy level, and are called the frontier. The points on the frontier alone can be visualized by toggling the visualize frontier checkbox on the far right. Click the "Show/Hide Algorithms" button to view the list of algorithms. Algorithms can be included or excluded from the plot using the associated check-boxes.* </p>
 
         <p class="text-left"> For degree distribution, two histograms are shown. The true degree distribution histogram is shown on the left. The noisy degree distribution histogram is shown in the middle. * Both histograms contain the same number of bins for easier comparison. Clicking on a bin of a histogram displays the number of counts in that bin. *For subgraph counting, the subgraph is plotted on the left. In the middle, the true count and the noisy count are shown next to each other. </p>
+
         
-        <select 
-          id = "Degree Type" 
-          onchange = "frontierFn()"
-        > 
+        <select id = "Degree Type" onchange = "frontierFn()"> 
         <option value = "1" selected = "selected">Node DP</option>
         <option value = "2">Edge DP</option>
         
         </select>
 
-        <select id = "Utility" 
-          onchange = "frontierFn()"
-        > 
+        <select id = "Utility" onchange = "frontierFn()"> 
         <option value = "1" selected = "selected">Degree Distribution</option>
         <option value = "4">Subgraph Counting_4kclique</option>
         <option value = "3">Subgraph Counting_3kstar</option>
@@ -187,19 +181,6 @@
         </script>
         
         <script>
-          // Color codes used to these plots:
-
-          // #c83349 is the first displayed line
-          // #622569 is the second displayed line
-          // #3fbf5b is the third displayed line
-
-          // #e06377 is the first hidden line
-          // #eeac99 is the second hidden line
-          // #b8a9c9 is the third hidden line
-
-          // #eeac99 should correspond to all the noisy colors (noisy Hist & gif, noisy CDF & gif, noisy count & gif)
-          // #5e9aa0 should correspond to all the true colors (true Hist, true CDF, true count)
-
           var data = {};
           var curveChosen = '';
           var eChosen = '';
@@ -228,9 +209,7 @@
             else if(temp_data == 6) return [0,500]
           }
           function show_algorithm(){
-
             buttonTextFn();
-
             var dp_chosen = document.getElementById("Degree Type").value;
             var temp_query = document.getElementById("Utility").value;
             if(document.getElementById("select_algorithm_DD").style.visibility != "visible"){
@@ -299,6 +278,7 @@
               document.getElementById("algorithm6").style.visibility = "hidden";
               document.getElementById("algorithm1").style.visibility = "hidden";
               document.getElementById("algorithm2").style.visibility = "hidden";
+              
             }
           }
 
@@ -605,6 +585,7 @@
                         if(temp_query == 1) return 'scatter';
                         else return 'bar';
                       }
+                     
                       var data = [{
                         mode: 'markers',
                         type: get_type(),
@@ -616,13 +597,13 @@
                         marker: {
                           color: "#eeac99",
                         },
-                      }];      
+                      }];
+                      
                       
                       if(temp_query == 1){
                         
                         var layout = {
                           autosize: false,
-                          // dragmode: false,
                           width: 300,
                           height: testHeight,
                           xaxis: {
@@ -649,8 +630,7 @@
                         };
                         Plotly.deleteTraces('trueHist', 1);
                         Plotly.plot('trueHist', data, layout);
-                      }
-                      else {
+                      }else {
                         function getcolor(){
                           // This function is for SGC onclick
                           // It determines the color of the noisy count ONCLICK. We always return the noisy color
@@ -669,8 +649,8 @@
                           }
                         }];
                         var layout = {
+                          dragmode:"pan",
                           autosize: false,
-                          dragmode: false,
                           width: 250,
                           height: 300,
                           xaxis: {
@@ -754,9 +734,11 @@
                           xaxis: {
                             type: 'log',
                             title: 'degree',
+                          //autorange: true
                           },
                           yaxis: {
                             title: 'count',
+                          //autorange: true
                           },
                           margin: {
                             l: 30,
@@ -777,17 +759,16 @@
                     }
                   }
                 });
+                
               });
+            
+            
           }
-
-          // This function is called when user checks/unchecks an algorithm for the accuracy frontier
-  
           function changevisibility(i){
             var dataChosen = '';
             var temp_data = document.getElementById("Dataset").value;
             var dp_chosen = document.getElementById("Degree Type").value;
-            
-            // dataChosen stores the dataset that user has chosen
+              // dataChosen stores the dataset that user has chosen
             if (temp_data == 2) {
               dataChosen = 'CIT';
             } else if (temp_data == 3) {
@@ -803,8 +784,7 @@
             else {
               dataChosen = 'EMAIL';
             }
-            
-            // graphSource stores the source (.png) of an image of the original dataset
+              // graphSource stores the source (.png) of an image of the original dataset
             console.log(algoindex);
             var graphSource = "Plot"+dataChosen+".png";
             if(dp_chosen == 1){
@@ -819,13 +799,10 @@
               }
               else edgealgoindex[i] = -1;
             }
-            // In here we check if we are plotting the right dataset
-            console.log("The dataset chosen is " + dataChosen);
 
-            // Lastly we call plotfrontier to create the plot
+            console.log(dataChosen);
             plotfrontier(dataChosen);
           }
-
           function DDFn() {
             // First determine which dataset we have chosen. If none is, display empty true histogram
 
@@ -865,9 +842,8 @@
                 document.getElementById("algorithm2").checked = true;
               }
             })
-
-            // clear the graph after a new click on the frontier; generate a random Toy dataset; Add words for the data points;
-            // In this part we plot the CDF's of true and noisy DD. 
+            //CLear the graph after a new click on the frontier; generate a random Toy dataset; Add words for the data points;
+            //Challenge: upload their own algorithm
             Plotly.d3.csv(cdf, (err,rows)=>{
               function unpack(rows, key, total) {
                 return rows.map(function(row) { return row[key]; });
@@ -876,17 +852,17 @@
                 mode: 'markers',
                 type: 'line',
                 name: 'true cdf',
+                x: rows.map(function(row) { return row['degree']}),
+                y: unpack(rows, 'count'),
                 marker: {
                   color: "#5e9aa0",
                 },
-                x: rows.map(function(row) { return row['degree']}),
-                y: unpack(rows, 'count')
               }
               var trace2 = {}
               var data = [trace1,trace2]
               var layout = {
+                dragmode:"pan",
                 autosize: true,
-                dragmode: "pan",
                 width: 250,
                 height: 300,
                 xaxis: {
@@ -924,7 +900,6 @@
                 };
               Plotly.newPlot('noisyHist', data, layout);
             })
-
             // The folloiwng function plots the ture DD histogram of a dataset. Note that one dataset has only one true DD. 
             var trueHistName =dataChosen+'HistCSV.csv'
             Plotly.d3.csv(trueHistName, function(err, rows){
@@ -933,31 +908,30 @@
               return rows.map(function(row) { return row[key]; });
             }
 
-            // In this part of the code we set data, chart type and color for true histogram
             var trace1 = {
               name: 'trueHist',
               mode: 'markers',
               type: 'bar',
+              x: unpack(rows, 'degree'),
+              y: unpack(rows, 'count'),
               marker: {
                 color: "#5e9aa0",
               },
-              x: unpack(rows, 'degree'),
-              y: unpack(rows, 'count')
             }
             var trace2 = {}
             var data = [trace1, trace2]
             var layout = {
-              dragmode: "pan",
               autosize: false,
               width: 250,
               height: 300,
               xaxis: {
                 automargin: true,
                 title: {
-                  text: 'degree',
+                  text: 'count',
                   standoff: 1,
                 },
                 range: getxrange(),
+                //autorange: true
               },
               yaxis: {
                 automargin: true,
@@ -991,15 +965,16 @@
             var temp_data = document.getElementById("Dataset").value;
             var temp_query = document.getElementById("Utility").value;
             var dp_chosen = document.getElementById("Degree Type").value;
+            //document.getElementById("true_color").innerHTML = "purple";
+            //document.getElementById("true_color").style.color = "purple";
             if (temp_data == 2) {
               dataChosen = 'CIT';
-            } 
-            else if (temp_data == 3) {
+            } else if (temp_data == 3) {
               dataChosen = 'DBLP';
             } 
-            else if(temp_data == 1) {
+            else if(temp_data == 1){
               dataChosen = 'FACEBOOK';
-            } else if(temp_data == 4) {
+            } else if(temp_data == 4){
               dataChosen = 'WIKI';
             } else if(temp_data == 5){
               dataChosen = 'TOYDATA';
@@ -1010,13 +985,9 @@
             
             var lookingname = "lookingSGC";
             // This part draws the frontier 
-            if (dp_chosen == 2) {
-              lookingname = lookingname + "edge";
-            }
+            if(dp_chosen == 2) lookingname = lookingname+"edge"
             lookingname = lookingname + ".csv"       
             Plotly.d3.csv(lookingname, (err, rows)=>{
-              console.log("In this plotting function");
-              console.log(dp_chosen);
               var l = rows.filter(r=>r.algo)
               algoindex = l.map(r => r.algo)
               edgealgoindex = l.map(r => r.algo);
@@ -1061,7 +1032,7 @@
               xaxis: {
                 //title: 'degree',
                 //range: getxrange(),
-                autorange: true,
+                autorange: true
               },
               yaxis: {
                 automargin: true,
@@ -1095,9 +1066,7 @@
         };
         var animation = 1;
         function started(){  
-
           animateTextFn();
-
           if(animation == 1){
             console.log("start");
             animation = 2;
@@ -1146,15 +1115,14 @@
               var col = "count"+time
               console.log(col)
               if(time >10) return;
-              // The color passed in the following "data" variable determines the color of noisy hist/cdf in gif animations
               var data = [{
                 mode: 'markers',
                 name: "test",
+                x: unpack(d, 'degree'),
+                y: unpack(d, col),
                 marker: {
                   color: "#eeac99"
                 },
-                x: unpack(d, 'degree'),
-                y: unpack(d, col)
               }]
               var layout = {
                 autosize: true,
@@ -1162,9 +1130,10 @@
                 height: 300,
                 xaxis: {
                   type: 'log',
+                  
                 },
                 yaxis: {
-                  automargin: true,
+                  automargin:true,
                   title: 'count',
                 },
                 margin: {
@@ -1227,7 +1196,7 @@
                     text: 'count',
                     standoff: 1,
                   },
-                  autorange: false,
+                  autorange:false,
                   range:[1,15]
                 },
                 margin: {
@@ -1255,19 +1224,14 @@
         function frontierFn() {
           prepare();
           document.getElementById("show_algorithm").style.visibility = "visible";
-
-          // Need to change button text to "show algorithms"
-          document.getElementById("show_algorithm").innerHTML = "show algorithms";
-
           if (document.getElementById("Utility").value == 1) {
             document.getElementById("trueHist").style.visibility = "visible";
             document.getElementById("noisyHist").style.visibility = "visible";
-            // if query is DD, we want to set "subgraph" to be hidden
             document.getElementById("subgraph").style.visibility = "hidden";
             document.getElementById("subgraph_png").style.height = "0px";
             DDFn();
-          } 
-          else {
+            
+          } else {
             document.getElementById("trueHist").style.visibility = "visible";
             document.getElementById("noisyHist").style.visibility = "hidden";
             // In this case we also want to set the visibility of "subgraph" to be visible
@@ -1291,13 +1255,10 @@
             SGCFn();
           }
         }
-
         function buttonTextFn() {
           // The first few lines deal with button text change
           var buttonEle = document.getElementById("show_algorithm");
-
           // console.log(buttonEle.innerHTML);
-
           if (buttonEle.innerHTML =="show algorithms") {
             buttonEle.innerHTML = "hide algorithms";
           }
@@ -1305,12 +1266,9 @@
             buttonEle.innerHTML = "show algorithms";
           }
         }
-
         function animateTextFn() {
           var buttonEle = document.getElementById("gif");
-
           console.log(buttonEle.innerHTML);
-
           if (buttonEle.innerHTML.includes("Animate")) {
             buttonEle.innerHTML = "Stop";
           }
@@ -1387,6 +1345,7 @@
           <br>
           <br>
           
+          
         </div>
 
         <br>
@@ -1396,14 +1355,6 @@
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-
-<!-- (Optional) Latest compiled and minified JavaScript translation files -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
 
 </body>
 

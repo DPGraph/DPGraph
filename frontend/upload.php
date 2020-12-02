@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <title>DPGraph</title>
     <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -67,7 +68,7 @@
         <option value = "2">Subgraph Counting_4kclique</option>
         <option value = "3">Subgraph Counting_3kstar</option>
         <option value = "4">Subgraph Counting_2ktriangle</option>
-        <option value = "5">Subgraph Counting_0ktriangle</option>
+        <option value = "5">Subgraph Counting_triangle</option>
         </select>
   <select id = "Dataset"> 
   <option value = "1">FACEBOOK</option>
@@ -96,7 +97,6 @@
  
   function prepare(){
     hideoption();
-    document.getElementById("gif").style.visibility = "hidden";
     document.getElementById("true_explain").style.visibility = "hidden";
     document.getElementById("noisy_explain").style.visibility = "hidden";
     document.getElementById("noisy_detail").style.visibility = "hidden";
@@ -133,6 +133,7 @@
             else if(temp_data == 6) return [0,500]
           }
           function show_algorithm(){
+            buttonTextFn();
             var dp_chosen = document.getElementById("Degree Type").value;
             if(document.getElementById("select_algorithm_DD").style.visibility != "visible"){
               document.getElementById("select_algorithm_DD").style.visibility = "visible";
@@ -194,13 +195,15 @@
             Plotly.d3.csv(csvName, (err, rows) => {
               var tempPlot = document.getElementById('scatterFrontier')
               function getcolor(y){
-                if(y==1)return "blue";
-                else if(y==2) return "orange";
-                else if(y==3) return "green";
-                else if(y==4) return "red";
-                else if(y==5) return "purple";
-                else if(y==6) return "brown";
-                else if(y==7) return "pink";
+                // Case 1: dp type is node-DP, query chosen is DD
+                
+                if(y==1)return '#e06377';
+                else if(y==2) return '#85E3FF';
+                else if(y==3) return '#b8a9c9';
+                else if(y==4) return '#c83349';
+                else if(y==5) return '#622569';
+                else if(y==6) return '#3fbf5b';
+                else if(y==7) return '#94b1d2';
               }
               console.log(algoindex)
               if(dp_chosen == 1){
@@ -250,13 +253,22 @@
                   }
                 })
               }
+              var temp_query = document.getElementById("Utility").value;
+              function gettitle(){
+                if(temp_query == 1) return 'L1error';
+                else return 'Relative error';
+              }
               var layout = {
                 autosize: false,
                 width: 300,
                 height: 300,
                 xaxis: {
+                  automargin: true,
                   type: 'log',
-                  title: 'epsilon',
+                  title: {
+                    text: 'epsilon',
+                    standoff: 1,
+                  },
                   autorange: true,
                   tickangle: 'auto',
                   tickfont: {
@@ -271,7 +283,11 @@
                   },
                 },
                 yaxis:{
-                  title: 'L1error',
+                  automargin: true,
+                  title: {
+                    text: gettitle(),
+                    standoff: 1,
+                  },
                   autorange: false,
                   range: [0,3],
                   tickangle: 45,
@@ -287,9 +303,8 @@
                   },
                   exponentformat: 'e',
                   showexponent: 'all',
-                  
+                  hoverformat: '.2r',
                 },
-                colorway:["blue","orange","green","red","purple","brown"],
                 margin: {
                   l: 30,
                   r: 30,
@@ -299,8 +314,8 @@
                 },
                 mode:'markers',
                 hovermode:'closest',
-                title:'Privacy Frontier '+dataChosen,
-                showlegend: false
+                title:'Accuracy Frontier FACEBOOK',
+                showlegend: false,
               };
                 
               Plotly.newPlot('scatterFrontier', data, layout,{showSendToCloud: true});
@@ -314,7 +329,6 @@
                 Plotly.deleteTraces('noisyHist', 1);
                 Plotly.deleteTraces('trueHist', 1);
                 for(var i=0; i < data.points.length; i++){
-                  document.getElementById("gif").style.visibility = "visible"
                   rankChosen = data.points[i].curveNumber;
                     if (dp_chosen == 1){
                       if (rankChosen == 0) {
@@ -363,7 +377,10 @@
                         mode: 'markers',
                         name: aname,
                         x: unpack(d, 'degree'),
-                        y: unpack(d, col)
+                        y: unpack(d, col),
+                        marker:{
+                          color:"#eeac99"
+                        }
                       }];
                       var layout = {
                         autosize: false,
@@ -372,12 +389,13 @@
                         xaxis: {
                           title: 'degree',
                           autorange: false,
-                          range: [0, 300]
+                          range: [0, 100]
                         },
                         yaxis: {
-                          fixedrange:true, 
+                          fixedrange: false,
                           title: 'count',
-                          autorange: true,
+                          autorange: false
+                          //autorange: false,
                         },
                         margin: {
                           l: 30,
@@ -394,7 +412,23 @@
                       Plotly.plot('trueHist', data, layout);
                       time++;
                       var finish_time = new Date();
-                      console.log("Time to compute is "+(finish_time - curr_time));
+                      // Now we want to render a shorter algorithm name, so let's use another variable
+                      short_name = ""
+                      if (aname == "nodeDP_degHis_Lap") short_name = "degHis*" 
+                      else if (aname == "nodeDP_degSeq_Lap") short_name = "degSeq*"
+                      else if (aname == "nodeDP_nodeTrun_Smooth") short_name = "nodeTrun"
+                      else if (aname == "nodeDP_edgeAdd_degHisPart_Lap") short_name = "edgeAdd_degHisPart"
+                      else if (aname == "nodeDP_edgeAdd_degCum_Lap") short_name = "edgeAdd_degCum"
+                      else if (aname == "nodeDP_edgeAdd_degCum_Lap_variant") short_name = "edgeAdd_degCumV"
+                      else if (aname == "edgeDP_degSeq_Lap") short_name = "degSeq"
+                      else if (aname == "edgeDP_degHis_Lap") short_name = "degHis"
+                      else if (aname == "ladder") short_name = "Ladder"
+                      else short_name = aname
+                      // console.log("Time to compute is "+(finish_time - curr_time));
+                      document.getElementById("noisy_explain").style.visibility = "visible";
+                      document.getElementById("noisy_detail").style.visibility = "visible";
+                      document.getElementById("noisy_detail").innerHTML = 
+                        "Data point being displayed is algorithm: " + short_name + ". Epsilon chosen is " + eChosen;
                     });
                     if(dp_chosen == 1) var noisyHistName1 = 'uploads/'+dataChosen+"cdfalgo.csv"
                     else var noisyHistName1 = 'uploads/'+dataChosen + "cdfedgealgo.csv"
@@ -410,7 +444,10 @@
                         mode: 'markers',
                         name: aname,
                         x: unpack(d, 'degree'),
-                        y: unpack(d, col)
+                        y: unpack(d, col),
+                        marker:{
+                          color:"#eeac99"
+                        }
                       }]
                       console.log(data);
                       var layout = {
@@ -418,7 +455,7 @@
                         width: 300,
                         height: testHeight,
                         xaxis: {
-                          type: 'log',
+                          //type: 'log',
                           title: 'degree',
                           //autorange: true
                         },
@@ -536,26 +573,36 @@
                 mode: 'markers',
                 type: 'line',
                 name: 'true cdf',
-                x: rows.map(function(row) { return row['degree']}),
-                y: unpack(rows, 'count')
+                x: unpack(rows, 'degree'),
+                y: unpack(rows, 'count'),
+                marker: {
+                  color: "#5e9aa0",
+                },
               }
               var trace2 = {}
               var data = [trace1,trace2]
+              console.log(data)
               var layout = {
+                dragmode:"pan",
                 autosize: true,
                 width: 250,
                 height: 300,
                 xaxis: {
-                  title: 'degree',
+                  automargin: true,
+                  title: {
+                    text: 'degree',
+                    standoff: 1,
+                  },
                   type: 'log',
-                  autorange: true
+                  autorange: true, 
+                  //utorange: true
                 },
                 yaxis: {
                   fixedrange: true,
                   zerolin: true,
-                  type: 'log',
                   title: 'P(K>=k)',
-                  autorange: true
+                  range:[0,1]
+                  //autorange: true
                 },
                 margin: {
                   l: 30,
@@ -588,7 +635,10 @@
                 mode: 'markers',
                 type: 'bar',
                 x: unpack(rows, 'degree'),
-                y: unpack(rows, 'count')
+                y: unpack(rows, 'count'),
+                marker: {
+                  color: "#5e9aa0",
+                },
               }
               var trace2 = {}
               var data = [trace1, trace2]
@@ -598,12 +648,15 @@
                 height: 300,
                 xaxis: {
                   title: 'degree',
-                  range: getxrange(),
+                  fixedrange:true,
+                  range:[0,100]
                   //autorange: true
                 },
                 yaxis: {
                   title: 'count',
-                  range: getyrange()
+                  fixedrange: true,
+                  range:[0,40]
+                  //range: getyrange()
                 },
                 margin: {
                   l: 30,
@@ -802,18 +855,56 @@
         function frontierFn() {
           prepare();
           document.getElementById("show_algorithm").style.visibility = "visible";
-          document.getElementById("Utility").style.visibility = "visible";
-          document.getElementById("Degree Type").style.visibility = "visible";
-          document.getElementById("Dataset").style.visibility = "visible";
           if (document.getElementById("Utility").value == 1) {
             document.getElementById("trueHist").style.visibility = "visible";
             document.getElementById("noisyHist").style.visibility = "visible";
+            document.getElementById("subgraph").style.visibility = "hidden";
+            document.getElementById("subgraph_png").style.height = "0px";
             DDFn();
             
           } else {
-            document.getElementById("trueHist").style.visibility = "hidden";
+            document.getElementById("trueHist").style.visibility = "visible";
             document.getElementById("noisyHist").style.visibility = "hidden";
+            // In this case we also want to set the visibility of "subgraph" to be visible
+            document.getElementById("subgraph").style.visibility = "visible";
+            // In addition, let's set the source for subgraph_png
+            var image_name = "";
+            if (document.getElementById("Utility").value == 2) {
+              image_name = "triangle"
+            }
+            else if (document.getElementById("Utility").value == 3) {
+              image_name = "3star"
+            }
+            else if (document.getElementById("Utility").value == 4) {
+              image_name = "4clique"
+            }
+            else {
+              image_name = "2triangle"
+            }
+            document.getElementById("subgraph_png").src = image_name + ".png";
+            document.getElementById("subgraph_png").style.height = "60px";
             SGCFn();
+          }
+        }
+        function buttonTextFn() {
+          // The first few lines deal with button text change
+          var buttonEle = document.getElementById("show_algorithm");
+          // console.log(buttonEle.innerHTML);
+          if (buttonEle.innerHTML =="show algorithms") {
+            buttonEle.innerHTML = "hide algorithms";
+          }
+          else {
+            buttonEle.innerHTML = "show algorithms";
+          }
+        }
+        function animateTextFn() {
+          var buttonEle = document.getElementById("gif");
+          console.log(buttonEle.innerHTML);
+          if (buttonEle.innerHTML.includes("Animate")) {
+            buttonEle.innerHTML = "Stop";
+          }
+          else {
+            buttonEle.innerHTML = "Animate";
           }
         }
       
@@ -823,37 +914,50 @@
           <div style="float: left;" id="trueHist" class="trueHist"></div>
           <div style="float: left;" id="noisyHist" class="noisyHist"></div>
           <div style="float: left;" id="scatterFrontier"></div>
-          <button id = "show_algorithm" onclick = "show_algorithm()">show algorithms</button><br>
+          <button 
+            id = "show_algorithm" 
+            onclick = "show_algorithm()"
+            type="button" 
+            class="btn btn-secondary"
+          >
+            show algorithms
+          </button>
+          <br>
           <form id = "select_algorithm_DD">
             <p>Please select the algorithm you want to display</p>
             <input type = "checkbox" onclick = "changevisibility(0)" id = "algorithm1">
-            <span id="nodedp_algo1" style="display:inline; color:blue;">degHis_Lap.</span>
-            <span id="edgedp_algo1" style="display:none; color:blue;">degHis_Lap</span><br>
+            <span id="nodedp_algo1" style="display:inline; color:#e06377;">degHis*</span>
+            <span id="edgedp_algo1" style="display:none; color:#c83349;">degHis</span><br>
             <input type = "checkbox" onclick = "changevisibility(1)" id = "algorithm2">
-            <span id="nodedp_algo2" style="display:inline; color:orange;">degSeq_Lap</span>
-            <span id="edgedp_algo2" style="display:none; color:orange;">degSeq_Lap</span><br>
+            <span id="nodedp_algo2" style="display:inline; color:#85E3FF;">degSeq*</span>
+            <span id="edgedp_algo2" style="display:none; color:#622569;">degSeq</span><br>
             <input type = "checkbox" onclick = "changevisibility(2)" id = "algorithm3">
-            <span id="nodedp_algo3" style="display:inline; color:green;">nodeTrun_Smooth</span><br>
+            <span id="nodedp_algo3" style="display:inline; color:#b8a9c9;">nodeTrun</span><br>
             <input type = "checkbox" onclick = "changevisibility(3)" id = "algorithm4">
-            <span id="nodedp_algo4" style="display:inline; color:red;">edgeAdd_degHisPart_Lap</span><br>
+            <span id="nodedp_algo4" style="display:inline; color:#c83349;">edgeAdd_degHisPart</span><br>
             <input type = "checkbox" onclick = "changevisibility(4)" id = "algorithm5">
-            <span id="nodedp_algo5" style="display:inline; color:purple;">edgeAdd_degCum_Lap</span><br>
+            <span id="nodedp_algo5" style="display:inline; color:#622569;">edgeAdd_degCum</span><br>
             <input type = "checkbox" onclick = "changevisibility(5)" id = "algorithm6">
-            <span id="nodedp_algo6" style="display:inline; color:brown;">edgeAdd_degCum_Lap_variant</span><br>
+            <span id="nodedp_algo6" style="display:inline; color:#3fbf5b;">edgeAdd_degCumV</span><br>
             <input type = "checkbox" onclick = "changevisibility(6)" id = "algorithm7">
-            <span id="nodedp_algo7" style="display:inline; color:blue;">new_algorithm</span><br>
+            <span id="nodedp_algo6" style="display:inline; color:#94b1d2;">new_algorithm</span><br>
           </form><br>
           <br>
           <br>
-          <button id="gif" onclick="started()">Animate</button>
-          <p id="true_explain">The <span style="color:blue;font-weight:bold;">blue</span> graph represent the true dataset. </p>
-          <p id="noisy_explain">The <span style="color:orange;font-weight:bold;">orange</span> graph represent the noisy dataset</p>
-          <p id="noisy_detail">The data point being displayed is algorithm: ,and the epsilon chosen is </p>
+          <p id="subgraph">
+            The shape of the subgraph is <img id="subgraph_png" src="3star.png" alt="subgraph pic" style="width:75px;height:60px;">
+          </p>
+          <p id="true_explain">
+            The <span style="color:#5e9aa0;font-weight:bold;">left</span> graph represents the true dataset output. 
+          </p>
+          <p id="noisy_explain">
+            The <span style="color:#eeac99;font-weight:bold;">middle</span> graph represents the noisy dataset output.
+          </p>
+          <p id="noisy_detail">Data point being displayed is algorithm: . Epsilon chosen is </p>
           <?php
 // Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
   $file = $_FILES['fileToUpload'];
-  print_r($file);
 
   $fileName = $_FILES['fileToUpload']['name'];
   $fileTmpName = $_FILES['fileToUpload']['tmp_name'];
