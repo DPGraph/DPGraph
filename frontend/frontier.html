@@ -302,6 +302,7 @@
             }
           }
 
+          // This function plots the frontier
           function plotfrontier(dataChosen){
             var dp_chosen = document.getElementById("Degree Type").value;
             var temp_query = document.getElementById("Utility").value;
@@ -311,17 +312,19 @@
             else var csvName = dataChosen + ".csv";
             Plotly.d3.csv(csvName, (err, rows) => {
               var tempPlot = document.getElementById('scatterFrontier')
+
               // The following function determines the color for the lines on the accuracy frontier
               // We return color based on the current DP type and query chosen
               function getcolor(y){
                 // Case 1: dp type is node-DP, query chosen is DD
+                // Currently, in this case, we have six different colors in total
                 if (dp_chosen == 1 && temp_query == 1) {
-                  if(y==1)return '#e06377';
-                  else if(y==2) return '#85E3FF';
-                  else if(y==3) return '#b8a9c9';
-                  else if(y==4) return '#c83349';
-                  else if(y==5) return '#622569';
-                  else if(y==6) return '#3fbf5b';
+                  if(y==1)return '#e06377'; // degHis*
+                  else if(y==2) return '#85E3FF'; // degSeq*
+                  else if(y==3) return '#b8a9c9'; // nodeTrun
+                  else if(y==4) return '#c83349'; // edgeAdd_degHisPart
+                  else if(y==5) return '#622569'; // edgeAdd_degCum
+                  else if(y==6) return '#3fbf5b'; // edgeAdd_degCumV
                 }
                 // Case 2: dp type is edge-dp, query chosen is DD
                 else if (dp_chosen == 2 && temp_query == 1) {
@@ -335,6 +338,34 @@
                   else return '#3fbf5b';
                 }
               }
+
+              // The following function determines the marker symbols for the lines on the accuracy frontier
+              // We return symbol based on the current DP type and query chosen
+              function getsymbol(y){
+                // Case 1: dp type is node-DP, query chosen is DD
+                // Currently, in this case, we have six different symbols in total
+                if (dp_chosen == 1 && temp_query == 1) {
+                  if(y==1)return "x"; // degHis* -> x
+                  else if(y==2) return 'star'; // degSeq*
+                  else if(y==3) return 'pentagon'; // nodeTrun
+                  else if(y==4) return 'circle'; // edgeAdd_degHisPart -> circle
+                  else if(y==5) return 'diamond'; // edgeAdd_degCum -> diamond
+                  else if(y==6) return 5; // edgeAdd_degCumV -> triangle-up
+                }
+                // Case 2: dp type is edge-dp, query chosen is DD
+                else if (dp_chosen == 2 && temp_query == 1) {
+                  if (y == 1) return 'circle';
+                  else return 'diamond';
+                }
+                // Case 3: SGC queries
+                else {
+                  if (y == 1) return 'circle';
+                  else if (y == 2) return 'diamond';
+                  else return 5;
+                }
+              }
+
+              // In this if clause we have chosen node dp
               if(dp_chosen == 1){
                 var data = algoindex.map(y => {
                   var d = rows.filter(r => r.algorithm == y)
@@ -355,18 +386,29 @@
                     name: algorithms[y-1],
                     x: filter_x(),
                     y: filter_y(),
+                    // style of the markers
                     marker:{
                       color: getcolor(y),
+                      symbol: getsymbol(y),
+                      size: 7,
                     },
+                    // style of the confidence interval(error bars)
                     error_y: {
                       type: 'data',
                       array: filter_error(),
-                      visible: true
+                      visible: true,
+                      thickness: 0.5,
+                      width: 3,
+                    },
+                    // line: changing the style of the lines
+                    line: {
+                      width: 0.5,
                     },
                     type: 'dotplot',
                   }
                 })
               } 
+              // In this clause we are working with edgeDP
               else {
                 var data = edgealgoindex.map(y => {
                   var d = rows.filter(r => r.algorithm == y)
@@ -387,13 +429,23 @@
                     name: algorithms[y-1],
                     x: filter_x(),
                     y: filter_y(),
+                    // style of the markers
                     marker: {
                       color: getcolor(y),
+                      symbol: getsymbol(y),
+                      size: 7,
                     },
+                    // style of the confidence intervals
                     error_y: {
                       type: 'data',
                       array: filter_error(),
-                      visible: true
+                      visible: true,
+                      thickness: 0.5,
+                      width: 3,
+                    },
+                    // style of the lines connecting the dots
+                    line: {
+                      width: 0.5,
                     },
                     type: 'scatter',
                   }
