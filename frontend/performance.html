@@ -61,6 +61,9 @@
             <a class="nav-link" href="index.html">DPGraph</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="problem.html">Problem Statement</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="frontier.html">Accuracy Frontier</a>
           </li>
           <li class="nav-item">
@@ -126,7 +129,7 @@
       <option value = "9" >5.0</option>
       <option value = "10">10.0</option>
     </select>
-    <button id = "show_graph" onclick = "wrapper()">Apply Setting</button>
+    <button id = "show_graph" onclick = "wrapper()" class="btn btn-secondary">Apply Setting</button>
     <br>
     <script>
       var algoindex = [];
@@ -137,12 +140,12 @@
       var data ={};
       var x_value = ['FACEBOOK','WIKI','EMAIL','CIT','DBLP']
       function getcolor(name){
-        if(name == 1)return '#e06377';
-        else if(name ==2) return '#85E3FF';
-        else if(name == 3) return '#b8a9c9';
-        else if(name == 4) return '#c83349';
-        else if(name == 5) return '#622569';
-        else if(name == 6) return '#3fbf5b';
+        if(name == 0)return '#e06377';
+        else if(name ==1) return '#85E3FF';
+        else if(name == 2) return '#b8a9c9';
+        else if(name == 3) return '#c83349';
+        else if(name == 4) return '#622569';
+        else if(name == 5) return '#3fbf5b';
       }
       started = true
       function show_algorithm(){
@@ -341,7 +344,7 @@
               name:algorithms[k],
               type:'bar',
               marker:{
-                color:getcolor(algorithms[k])
+                color:getcolor(k)
               }
             }
             new_data.push(trace)
@@ -418,7 +421,7 @@
 <div id="DDContainer">
   <div style="float: left;" id="scatterFrontier"></div>
   
-  <button id = "show_algorithm" onclick = "show_algorithm()">Settings</button><br>
+  <button id = "show_algorithm" onclick = "show_algorithm()" class="btn btn-secondary">Settings</button><br>
   
   <form id = "select_algorithm_DD">
     <p>Please select the algorithm you want to display</p>
@@ -427,7 +430,7 @@
     <span id="sgcedgedp_algo1" style="display:inline; color:#e06377;">Ladder.</span>
     <span id="edgedp_algo1" style="display:none; color:#e06377;">degHis_Lap</span><br>
     <input type = "checkbox" onclick = "changevisibility(1)" id = "algorithm2">
-    <span id="nodedp_algo2" style="display:inline; color:o#85E3FF;">degSeq_Lap</span>
+    <span id="nodedp_algo2" style="display:inline; color:#85E3FF;">degSeq_Lap</span>
     <span id="sgcedgedp_algo2" style="display:inline; color:#85E3FF;">LAP</span>
     <span id="edgedp_algo2" style="display:none; color:#85E3FF;">degSeq_Lap</span><br>
     <input type = "checkbox" onclick = "changevisibility(2)" id = "algorithm3">

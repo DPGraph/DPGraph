@@ -990,9 +990,9 @@
         function frontierFn() {
           prepare();
           document.getElementById("show_algorithm").style.visibility = "visible";
-          document.getElementById("Utility").style.visibility = "visible";
-          document.getElementById("Degree Type").style.visibility = "visible";
-          document.getElementById("Dataset").style.visibility = "visible";
+          document.getElementById("Utility").style.visibility = "hidden";
+          document.getElementById("Degree Type").style.visibility = "hidden";
+          document.getElementById("Dataset").style.visibility = "hidden";
           if (document.getElementById("Utility").value == 1) {
             document.getElementById("trueHist").style.visibility = "visible";
             document.getElementById("noisyHist").style.visibility = "visible";
@@ -1043,7 +1043,7 @@
           <?php
 // Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
-  $file = $_FILE['fileToUpload'];
+  $file = $_FILES['fileToUpload'];
   print_r($file);
 
   $fileName = $_FILES['fileToUpload']['name'];

@@ -29,7 +29,13 @@
             <a class="nav-link" href="index.html">DPGraph</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="problem.html">Problem Statement</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="frontier.html">Accuracy Frontier</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="performance.html">Performance Frontier</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="finding.html">Empirical Findings</a>
