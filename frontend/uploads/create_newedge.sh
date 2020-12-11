@@ -1,7 +1,9 @@
 #!/bin/bash
 cd uploads/
-rm *.csv
+rm *.csv 
+cp sample/*.csv .
+cp sample/*.py .
 chmod u+x *.sh
-cp ../*.csv .
 echo "3,new_algorithm">>lookingedge.csv
 ./create_FACEBOOKedge.sh
+
