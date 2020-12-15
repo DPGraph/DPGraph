@@ -12,3 +12,5 @@ python3 timeedge.py 3 2.0 >> FACEBOOKcdfedgealgo.csv
 python3 timeedge.py 3 5.0 >> FACEBOOKcdfedgealgo.csv 
 python3 timeedge.py 3 10.0 >> FACEBOOKcdfedgealgo.csv 
 python3 evalDegDistedge.py 0 2 >>FACEBOOKedge.csv
+python3 edgealgo_density.py > new.csv 
+mv new.csv FACEBOOKedgealgo.csv
