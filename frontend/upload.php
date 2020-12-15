@@ -374,7 +374,9 @@
                       };
                       var col = "count"+(time%10+1);
                       var data = [{
-                        mode: 'markers',
+                        mode: 'none',
+                        fill: 'tozeroy',
+                        type: 'scatter',
                         name: aname,
                         x: unpack(d, 'degree'),
                         y: unpack(d, col),
@@ -441,7 +443,9 @@
                       }
                       var col = "count"+(time%10+1)
                       var data = [{
-                        mode: 'markers',
+                        mode: 'none',
+                        fill: 'tozeroy',
+                        type: 'scatter',
                         name: aname,
                         x: unpack(d, 'degree'),
                         y: unpack(d, col),
@@ -570,8 +574,9 @@
                 return rows.map(function(row) { return row[key]; });
               }
               var trace1 = {
-                mode: 'markers',
-                type: 'line',
+                mode: 'none',
+                fill: 'tozeroy',
+                type: 'scatter',
                 name: 'true cdf',
                 x: unpack(rows, 'degree'),
                 y: unpack(rows, 'count'),
@@ -599,8 +604,15 @@
                 },
                 yaxis: {
                   fixedrange: true,
+                  automargin: true,
                   zerolin: true,
-                  title: 'P(K>=k)',
+                  // type: 'log',
+                  title: {
+                    text: 'P(degree>=k)',
+                    standoff: 1,
+                  },
+                  autorange: false,
+                  hoverformat: '.2r',
                   range:[0,1]
                   //autorange: true
                 },
@@ -631,9 +643,9 @@
               }
 
               var trace1 = {
-                name: 'trueHist',
-                mode: 'markers',
-                type: 'bar',
+                mode: 'none',
+                fill: 'tozeroy',
+                type: 'scatter',
                 x: unpack(rows, 'degree'),
                 y: unpack(rows, 'count'),
                 marker: {
@@ -653,9 +665,17 @@
                   //autorange: true
                 },
                 yaxis: {
-                  title: 'count',
                   fixedrange: true,
-                  range:[0,40]
+                  automargin: true,
+                  zerolin: true,
+                  // type: 'log',
+                  title: {
+                    text: 'P(degree=k)',
+                    standoff: 1,
+                  },
+                  autorange: false,
+                  hoverformat: '.2r',
+                  range:[0,0.2]
                   //range: getyrange()
                 },
                 margin: {
