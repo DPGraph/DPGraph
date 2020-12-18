@@ -625,7 +625,7 @@
                 },
                 mode:'markers',
                 hovermode:'closest',
-                title:'CDF of the data',
+                title:'Cumulative Distribution',
                 showlegend: false
                 };
               Plotly.newPlot('noisyHist', data, layout);
@@ -687,7 +687,7 @@
                 },
                 mode:'markers',
                 hovermode:'closest',
-                title:'Scatter Plot',
+                title:'Degree Distribution',
                 showlegend: false
               };
 
