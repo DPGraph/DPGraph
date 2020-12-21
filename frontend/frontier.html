@@ -276,8 +276,6 @@
               
             }
           }
-
-          // This function plots the frontier
           function plotfrontier(dataChosen){
             var dp_chosen = document.getElementById("Degree Type").value;
             var temp_query = document.getElementById("Utility").value;
@@ -287,19 +285,15 @@
             else var csvName = dataChosen + ".csv";
             Plotly.d3.csv(csvName, (err, rows) => {
               var tempPlot = document.getElementById('scatterFrontier')
-
-              // The following function determines the color for the lines on the accuracy frontier
-              // We return color based on the current DP type and query chosen
               function getcolor(y){
                 // Case 1: dp type is node-DP, query chosen is DD
-                // Currently, in this case, we have six different colors in total
                 if (dp_chosen == 1 && temp_query == 1) {
-                  if(y==1)return '#e06377'; // degHis*
-                  else if(y==2) return '#85E3FF'; // degSeq*
-                  else if(y==3) return '#b8a9c9'; // nodeTrun
-                  else if(y==4) return '#c83349'; // edgeAdd_degHisPart
-                  else if(y==5) return '#622569'; // edgeAdd_degCum
-                  else if(y==6) return '#3fbf5b'; // edgeAdd_degCumV
+                  if(y==1)return '#e06377';
+                  else if(y==2) return '#85E3FF';
+                  else if(y==3) return '#b8a9c9';
+                  else if(y==4) return '#c83349';
+                  else if(y==5) return '#622569';
+                  else if(y==6) return '#3fbf5b';
                 }
                 // Case 2: dp type is edge-dp, query chosen is DD
                 else if (dp_chosen == 2 && temp_query == 1) {
@@ -313,34 +307,6 @@
                   else return '#3fbf5b';
                 }
               }
-
-              // The following function determines the marker symbols for the lines on the accuracy frontier
-              // We return symbol based on the current DP type and query chosen
-              function getsymbol(y){
-                // Case 1: dp type is node-DP, query chosen is DD
-                // Currently, in this case, we have six different symbols in total
-                if (dp_chosen == 1 && temp_query == 1) {
-                  if(y==1)return "x"; // degHis* -> x
-                  else if(y==2) return 'star'; // degSeq*
-                  else if(y==3) return 'pentagon'; // nodeTrun
-                  else if(y==4) return 'circle'; // edgeAdd_degHisPart -> circle
-                  else if(y==5) return 'diamond'; // edgeAdd_degCum -> diamond
-                  else if(y==6) return 5; // edgeAdd_degCumV -> triangle-up
-                }
-                // Case 2: dp type is edge-dp, query chosen is DD
-                else if (dp_chosen == 2 && temp_query == 1) {
-                  if (y == 1) return 'circle';
-                  else return 'diamond';
-                }
-                // Case 3: SGC queries
-                else {
-                  if (y == 1) return 'circle';
-                  else if (y == 2) return 'diamond';
-                  else return 5;
-                }
-              }
-
-              // In this if clause we have chosen node dp
               if(dp_chosen == 1){
                 var data = algoindex.map(y => {
                   var d = rows.filter(r => r.algorithm == y)
@@ -361,30 +327,18 @@
                     name: algorithms[y-1],
                     x: filter_x(),
                     y: filter_y(),
-                    // style of the markers
                     marker:{
-                      color: getcolor(y),
-                      symbol: getsymbol(y),
-                      size: 7,
+                      color:getcolor(y)
                     },
-                    // style of the confidence interval(error bars)
                     error_y: {
                       type: 'data',
                       array: filter_error(),
-                      visible: true,
-                      thickness: 0.5,
-                      width: 3,
-                    },
-                    // line: changing the style of the lines
-                    line: {
-                      width: 0.5,
+                      visible: true
                     },
                     type: 'dotplot',
                   }
                 })
-              } 
-              // In this clause we are working with edgeDP
-              else {
+              } else {
                 var data = edgealgoindex.map(y => {
                   var d = rows.filter(r => r.algorithm == y)
                   var l = rows.filter(r => (r.query == temp_query-1) && (r.algorithm == y))
@@ -404,23 +358,13 @@
                     name: algorithms[y-1],
                     x: filter_x(),
                     y: filter_y(),
-                    // style of the markers
-                    marker: {
-                      color: getcolor(y),
-                      symbol: getsymbol(y),
-                      size: 7,
+                    marker:{
+                      color:getcolor(y)
                     },
-                    // style of the confidence intervals
                     error_y: {
                       type: 'data',
                       array: filter_error(),
-                      visible: true,
-                      thickness: 0.5,
-                      width: 3,
-                    },
-                    // style of the lines connecting the dots
-                    line: {
-                      width: 0.5,
+                      visible: true
                     },
                     type: 'scatter',
                   }
@@ -582,22 +526,26 @@
                       }
                      
                       var data = [{
-                        mode: 'markers',
+                        mode: 'none',
                         type: get_type(),
                         name: aname,
                         text: data_y(),
+                        //type:'bar',
                         textposition: 'auto',
                         x: data_x(),
                         y: data_y(),
                         marker: {
                           color: "#eeac99",
                         },
+                        fill: 'tozeroy',
+                        fillcolor:"#eeac99",
+                        type: 'scatter'
                       }];
                       
                       
                       if(temp_query == 1){
-                        
                         var layout = {
+                          barmode:"overlay",
                           autosize: false,
                           width: 300,
                           height: testHeight,
@@ -636,6 +584,7 @@
                           type: get_type(),
                           name: aname,
                           text: data_y(),
+                          //type:'bar',
                           textposition: 'auto',
                           x: data_x(),
                           y: data_y(),
@@ -649,7 +598,8 @@
                           width: 250,
                           height: 300,
                           xaxis: {
-                            //title: 'degree',
+                            title: 'degree',
+                            //LAP to laplace
                             //range: getxrange(),
                             autorange: true
                           },
@@ -713,7 +663,10 @@
                         }
                         var col = "count"+(time%10+1)
                         var data = [{
-                          mode: 'markers',
+                          mode: 'none',
+                          fill: 'tozeroy',
+                          fillcolor:"#eeac99",
+                          type: 'scatter',
                           name: aname,
                           x: unpack(d, 'degree'),
                           y: unpack(d, col),
@@ -723,6 +676,7 @@
                         }]
                         console.log(data);
                         var layout = {
+                          barmode:'overlay',
                           autosize: true,
                           width: 300,
                           height: testHeight,
@@ -844,8 +798,10 @@
                 return rows.map(function(row) { return row[key]; });
               }
               var trace1 = {
-                mode: 'markers',
-                type: 'line',
+                mode: 'none',
+                fill: 'tozeroy',
+                fillcolor:"#5e9aa0",
+                type: 'scatter',
                 name: 'true cdf',
                 x: rows.map(function(row) { return row['degree']}),
                 y: unpack(rows, 'count'),
@@ -875,7 +831,7 @@
                   zerolin: true,
                   // type: 'log',
                   title: {
-                    text: 'P(K>=k)',
+                    text: 'P(degree>=k)',
                     standoff: 1,
                   },
                   autorange: true,
@@ -890,7 +846,7 @@
                 },
                 mode:'markers',
                 hovermode:'closest',
-                title:'CDF of the data',
+                title:'Cumulative distribution',
                 showlegend: false
                 };
               Plotly.newPlot('noisyHist', data, layout);
@@ -904,9 +860,10 @@
             }
 
             var trace1 = {
-              name: 'trueHist',
-              mode: 'markers',
-              type: 'bar',
+              mode: 'none',
+              fill: 'tozeroy',
+              fillcolor:"#5e9aa0",
+              type: 'scatter',
               x: unpack(rows, 'degree'),
               y: unpack(rows, 'count'),
               marker: {
@@ -916,26 +873,32 @@
             var trace2 = {}
             var data = [trace1, trace2]
             var layout = {
+              barmode:"overlay",
               autosize: false,
               width: 250,
               height: 300,
               xaxis: {
                 automargin: true,
                 title: {
-                  text: 'count',
+                  text: 'degree',
                   standoff: 1,
                 },
                 range: getxrange(),
                 //autorange: true
               },
               yaxis: {
-                automargin: true,
-                title: {
-                  text: 'count',
-                  standoff: 1,
+                  fixedrange: true,
+                  automargin: true,
+                  zerolin: true,
+                  // type: 'log',
+                  title: {
+                    text: 'P(degree=k)',
+                    standoff: 1,
+                  },
+                  autorange: false,
+                  hoverformat: '.2r',
+                  range:[0,0.2]
                 },
-                range: getyrange()
-              },
               margin: {
                 l: 30,
                 r: 30,
@@ -945,7 +908,7 @@
               },
               mode:'markers',
               hovermode:'closest',
-              title:'Histogram',
+              title:'Degree Distribution',
               showlegend: false
             };
 
@@ -1111,7 +1074,9 @@
               console.log(col)
               if(time >10) return;
               var data = [{
-                mode: 'markers',
+                mode: 'none',
+                fill: 'tozeroy',
+                type: 'scatter',
                 name: "test",
                 x: unpack(d, 'degree'),
                 y: unpack(d, col),
@@ -1168,8 +1133,9 @@
               console.log(col)
               if(time >10) return;
               var data = [{
-                mode: 'markers',
-                type: 'bar',
+                mode: 'none',
+                fill: 'tozeroy',
+                type: 'scatter',
                 textposition: 'auto',
                 text: unpack(d, col),
                 name: aname,
@@ -1273,8 +1239,10 @@
         }
       
       </script>
-        <!-- Following are the four graphs we want to display on the page: privacy frontier, true Hist, noisy Hist, and image of dataset -->
+      <!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
 
+<!-- Create a div where the graph will take place -->
         <div id="DDContainer">
           <div style="float: left;" id="trueHist" class="trueHist"></div>
           <div style="float: left;" id="noisyHist" class="noisyHist"></div>
@@ -1331,6 +1299,7 @@
           
           
           <p><a href="uploading.html">Upload your own algorithm</a></p>
+          
           
           <br>
           <br>

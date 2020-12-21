@@ -12,3 +12,5 @@ python3 time.py 7 2.0 >> FACEBOOKcdfalgo.csv
 python3 time.py 7 5.0 >> FACEBOOKcdfalgo.csv 
 python3 time.py 7 10.0 >> FACEBOOKcdfalgo.csv 
 python3 evalDegDist.py 0 8 >>FACEBOOK.csv
+python3 algo_density.py >> new.csv 
+mv new.csv FACEBOOKalgo.csv
