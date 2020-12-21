@@ -372,6 +372,7 @@
                       var data = [{
                         mode: 'none',
                         fill: 'tozeroy',
+                        fillcolor:"#eeac99",
                         type: 'scatter',
                         name: aname,
                         x: unpack(d, 'degree'),
@@ -440,6 +441,7 @@
                       var data = [{
                         mode: 'none',
                         fill: 'tozeroy',
+                        fillcolor:"#eeac99",
                         type: 'scatter',
                         name: aname,
                         x: unpack(d, 'degree'),
@@ -568,7 +570,9 @@
               }
               var trace1 = {
                 mode: 'none',
-                fill: 'tozeroy',
+                fill: 'toself',
+                fillcolor:"#5e9aa0",
+                //hoveron: 'fills',
                 type: 'scatter',
                 name: 'true cdf',
                 x: rows.map(function(row) { return row['degree']}),
@@ -576,6 +580,7 @@
                 marker: {
                   color: "#5e9aa0",
                 },
+                
               }
               var trace2 = {}
               var data = [trace1,trace2]
@@ -636,6 +641,7 @@
                 name: 'trueHist',
                 mode: 'none',
                 fill: 'tozeroy',
+                fillcolor:"#5e9aa0",
                 type: 'scatter',
                 x: unpack(rows, 'degree'),
                 y: unpack(rows, 'count'),

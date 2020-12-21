@@ -376,6 +376,7 @@
                       var data = [{
                         mode: 'none',
                         fill: 'tozeroy',
+                        fillcolor:"#eeac99",
                         type: 'scatter',
                         name: aname,
                         x: unpack(d, 'degree'),
@@ -445,6 +446,7 @@
                       var data = [{
                         mode: 'none',
                         fill: 'tozeroy',
+                        fillcolor:"#eeac99",
                         type: 'scatter',
                         name: aname,
                         x: unpack(d, 'degree'),
@@ -576,6 +578,7 @@
               var trace1 = {
                 mode: 'none',
                 fill: 'tozeroy',
+                fillcolor:"#5e9aa0",
                 type: 'scatter',
                 name: 'true cdf',
                 x: unpack(rows, 'degree'),
@@ -645,6 +648,7 @@
               var trace1 = {
                 mode: 'none',
                 fill: 'tozeroy',
+                fillcolor:"#5e9aa0",
                 type: 'scatter',
                 x: unpack(rows, 'degree'),
                 y: unpack(rows, 'count'),
