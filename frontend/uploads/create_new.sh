@@ -5,4 +5,5 @@ cp sample/*.csv .
 cp sample/*.py .
 chmod u+x *.sh
 echo "7,new_algorithm">>looking.csv
-./create_FACEBOOK.sh
+bash create_FACEBOOK.sh
+

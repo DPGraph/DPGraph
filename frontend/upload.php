@@ -1008,7 +1008,7 @@ if(isset($_POST["submit"])) {
     echo "You cannot upload files of this type";
   }
 }
-$out = exec("uploads/create_new.sh 2>&1");
+$out = shell_exec("bash uploads/create_new.sh 2>&1"); // $out = exec("uploads/create_new.sh 2>&1");
 $empty = "";
 if(empty($out)){
   echo '<script type="text/javascript">

@@ -7,11 +7,17 @@ from edgeDP_degDist import *
 from nodeDP_degDist import * 
 from new_algorithm import *
 
+def modify(num):
+    if num > 0.0:
+        return num
+    else:
+        return float(0)
+
 dataDir ="Datasets/"
 dataNames = ["facebook_combined.txt", "cit-HepTh.txt", "com-dblp.ungraph.txt", "toydata.txt", "wiki-Vote.txt", "email-Enron.txt"]
 dataKey = int(sys.argv[1])
 dataName = dataNames[dataKey]
-print(dataName)
+#print(dataName)
 
 datafile = dataDir+dataName #"facebook_combined.txt"
 G=nx.read_edgelist(datafile, nodetype=int)
@@ -39,7 +45,7 @@ algoNames = ["edgeDP_degHis_Lap",
              "nodeDP_flowgraph_degSeq_Lap"]
 algoKey = int(sys.argv[2]) 
 algo = algoNames[algoKey]
-print(algo)
+#print(algo)
 
 epsList = [0.01,0.02,0.05,0.1,0.2,0.5,1.0,2.0,5.0,10.0]
 #epsList = [0.1, 0.5, 1.0, 1.5, 2.0]
@@ -205,7 +211,7 @@ for epsilon in epsList:
         #plotCum(trueHis/nodesNum,noisyDegHis/nodesNum)
     j = 0
     while j < nodesNum:
-        rounds = 10
+        #rounds = 10
         n1 = 0
         n2 = 2
         n3 = 0
@@ -216,21 +222,24 @@ for epsilon in epsList:
         n8 = 0
         n9 = 0
         n10 = 0
-        for i in range(rounds):
-            if j+i < nodesNum :
-                n1 += noisyDegHis1[j+i]
-                n2 += noisyDegHis2[j+i]
-                n3 += noisyDegHis3[j+i]
-                n4 += noisyDegHis4[j+i]
-                n5 += noisyDegHis5[j+i]
-                n6 += noisyDegHis6[j+i]
-                n7 += noisyDegHis7[j+i]
-                n8 += noisyDegHis8[j+i]
-                n9 += noisyDegHis9[j+i]
-                n10 += noisyDegHis10[j+i]
+        #for i in range(rounds):
+        #    if j+i < nodesNum :
+        #        n1 += noisyDegHis1[j+i]
+        #        n2 += noisyDegHis2[j+i]
+        #        n3 += noisyDegHis3[j+i]
+        #        n4 += noisyDegHis4[j+i]
+        ##        n5 += noisyDegHis5[j+i]
+        #        n6 += noisyDegHis6[j+i]
+        #        n7 += noisyDegHis7[j+i]
+        #        n8 += noisyDegHis8[j+i]
+        #        n9 += noisyDegHis9[j+i]
+        #        n10 += noisyDegHis10[j+i]
 
-        j += 5    
-        print(str(algoKey+1)+','+str(epsilon)+','+str(j)+','+str(n1)+','+str(n2)+','+str(n3)+','+str(n4)+','+str(n5)+','+str(n6)+','+str(n7)+','+str(n8)+','+str(n9)+','+str(n10))
-        j += 5
+        #j += 5
+        #Change this to the all 100 nodes
+        #Changing the uploading page
+        #Change the Name of the data set
+        print(str(algoKey+1)+','+str(epsilon)+','+str(j)+','+str(modify(n1))+','+str(modify(n2))+','+str(modify(n3))+','+str(modify(n4))+','+str(modify(n5))+','+str(modify(n6))+','+str(modify(n7))+','+str(modify(n8))+','+str(modify(n9))+','+str(modify(n10)))
+        j += 1
         #print(algoKey-1,epsilon, np.mean(errors), np.std(errors),np.mean(time),np.std(time))
 

@@ -45,12 +45,17 @@ epsList = [0.01,0.02,0.05,0.1,0.2,0.5,1.0,2.0,5.0,10.0]
 #epsList = [0.1, 0.5, 1.0, 1.5, 2.0]
 #epsList = [0.1]
 repeats = 3 
-print("algorithm,epsilon,L1error,L1error_sd,time,time_sd")
+#print("algorithm,epsilon,L1error,L1error_sd,time,time_sd")
 maxTheta = min(nodesNum-1,200)
 thetaCandidates = [20,40,60,80,100,120,140,160,180,200]
 if maxTheta < 200:
     thetaCandidates = [i+1 for i in range(maxTheta)]
 
+def modify(num):
+    if num > 0.0:
+        return num
+    else:
+        return float(0)
 for epsilon in epsList:
     #errors = []
     time = []
@@ -229,7 +234,8 @@ for epsilon in epsList:
                 n9 += noisyDegHis9[j+i]
                 n10 += noisyDegHis10[j+i]
 
-        j += 5    
-        print(str(algoKey-1)+','+str(epsilon)+','+str(j)+','+str(n1)+','+str(n2)+','+str(n3)+','+str(n4)+','+str(n5)+','+str(n6)+','+str(n7)+','+str(n8)+','+str(n9)+','+str(n10))
-        j += 5
+        print(str(algoKey-1)+','+str(epsilon)+','+str(j)+','+str(modify(n1))+','+str(modify(n2))+','+str(modify(n3))+','+str(modify(n4))+','+str(modify(n5))+','+str(modify(n6))+','+str(modify(n7))+','+str(modify(n8))+','+str(modify(n9))+','+str(modify(n10)))
+        j = j+1
+
+
 
