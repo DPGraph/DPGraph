@@ -538,7 +538,8 @@
                           color: "#eeac99",
                         },
                         fill: 'tozeroy',
-                        fillcolor:"#eeac99",
+                        // fillcolor:"#eeac99",
+                        fillcolor:'rgba(238, 172, 153, 0.5)',
                         type: 'scatter'
                       }];
                       
@@ -652,6 +653,8 @@
                     });
                     if(dp_chosen == 1) var noisyHistName1 = dataChosen+"cdfalgo.csv"
                     else var noisyHistName1 = dataChosen + "cdfedgealgo.csv"
+
+                    // This part plots the noisy cumulative distribution
                     if(temp_query == 1){
                       Plotly.deleteTraces('noisyHist', 1);
                       Plotly.d3.csv(noisyHistName1, function(err, rows){
@@ -665,7 +668,8 @@
                         var data = [{
                           mode: 'none',
                           fill: 'tozeroy',
-                          fillcolor:"#eeac99",
+                          // fillcolor:"#eeac99",
+                          fillcolor:'rgba(238, 172, 153, 0.5)',
                           type: 'scatter',
                           name: aname,
                           x: unpack(d, 'degree'),
@@ -702,8 +706,7 @@
                           showlegend: false
                         };
                         Plotly.plot('noisyHist', data, layout);
-                        time++;
-                        
+                        time++; 
                       });
                     }
                   }
@@ -793,6 +796,8 @@
             })
             //CLear the graph after a new click on the frontier; generate a random Toy dataset; Add words for the data points;
             //Challenge: upload their own algorithm
+
+            // This part plots the true cumulative distribution
             Plotly.d3.csv(cdf, (err,rows)=>{
               function unpack(rows, key, total) {
                 return rows.map(function(row) { return row[key]; });
@@ -800,7 +805,8 @@
               var trace1 = {
                 mode: 'none',
                 fill: 'tozeroy',
-                fillcolor:"#5e9aa0",
+                // fillcolor:"#5e9aa0",
+                fillcolor:'rgba(94, 159, 160, 0.5)',
                 type: 'scatter',
                 name: 'true cdf',
                 x: rows.map(function(row) { return row['degree']}),
@@ -862,7 +868,8 @@
             var trace1 = {
               mode: 'none',
               fill: 'tozeroy',
-              fillcolor:"#5e9aa0",
+              // fillcolor:"#5e9aa0",
+              fillcolor:'rgba(94, 159, 160, 0.5)',
               type: 'scatter',
               x: unpack(rows, 'degree'),
               y: unpack(rows, 'count'),
@@ -1077,7 +1084,8 @@
               var data = [{
                 mode: 'none',
                 fill: 'tozeroy',
-                fillcolor: '#eeac99',
+                // fillcolor: '#eeac99',
+                fillcolor:'rgba(238, 172, 153, 0.5)',
                 type: 'scatter',
                 name: "test",
                 x: unpack(d, 'degree'),
