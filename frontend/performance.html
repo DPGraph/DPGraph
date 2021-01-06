@@ -91,22 +91,20 @@
 
     <h1 class="text-left">Privacy Performance Frontier</h1>
 
-    <select id = "Degree Type" onchange = "DDFn()"> <!--onchange="frontierFn()"-->
+    <select id = "Degree Type" onchange = "DDFn()"> 
       <option value = "1" selected = "selected">Node DP</option>
-      <option value = "2">Edge DP</option>
-      
-      </select>
+      <option value = "2">Edge DP</option>  
+    </select>
 
-      <select id = "Utility" onchange = "DDFn()"> <!--onchange="frontierFn()"-->
+    <select id = "Utility" onchange = "DDFn()"> 
       <option value = "1" selected = "selected">Degree Distribution</option>
       <option value = "2">Subgraph Counting_4kclique</option>
       <option value = "3">Subgraph Counting_3kstar</option>
       <option value = "4">Subgraph Counting_2ktriangle</option>
       <option value = "5">Subgraph Counting_0ktriangle</option>
-      </select>
-      
+    </select>
 
-      <select id = "epsilon level" onchange = "DDFn()">
+    <select id = "epsilon level" onchange = "DDFn()">
       <option value = "1" selected = "selected">0.01</option>
       <option value = "2" >0.02</option>
       <option value = "3" >0.05</option>
@@ -118,6 +116,7 @@
       <option value = "9" >5.0</option>
       <option value = "10">10.0</option>
     </select>
+
     <button id = "show_graph" onclick = "wrapper()" class="btn btn-secondary">Apply Setting</button>
     <br>
     <script>
@@ -407,6 +406,7 @@
       }
 
     </script>
+
 <div id="DDContainer">
   <div style="float: left;" id="scatterFrontier"></div>
   

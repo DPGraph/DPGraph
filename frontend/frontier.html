@@ -286,6 +286,7 @@
             else var csvName = dataChosen + ".csv";
             Plotly.d3.csv(csvName, (err, rows) => {
               var tempPlot = document.getElementById('scatterFrontier')
+
               function getcolor(y){
                 // Case 1: dp type is node-DP, query chosen is DD
                 if (dp_chosen == 1 && temp_query == 1) {
@@ -308,6 +309,33 @@
                   else return '#3fbf5b';
                 }
               }
+
+              // The following function determines the marker symbols for the lines on the accuracy frontier
+              // We return symbol based on the current DP type and query chosen
+              function getsymbol(y){
+                // Case 1: dp type is node-DP, query chosen is DD
+                // Currently, in this case, we have six different symbols in total
+                if (dp_chosen == 1 && temp_query == 1) {
+                  if(y==1)return "x"; // degHis* -> x
+                  else if(y==2) return 'star'; // degSeq*
+                  else if(y==3) return 'pentagon'; // nodeTrun
+                  else if(y==4) return 'circle'; // edgeAdd_degHisPart -> circle
+                  else if(y==5) return 'diamond'; // edgeAdd_degCum -> diamond
+                  else if(y==6) return 5; // edgeAdd_degCumV -> triangle-up
+                }
+                // Case 2: dp type is edge-dp, query chosen is DD
+                else if (dp_chosen == 2 && temp_query == 1) {
+                  if (y == 1) return 'circle';
+                  else return 'diamond';
+                }
+                // Case 3: SGC queries
+                else {
+                  if (y == 1) return 'circle';
+                  else if (y == 2) return 'diamond';
+                  else return 5;
+                }
+              }
+
               if(dp_chosen == 1){
                 var data = algoindex.map(y => {
                   var d = rows.filter(r => r.algorithm == y)
@@ -329,17 +357,27 @@
                     x: filter_x(),
                     y: filter_y(),
                     marker:{
-                      color:getcolor(y)
+                      color:getcolor(y),
+                      symbol: getsymbol(y),
+                      size: 7,
                     },
                     error_y: {
                       type: 'data',
                       array: filter_error(),
-                      visible: true
+                      visible: true,
+                      thickness: 0.5,
+                      width: 3,
+                    },
+                    // line: changing the style of the lines
+                    line: {
+                      width: 0.5,
                     },
                     type: 'dotplot',
                   }
                 })
-              } else {
+              } 
+              // In this clause we are working with edgeDP
+              else {
                 var data = edgealgoindex.map(y => {
                   var d = rows.filter(r => r.algorithm == y)
                   var l = rows.filter(r => (r.query == temp_query-1) && (r.algorithm == y))
@@ -360,12 +398,20 @@
                     x: filter_x(),
                     y: filter_y(),
                     marker:{
-                      color:getcolor(y)
+                      color:getcolor(y),
+                      symbol: getsymbol(y),
+                      size: 7,
                     },
                     error_y: {
                       type: 'data',
                       array: filter_error(),
-                      visible: true
+                      visible: true,
+                      thickness: 0.5,
+                      width: 3,
+                    },
+                    // style of the lines connecting the dots
+                    line: {
+                      width: 0.5,
                     },
                     type: 'scatter',
                   }

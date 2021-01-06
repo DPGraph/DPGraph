@@ -262,6 +262,7 @@
                 autosize: false,
                 width: 300,
                 height: 300,
+                dragmode: "pan",
                 xaxis: {
                   automargin: true,
                   type: 'log',
