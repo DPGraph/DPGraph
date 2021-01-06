@@ -205,6 +205,33 @@
                 else if(y==6) return '#3fbf5b';
                 else if(y==7) return '#94b1d2';
               }
+
+              // The following function determines the marker symbols for the lines on the accuracy frontier
+              // We return symbol based on the current DP type and query chosen
+              function getsymbol(y){
+                // Case 1: dp type is node-DP, query chosen is DD
+                // Currently, in this case, we have six different symbols in total
+                if (dp_chosen == 1 && temp_query == 1) {
+                  if(y==1)return "x"; // degHis* -> x
+                  else if(y==2) return 'star'; // degSeq*
+                  else if(y==3) return 'pentagon'; // nodeTrun
+                  else if(y==4) return 'circle'; // edgeAdd_degHisPart -> circle
+                  else if(y==5) return 'diamond'; // edgeAdd_degCum -> diamond
+                  else if(y==6) return 5; // edgeAdd_degCumV -> triangle-up
+                }
+                // Case 2: dp type is edge-dp, query chosen is DD
+                else if (dp_chosen == 2 && temp_query == 1) {
+                  if (y == 1) return 'circle';
+                  else return 'diamond';
+                }
+                // Case 3: SGC queries
+                else {
+                  if (y == 1) return 'circle';
+                  else if (y == 2) return 'diamond';
+                  else return 5;
+                }
+              }
+
               console.log(algoindex)
               if(dp_chosen == 1){
                 function getwidth(y){
@@ -218,18 +245,27 @@
                     x: d.map(r => r.epsilon),
                     y: d.map(r => r.L1error),
                     marker:{
-                      color: getcolor(y)
+                      color:getcolor(y),
+                      symbol: getsymbol(y),
+                      size: 7,
                     },
                     width: getwidth(y),
                     error_y: {
                       type: 'data',
                       array: d.map(r => r.L1error_sd),
-                      visible: true
+                      visible: true,
+                      thickness: 0.5,
+                      width: 3,
+                    },
+                    // line: changing the style of the lines
+                    line: {
+                      width: 0.5,
                     },
                     type: 'scatter'
                   }
                 })
-              } else {
+              } 
+              else {
                 function getwidthedge(y){
                   if(y==3)return 3;
                   else return 1;
@@ -377,7 +413,8 @@
                       var data = [{
                         mode: 'none',
                         fill: 'tozeroy',
-                        fillcolor:"#eeac99",
+                        // fillcolor:"#eeac99",
+                        fillcolor:'rgba(238, 172, 153, 0.5)',
                         type: 'scatter',
                         name: aname,
                         x: unpack(d, 'degree'),
@@ -447,7 +484,8 @@
                       var data = [{
                         mode: 'none',
                         fill: 'tozeroy',
-                        fillcolor:"#eeac99",
+                        // fillcolor:"#eeac99",
+                        fillcolor:'rgba(238, 172, 153, 0.5)',
                         type: 'scatter',
                         name: aname,
                         x: unpack(d, 'degree'),
@@ -579,7 +617,8 @@
               var trace1 = {
                 mode: 'none',
                 fill: 'tozeroy',
-                fillcolor:"#5e9aa0",
+                // fillcolor:"#5e9aa0",
+                fillcolor:'rgba(94, 159, 160, 0.5)',
                 type: 'scatter',
                 name: 'true cdf',
                 x: unpack(rows, 'degree'),
@@ -649,7 +688,8 @@
               var trace1 = {
                 mode: 'none',
                 fill: 'tozeroy',
-                fillcolor:"#5e9aa0",
+                // fillcolor:"#5e9aa0",
+                fillcolor:'rgba(94, 159, 160, 0.5)',
                 type: 'scatter',
                 x: unpack(rows, 'degree'),
                 y: unpack(rows, 'count'),
