@@ -1,13 +1,11 @@
 1. Introduce the goal of the demo on the homepage.
     - Break the intro paragraph into smaller parts.
 
-2. Make sure to fix "left" and "middle".
-
 3. Swap the order of the selections. (go in the order of dataset -> query -> nodeType)
 
 4. Remove the text in accuracy frontier.
 
-5. Change the left and middle plots to have the same scale.
+5 (?). Change the left and middle plots to have the same scale.
 
 6. Have one sentence about the error bars in the script.
 
@@ -15,13 +13,7 @@
 
 8. Update the names for the algorithms based on Karl's table.
 
-9. "Select the algorithms to display"
-
 10. Explain what "animate" is doing.
-
-11. Open up a new page when doing the "upload your own algorithm".
-
-12. Make the uploading page's title "Upload your algorithm".
 
 13. Add in metadata about the datasets in performance.html.
 

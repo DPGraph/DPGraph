@@ -188,12 +188,12 @@
           var edgealgorithms = {};        
           function getxrange(){
             var temp_data = document.getElementById("Dataset").value;
-            if(temp_data == 1) return [0,300]
-            else if(temp_data == 2) return [0,200]
-            else if(temp_data == 3) return [0,100]
-            else if(temp_data == 4) return [0,300]
-            else if(temp_data == 5) return [0,10]
-            else if(temp_data == 6) return [0,300]
+            if(temp_data == 1) return [0,Math.log10(300)]
+            else if(temp_data == 2) return [0,Math.log10(200)]
+            else if(temp_data == 3) return [0,Math.log10(100)]
+            else if(temp_data == 4) return [0,Math.log10(300)]
+            else if(temp_data == 5) return [0,Math.log10(10)]
+            else if(temp_data == 6) return [0,Math.log10(300)]
           }
           function getyrange(){
             var temp_data = document.getElementById("Dataset").value;
@@ -938,21 +938,22 @@
                   text: 'degree',
                   standoff: 1,
                 },
-                range: getxrange(),
-                //autorange: true
+                // range: getxrange(),
+                // type: 'log',
+                type: 'log',
+                autorange: true, 
               },
               yaxis: {
                   fixedrange: true,
                   automargin: true,
                   zerolin: true,
-                  // type: 'log',
                   title: {
                     text: 'P(degree=k)',
                     standoff: 1,
                   },
                   autorange: false,
                   hoverformat: '.2r',
-                  range:[0,0.2]
+                  range:[0,1]
                 },
               margin: {
                 l: 30,
@@ -1315,7 +1316,7 @@
           </button>
           <br>
           <form id = "select_algorithm_DD">
-            <p>Please select the algorithm you want to display</p>
+            <p>Select the algorithms to display:</p>
             <input type = "checkbox" onclick = "changevisibility(0)" id = "algorithm1">
             <span id="nodedp_algo1" style="display:inline; color:#e06377;">degHis*</span>
             <span id="sgcedgedp_algo1" style="display:inline; color:#c83349;">Ladder</span>
@@ -1336,6 +1337,7 @@
           </form><br>
           <br>
           <br>
+          <br>
           <button 
             id="gif" 
             onclick="started()"
@@ -1348,15 +1350,15 @@
             The shape of the subgraph is <img id="subgraph_png" src="3star.png" alt="subgraph pic" style="width:75px;height:60px;">
           </p>
           <p id="true_explain">
-            The <span style="color:#5e9aa0;font-weight:bold;">left</span> graph represents the true dataset output. 
+            The <span style="color:#5e9aa0;font-weight:bold;">blue</span> graphs represent the true dataset output. 
           </p>
           <p id="noisy_explain">
-            The <span style="color:#eeac99;font-weight:bold;">middle</span> graph represents the noisy dataset output.
+            The <span style="color:#eeac99;font-weight:bold;">pink</span> graphs represent the noisy dataset output.
           </p>
           <p id="noisy_detail">Data point being displayed is algorithm: . Epsilon chosen is </p>
           
           
-          <p><a href="uploading.html">Upload your own algorithm</a></p>
+          <p><a href="uploading.html" target="_blank">Upload your own algorithm</a></p>
           
           
           <br>
