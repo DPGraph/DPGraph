@@ -522,9 +522,22 @@
                       };
                       Plotly.plot('noisyHist', data, layout);
                       time++;
+                      // Now we want to render a shorter algorithm name, so let's use another variable
+                      short_name = ""
+                      if (aname == "nodeDP_degHis_Lap") short_name = "degHis*" 
+                      else if (aname == "nodeDP_degSeq_Lap") short_name = "degSeq*"
+                      else if (aname == "nodeDP_nodeTrun_Smooth") short_name = "nodeTrun"
+                      else if (aname == "nodeDP_edgeAdd_degHisPart_Lap") short_name = "edgeAdd_degHisPart"
+                      else if (aname == "nodeDP_edgeAdd_degCum_Lap") short_name = "edgeAdd_degCum"
+                      else if (aname == "nodeDP_edgeAdd_degCum_Lap_variant") short_name = "edgeAdd_degCumV"
+                      else if (aname == "edgeDP_degSeq_Lap") short_name = "degSeq"
+                      else if (aname == "edgeDP_degHis_Lap") short_name = "degHis"
+                      else if (aname == "ladder") short_name = "Ladder"
+                      else short_name = aname
                       document.getElementById("noisy_explain").style.visibility = "visible";
                       document.getElementById("noisy_detail").style.visibility = "visible";
-                      document.getElementById("noisy_detail").innerHTML = "The data point being displayed is algorithm: "+aname+" ,and the epsilon chosen is "+eChosen;
+                      document.getElementById("noisy_detail").innerHTML = 
+                        "Data point being displayed is algorithm: " + short_name + ". Epsilon chosen is " + eChosen;;
                     });
                   }
                 });
@@ -705,9 +718,10 @@
                 height: 300,
                 xaxis: {
                   title: 'degree',
-                  fixedrange:true,
-                  range:[0,100]
-                  //autorange: true
+                  // fixedrange:true,
+                  // range:[0,100]
+                  autorange: true,
+                  type: 'log',
                 },
                 yaxis: {
                   fixedrange: true,
@@ -720,7 +734,7 @@
                   },
                   autorange: false,
                   hoverformat: '.2r',
-                  range:[0,0.2]
+                  range:[0,1]
                   //range: getyrange()
                 },
                 margin: {
@@ -1013,10 +1027,10 @@
             The shape of the subgraph is <img id="subgraph_png" src="3star.png" alt="subgraph pic" style="width:75px;height:60px;">
           </p>
           <p id="true_explain">
-            The <span style="color:#5e9aa0;font-weight:bold;">left</span> graph represents the true dataset output. 
+            The <span style="color:#5e9aa0;font-weight:bold;">blue</span> graphs represent the true dataset output. 
           </p>
           <p id="noisy_explain">
-            The <span style="color:#eeac99;font-weight:bold;">middle</span> graph represents the noisy dataset output.
+            The <span style="color:#eeac99;font-weight:bold;">pink</span> graphs represent the noisy dataset output.
           </p>
           <p id="noisy_detail">Data point being displayed is algorithm: . Epsilon chosen is </p>
           <?php
