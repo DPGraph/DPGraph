@@ -1,18 +1,38 @@
-1. Some algorithms seem to have very long names. "The data point being displayed is algorithm: nodeDP_edgeAdd_degCum_Lap_variant ,and the epsilon chosen is 0.02"
-    - Karl fixed this part. Remember to put this into interface.
+1. Introduce the goal of the demo on the homepage.
+    - Break the intro paragraph into smaller parts.
 
-6. There should more explanation of what the "animate" button is doing. I got confused of what it is doing when I am trying it.
+2. Make sure to fix "left" and "middle".
 
-7. Need a story for the usage scenarios.
-    - Things that we can showcase: 
-      1) Choose between different parameters, then show how the "animate" button works (as well as explaining what it does)
-      2) "Upload" your own algorithm (this should be an interesting thing to demo)
+3. Swap the order of the selections. (go in the order of dataset -> query -> nodeType)
 
-10. For subgraph counting, we are not using "blue" graph to represent the true count, but rather the "purple" graph.
+4. Remove the text in accuracy frontier.
 
-12. (SC) One things I am noticing is that when we clicked on a point from the Ladder line, which is blue, noisy hist shows up as blue. But once we click on animate, 
-    it turns to orange.
+5. Change the left and middle plots to have the same scale.
 
-13. Currently, there is nothing to show for the empirical findings tab.
-    - If yes, we need to think about which content we should put in it, and how we want to display it. (which can make up for another
-      section in the demo video/usage scenario I think).
+6. Have one sentence about the error bars in the script.
+
+7. (low) Shape for the different algos (besides their names)
+
+8. Update the names for the algorithms based on Karl's table.
+
+9. "Select the algorithms to display"
+
+10. Explain what "animate" is doing.
+
+11. Open up a new page when doing the "upload your own algorithm".
+
+12. Make the uploading page's title "Upload your algorithm".
+
+13. Add in metadata about the datasets in performance.html.
+
+14. Fix any inconsistencies in performance.html.
+
+15. (low) Empirical Findings: separate components for the actual text
+
+16. For the algo section in background info, import Karl's table.
+
+17. Import Karl's table to overleaf once it's done.
+
+18. Where do people download the code?
+
+19. Document ER somewhere (figuring out the constant c is not done yet).
