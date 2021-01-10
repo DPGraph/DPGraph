@@ -1,12 +1,3 @@
-1. Introduce the goal of the demo on the homepage.
-    - Break the intro paragraph into smaller parts.
-
-3. Swap the order of the selections. (go in the order of dataset -> query -> nodeType)
-
-4. Remove the text in accuracy frontier.
-
-5 (?). Change the left and middle plots to have the same scale.
-
 6. Have one sentence about the error bars in the script.
 
 7. (low) Shape for the different algos (besides their names)

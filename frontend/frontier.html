@@ -105,28 +105,36 @@
     </div>
     <br />
 
-        <p class="text-left"> We show below (on the right) the Privacy Accuracy Frontier which is a representation of the best achievable error across different privacy levels (i.e., epsilon values). It plots the error over degree distribution, or subgraph counting, of various algorithms on the chosen input dataset (y-axis) versus the privacy level (epsilon) on the x-axis. </p>
+    <!-- <p class="text-left"> 
+      We show below (on the right) the Privacy Accuracy Frontier which is a representation of the best achievable error 
+      across different privacy levels (i.e., epsilon values). It plots the error over degree distribution, 
+      or subgraph counting, of various algorithms on the chosen input dataset (y-axis) versus the privacy level (epsilon) on the x-axis. 
+    </p>
 
-        <p class="text-left"> User first needs to specify which statistics they are interested in investigating (degree distribution of subgraph counting). Then, a privacy accuracy frontier corresponding to that statistic is generated on the right. </p>
+    <p class="text-left"> 
+      User first needs to specify which statistics they are interested in investigating (degree distribution of subgraph counting). 
+      Then, a privacy accuracy frontier corresponding to that statistic is generated on the right. 
+    </p>
 
-        <p class="text-left"> Each dot corresponds to the error of a specific algorithm at a specific epsilon. For the task of degree distribution, Click on a dot to visualize the noisy histogram of the algorithm in the middle. Dots corresponding to the same epsilon are placed along the same vertical line, and dots corresponding to the same algorithms all share the same unique color. *The points that make up the lower convex hull are those that achieve the least error at that privacy level, and are called the frontier. The points on the frontier alone can be visualized by toggling the visualize frontier checkbox on the far right. Click the "Show/Hide Algorithms" button to view the list of algorithms. Algorithms can be included or excluded from the plot using the associated check-boxes.* </p>
+    <p class="text-left"> 
+      Each dot corresponds to the error of a specific algorithm at a specific epsilon. 
+      For the task of degree distribution, Click on a dot to visualize the noisy histogram of the algorithm in the middle. 
+      Dots corresponding to the same epsilon are placed along the same vertical line, 
+      and dots corresponding to the same algorithms all share the same unique color. 
+      *The points that make up the lower convex hull are those that achieve the least error at that privacy level, 
+      and are called the frontier. The points on the frontier alone can be visualized by toggling the visualize frontier checkbox 
+      on the far right. Click the "Show/Hide Algorithms" button to view the list of algorithms. 
+      Algorithms can be included or excluded from the plot using the associated check-boxes.* 
+    </p>
 
-        <p class="text-left"> For degree distribution, two histograms are shown. The true degree distribution histogram is shown on the left. The noisy degree distribution histogram is shown in the middle. * Both histograms contain the same number of bins for easier comparison. Clicking on a bin of a histogram displays the number of counts in that bin. *For subgraph counting, the subgraph is plotted on the left. In the middle, the true count and the noisy count are shown next to each other. </p>
-
-        
-        <select id = "Degree Type" onchange = "frontierFn()"> 
-        <option value = "1" selected = "selected">Node DP</option>
-        <option value = "2">Edge DP</option>
-        
-        </select>
-
-        <select id = "Utility" onchange = "frontierFn()"> 
-        <option value = "1" selected = "selected">Degree Distribution</option>
-        <option value = "4">Subgraph Counting_4kclique</option>
-        <option value = "3">Subgraph Counting_3kstar</option>
-        <option value = "5">Subgraph Counting_2ktriangle</option>
-        <option value = "2">Subgraph Counting_triangle</option>
-        </select>
+    <p class="text-left"> 
+      For degree distribution, two histograms are shown. The true degree distribution histogram is shown on the left. 
+      The noisy degree distribution histogram is shown in the middle. * 
+      Both histograms contain the same number of bins for easier comparison. 
+      Clicking on a bin of a histogram displays the number of counts in that bin. 
+      *For subgraph counting, the subgraph is plotted on the left. 
+      In the middle, the true count and the noisy count are shown next to each other. 
+    </p> -->
 
         <select 
           id = "Dataset" 
@@ -162,6 +170,19 @@
         >
           Email_enron
         </option>
+        </select>
+
+        <select id = "Utility" onchange = "frontierFn()"> 
+          <option value = "1" selected = "selected">Degree Distribution</option>
+          <option value = "4">Subgraph Counting_4kclique</option>
+          <option value = "3">Subgraph Counting_3kstar</option>
+          <option value = "5">Subgraph Counting_2ktriangle</option>
+          <option value = "2">Subgraph Counting_triangle</option>
+        </select>
+
+        <select id = "Degree Type" onchange = "frontierFn()"> 
+          <option value = "1" selected = "selected">Node DP</option>
+          <option value = "2">Edge DP</option>
         </select>
         
         <!-- 
@@ -899,7 +920,7 @@
                 },
                 mode:'markers',
                 hovermode:'closest',
-                title:'Cumulative distribution',
+                title:'Cumulative Distribution',
                 showlegend: false
                 };
               Plotly.newPlot('noisyHist', data, layout);
