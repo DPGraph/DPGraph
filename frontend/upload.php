@@ -458,9 +458,9 @@
                       if (aname == "nodeDP_degHis_Lap") short_name = "degHis*" 
                       else if (aname == "nodeDP_degSeq_Lap") short_name = "degSeq*"
                       else if (aname == "nodeDP_nodeTrun_Smooth") short_name = "nodeTrun"
-                      else if (aname == "nodeDP_edgeAdd_degHisPart_Lap") short_name = "edgeAdd_degHisPart"
-                      else if (aname == "nodeDP_edgeAdd_degCum_Lap") short_name = "edgeAdd_degCum"
-                      else if (aname == "nodeDP_edgeAdd_degCum_Lap_variant") short_name = "edgeAdd_degCumV"
+                      else if (aname == "nodeDP_edgeAdd_degHisPart_Lap") short_name = "edgeAddHist"
+                      else if (aname == "nodeDP_edgeAdd_degCum_Lap") short_name = "edgeAddCum"
+                      else if (aname == "nodeDP_edgeAdd_degCum_Lap_variant") short_name = "edgeAddCumV"
                       else if (aname == "edgeDP_degSeq_Lap") short_name = "degSeq"
                       else if (aname == "edgeDP_degHis_Lap") short_name = "degHis"
                       else if (aname == "ladder") short_name = "Ladder"
@@ -527,9 +527,9 @@
                       if (aname == "nodeDP_degHis_Lap") short_name = "degHis*" 
                       else if (aname == "nodeDP_degSeq_Lap") short_name = "degSeq*"
                       else if (aname == "nodeDP_nodeTrun_Smooth") short_name = "nodeTrun"
-                      else if (aname == "nodeDP_edgeAdd_degHisPart_Lap") short_name = "edgeAdd_degHisPart"
-                      else if (aname == "nodeDP_edgeAdd_degCum_Lap") short_name = "edgeAdd_degCum"
-                      else if (aname == "nodeDP_edgeAdd_degCum_Lap_variant") short_name = "edgeAdd_degCumV"
+                      else if (aname == "nodeDP_edgeAdd_degHisPart_Lap") short_name = "edgeAddHist"
+                      else if (aname == "nodeDP_edgeAdd_degCum_Lap") short_name = "edgeAddCum"
+                      else if (aname == "nodeDP_edgeAdd_degCum_Lap_variant") short_name = "edgeAddCumV"
                       else if (aname == "edgeDP_degSeq_Lap") short_name = "degSeq"
                       else if (aname == "edgeDP_degHis_Lap") short_name = "degHis"
                       else if (aname == "ladder") short_name = "Ladder"
@@ -1013,11 +1013,11 @@
             <input type = "checkbox" onclick = "changevisibility(2)" id = "algorithm3">
             <span id="nodedp_algo3" style="display:inline; color:#b8a9c9;">nodeTrun</span><br>
             <input type = "checkbox" onclick = "changevisibility(3)" id = "algorithm4">
-            <span id="nodedp_algo4" style="display:inline; color:#c83349;">edgeAdd_degHisPart</span><br>
+            <span id="nodedp_algo4" style="display:inline; color:#c83349;">edgeAddHist</span><br>
             <input type = "checkbox" onclick = "changevisibility(4)" id = "algorithm5">
-            <span id="nodedp_algo5" style="display:inline; color:#622569;">edgeAdd_degCum</span><br>
+            <span id="nodedp_algo5" style="display:inline; color:#622569;">edgeAddCum</span><br>
             <input type = "checkbox" onclick = "changevisibility(5)" id = "algorithm6">
-            <span id="nodedp_algo6" style="display:inline; color:#3fbf5b;">edgeAdd_degCumV</span><br>
+            <span id="nodedp_algo6" style="display:inline; color:#3fbf5b;">edgeAddCumV</span><br>
             <input type = "checkbox" onclick = "changevisibility(6)" id = "algorithm7">
             <span id="nodedp_algo7" style="display:inline; color:#94b1d2;">new_algorithm</span><br>
           </form><br>

@@ -25,6 +25,9 @@
   <!-- Plotly-->
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
+  <!-- FaIcons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <script>
   function hideoption(){
@@ -49,6 +52,7 @@
   function prepare(){
     hideoption();
     document.getElementById("gif").style.visibility = "hidden";
+    document.getElementById("question_mark").style.visibility = "hidden";
     document.getElementById("true_explain").style.visibility = "hidden";
     document.getElementById("noisy_explain").style.visibility = "hidden";
     document.getElementById("subgraph").style.visibility = "hidden";
@@ -520,6 +524,7 @@
                 //Plotly.deleteTraces('trueHist', 1);
                 for(var i=0; i < data.points.length; i++){
                   document.getElementById("gif").style.visibility = "visible"
+                  document.getElementById("question_mark").style.visibility = "visible"
                   rankChosen = data.points[i].curveNumber;
                   if(temp_query== 1){
                     if (dp_chosen == 1){
@@ -706,9 +711,9 @@
                       if (aname == "nodeDP_degHis_Lap") short_name = "degHis*" 
                       else if (aname == "nodeDP_degSeq_Lap") short_name = "degSeq*"
                       else if (aname == "nodeDP_nodeTrun_Smooth") short_name = "nodeTrun"
-                      else if (aname == "nodeDP_edgeAdd_degHisPart_Lap") short_name = "edgeAdd_degHisPart"
-                      else if (aname == "nodeDP_edgeAdd_degCum_Lap") short_name = "edgeAdd_degCum"
-                      else if (aname == "nodeDP_edgeAdd_degCum_Lap_variant") short_name = "edgeAdd_degCumV"
+                      else if (aname == "nodeDP_edgeAdd_degHisPart_Lap") short_name = "edgeAddHist"
+                      else if (aname == "nodeDP_edgeAdd_degCum_Lap") short_name = "edgeAddCum"
+                      else if (aname == "nodeDP_edgeAdd_degCum_Lap_variant") short_name = "edgeAddCumV"
                       else if (aname == "edgeDP_degSeq_Lap") short_name = "degSeq"
                       else if (aname == "edgeDP_degHis_Lap") short_name = "degHis"
                       else if (aname == "ladder") short_name = "Ladder"
@@ -1350,23 +1355,29 @@
             <span id="nodedp_algo3" style="display:inline; color:#b8a9c9;">nodeTrun</span>
             <span id="sgcedgedp_algo3" style="display:inline; color:#3fbf5b;">Smooth</span><br>
             <input type = "checkbox" onclick = "changevisibility(3)" id = "algorithm4">
-            <span id="nodedp_algo4" style="display:inline; color:#c83349;">edgeAdd_degHisPart</span><br>
+            <span id="nodedp_algo4" style="display:inline; color:#c83349;">edgeAddHist</span><br>
             <input type = "checkbox" onclick = "changevisibility(4)" id = "algorithm5">
-            <span id="nodedp_algo5" style="display:inline; color:#622569;">edgeAdd_degCum</span><br>
+            <span id="nodedp_algo5" style="display:inline; color:#622569;">edgeAddCum</span><br>
             <input type = "checkbox" onclick = "changevisibility(5)" id = "algorithm6">
-            <span id="nodedp_algo6" style="display:inline; color:#3fbf5b;">edgeAdd_degCumV</span><br>
+            <span id="nodedp_algo6" style="display:inline; color:#3fbf5b;">edgeAddCumV</span><br>
           </form><br>
           <br>
           <br>
           <br>
           <button 
-            id="gif" 
+            id="gif"
             onclick="started()"
             type="button" 
             class="btn btn-secondary"
           >
             Animate
           </button>
+          <i 
+            id="question_mark"
+            class="fa fa-question-circle" 
+            style="font-size:18px"
+            title="The Animate button plots 10 different runs of the noisy output"
+          ></i>           
           <p id="subgraph">
             The shape of the subgraph is <img id="subgraph_png" src="3star.png" alt="subgraph pic" style="width:75px;height:60px;">
           </p>

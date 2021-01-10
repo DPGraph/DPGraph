@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Modern Business - Start Bootstrap Template</title>
+  <title>DPGraph</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -327,7 +327,11 @@
               }
             }
             var trace = {
-              x:x_value,
+              x:["FACEBOOK<br># nodes:4k",
+                  "WIKI<br># nodes:7k",
+                  "EMAIL<br># nodes:28k",
+                  "CIT<br># nodes:37k",
+                  "DBLP<br># nodes:320k"],
               y:y,
               name:algorithms[k],
               type:'bar',
@@ -365,7 +369,7 @@
             barmode: 'group',
             autosize: false,
             xaxis: {
-              tickangle: -45,
+              // tickangle: -45,
               tickfont: {
                 family: 'Old Standard TT, serif',
                 size: 14,
