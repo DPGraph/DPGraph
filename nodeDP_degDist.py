@@ -400,7 +400,7 @@ def nodeDP_edgeAdd_degHisPart_Lap(G, maxDeg, epsilon, thetaList, rList):
     # historm + lap noise
     degHis = degSeqToDegHis(degListGt, theta)
     noisyDegHis = np.zeros(len(degHis))
-    sens = 1 
+    sens = 2 * theta + 1
     for i in range(len(partition)-1):
         start = partition[i]
         end = partition[i+1]
